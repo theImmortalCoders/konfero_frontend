@@ -9,14 +9,21 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "darkblue2blue-gradient":
+          "linear-gradient(to bottom right, rgb(var(--color-darkblue)), rgb(var(--color-blue)))",
+        "black2darkblue-gradient":
+          "radial-gradient(circle at 0% 100%, rgb(var(--color-black)) 0%, transparent 60%), radial-gradient(circle at 14% 86%, rgb(var(--color-darkblue)) 20%, transparent 70%), radial-gradient(circle at 29% 71%, rgb(var(--color-black)) 20%, transparent 70%), radial-gradient(circle at 83% 17%, rgb(var(--color-darkblue)) 30%, transparent 90%), radial-gradient(circle at 57% 43%, rgb(var(--color-black)) 40%, transparent 90%), radial-gradient(circle at 91% 89%, rgb(var(--color-black)) 90%, transparent 80%), radial-gradient(circle at 86% 14%, rgb(var(--color-black)) 60%, transparent 70%), radial-gradient(circle at 100% 0%, rgb(var(--color-darkblue)) 50%, transparent 60%)",
       },
       colors: {
         close2White: "rgb(var(--color-close2White) / <alpha-value>)",
+        blue: "rgb(var(--color-blue) / <alpha-value>)",
+        darkblue: "rgb(var(--color-darkblue) / <alpha-value>)",
+        black: "rgb(var(--color-black) / <alpha-value>)",
       },
       padding: {
+        navbar: "var(--navbar)",
+      },
+      margin: {
         navbar: "var(--navbar)",
       },
       height: {

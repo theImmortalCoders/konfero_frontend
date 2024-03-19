@@ -21,5 +21,8 @@ body,
 
 :root {
   --color-close2White: 242 242 242;
-  --navbar: 0px;
+  --color-blue: 1 79 134;
+  --color-darkblue: 1 42 74;
+  --color-black: 0 8 20;
+  --navbar: 50px;
 }
