@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Platform for organizing conferences
 
-First, run the development server:
+## Description
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+A web application for organizing scientific conferences is a tool designed to support organizers in effectively managing all aspects of the event. It allows you to plan conferences, register participants, create and manage session and presentation schedules, as well as publish conference materials. It was created with intuitiveness and ease of use in mind, which makes it available to organizers of various types of conferences, regardless of their size. The application is intended to improve communication between organizers and participants, effectively manage time and conference resources, and provide easy access to all necessary information and materials related to the event.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Team Members
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Marcin Bator** (@marcinbator) 
+- **Igor Litwa** (@miszor03)
+- **Wiktor Mazur** (@ZegarekPL)
+- **Paweł Buczek** (@pablitoo1)
+- **Bartłomiej Krówka** (@bkrowka)
+- **Adrian Gola** (@Adrianxx11)
+- **Bogdan Bosak** (@bkrowka)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Features
 
-## Learn More
+- Materials presentation and publication
+- Managing session schedules
+- An application supporting organizers of scientific conferences in planning
 
-To learn more about Next.js, take a look at the following resources:
+## Technologies Used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Frontend: React/Next.js (TypeScript), TailwindCSS
+- Backend: Java, Spring Boot, PostgreSQL, Docker
