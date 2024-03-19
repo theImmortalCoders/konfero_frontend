@@ -13,6 +13,30 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        close2White: "rgb(var(--color-close2White) / <alpha-value>)",
+      },
+      padding: {
+        navbar: "var(--navbar)",
+      },
+      height: {
+        navbar: "var(--navbar)",
+      },
+      minHeight: {
+        navbar: "var(--navbar)",
+        max: "calc(100vh - var(--navbar))",
+      },
+      minWidth: {
+        sidebar: "var(--sidebar)",
+        max: "100vw",
+      },
+      maxHeight: {
+        max: "calc(100vh - var(--navbar))",
+      },
+      maxWidth: {
+        sidebar: "var(--sidebar)",
+        max: "100vw",
+      },
     },
   },
   plugins: [],
