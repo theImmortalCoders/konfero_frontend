@@ -16,7 +16,7 @@ function LoginBoard () {
             <button className="flex justify-center items-center w-full md:w-96 h-16 text-white text-lg bg-blue rounded-2xl px-8">
                 <FaGoogle className="text-base mr-2"/> <p className="text-sm xs:text-lg">Kontynuuj z Google</p>
             </button>
-            <p className="text-xs font-sans w-auto mt-4">Przetworzymy Twój adres e-mail, aby sprawdzić, czy jesteś już zarejestrowany.</p>
+            <p className="text-xs font-sans w-64 mt-4">Przetworzymy Twój adres e-mail, aby sprawdzić, czy jesteś już zarejestrowany.</p>
     </div>
     )
 }
