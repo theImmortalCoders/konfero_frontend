@@ -45,13 +45,10 @@ export async function getCurrentUser() {
     }
 }
 
-export async function changeUserRole(userId: number, userRole: string) {
+export async function changeUserRole(userId: number, newRole: string) {
     try{
         const response: AxiosResponse<void> = await appAPI.patch(
-            `/api/user/${userId}/role`,
-            {
-                userRole,
-            },
+            `/api/user/${userId}/role?newRole=${newRole}`,
             {
                 withCredentials: true,
             }
@@ -100,6 +97,74 @@ export async function banUser(userId: number) {
     } catch (error: any) {
         if (error.response.status === 401) {
             window.location.replace("/login");
+            console.error("Brak autoryzacji użytkownika");
+            return "Brak autoryzacji użytkownika";
+        } else {
+            throw new Error("Error500");
+        }
+    }
+}
+
+export async function updateProfileWithAdditionalData(phone: string, city: string) {
+    try{
+        const response: AxiosResponse<void> = await appAPI.post(
+            `/api/user/update-profile`,
+            {
+                phone,
+                city,
+            },
+            {
+                withCredentials: true,
+            }
+        );
+        if (response.status === 200) {
+            console.log("Dane użytkownika zaktualizowane poprawnie!")
+            return response.status;
+        } else if(response.status === 401) {
+            console.error("Brak autoryzacji użytkownika");
+            return "Brak autoryzacji użytkownika";
+        } else {
+            console.error("Wystąpił błąd podczas aktualizacji danych użytkownika");
+            return "Wystąpił błąd podczas aktualizacji danych użytkownika";
+        }
+    } catch (error: any) {
+        if (error.response.status === 401) {
+            console.error("Brak autoryzacji użytkownika");
+            return "Brak autoryzacji użytkownika";
+        } else {
+            throw new Error("Error500");
+        }
+    }
+}
+
+export interface BecomeOrganizerData {
+    companyName: string;
+    address: string;
+    city: string;
+    phone: string;
+}
+
+export async function becomeOrganizerWithUpdateData(organizerData: BecomeOrganizerData) {
+    try{
+        const response: AxiosResponse<void> = await appAPI.post(
+            `/api/user/become-organizer`,
+            organizerData,
+            {
+                withCredentials: true,
+            }
+        );
+        if (response.status === 200) {
+            console.log("Użytkownik stał się organizatorem!")
+            return response.status;
+        } else if(response.status === 401) {
+            console.error("Brak autoryzacji użytkownika");
+            return "Brak autoryzacji użytkownika";
+        } else {
+            console.error("Wystąpił błąd podczas dodawania użytkownikowi roli organizatora");
+            return "Wystąpił błąd podczas dodawania użytkownikowi roli organizatora";
+        }
+    } catch (error: any) {
+        if (error.response.status === 401) {
             console.error("Brak autoryzacji użytkownika");
             return "Brak autoryzacji użytkownika";
         } else {
