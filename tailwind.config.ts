@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: "475px",
+        mds: "799px",
+        mdl: "910px",
+        "3xl": "1760px",
+      },
       backgroundImage: {
         "darkblue2blue-gradient":
           "linear-gradient(to bottom right, rgb(var(--color-darkblue)), rgb(var(--color-blue)))",
