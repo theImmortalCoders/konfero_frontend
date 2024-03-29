@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { appAPI } from "@/utils/appAPI";
+import { appAPI } from "@/utils/appENV";
 
 interface APIImageComponentProps {
   imageId: number;
@@ -9,10 +9,10 @@ interface APIImageComponentProps {
 }
 
 const APIImageComponent: React.FC<APIImageComponentProps> = ({
-    imageId,
-    type,
-    thumbnail,
-    full,
+  imageId,
+  type,
+  thumbnail,
+  full,
 }) => {
   const [imageData, setImageData] = useState<string>("");
   const [defaultImg, setDefaultImage] = useState("question.jpg");
@@ -28,21 +28,18 @@ const APIImageComponent: React.FC<APIImageComponentProps> = ({
             setDefaultImage("question.jpg");
           }
         } else {
-            if (!thumbnail || thumbnail === undefined) {
-                const response = await appAPI.get(
-                    `/api/image/${imageId}`,
-                    {
-                    responseType: "arraybuffer",
-                }
-            );
+          if (!thumbnail || thumbnail === undefined) {
+            const response = await appAPI.get(`/api/image/${imageId}`, {
+              responseType: "arraybuffer",
+            });
 
             if (response.status === 200) {
-                const base64Image = btoa(
-                    new Uint8Array(response.data).reduce(
-                        (data, byte) => data + String.fromCharCode(byte),
-                        ""
-                    )
-                );
+              const base64Image = btoa(
+                new Uint8Array(response.data).reduce(
+                  (data, byte) => data + String.fromCharCode(byte),
+                  ""
+                )
+              );
 
               const imageSrc = `data:image/png;base64,${base64Image}`;
 
