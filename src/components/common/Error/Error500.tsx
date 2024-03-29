@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Logo from "@/assets/logo/_70fa34e3-d819-4d5b-9aa7-fa543348061c.jpeg";
+import Logo from "@/assets/logo/logo_table.jpeg";
 export default function Error500() {
   return (
     <main className="bg-black2darkblue-gradient flex min-h-max justify-center">
