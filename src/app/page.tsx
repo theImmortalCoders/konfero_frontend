@@ -5,20 +5,20 @@ import { FaArrowRight } from "react-icons/fa6";
 
 export default function Home() {
   return (
-    <main className="flex min-h-max min-w-screen bg-black2darkblue-gradient justify-center items-center mt-navbar">
+    <main className="flex min-h-max min-w-screen bg-black2darkblue-gradient justify-center items-center">
       <Box>
         <div className="grid grid-cols-1 xl:grid-cols-2 w-full h-full">
           <div className="pr-0 md:pr-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
-              Witamy w Konferno
+              Witamy w Konfero
             </h1>
             <p className="text-md sm:text-lg md:text-xl mb-4 sm:mb-6 md:mb-8">
               Najlepszej stronie do organizacji konferencji
             </p>
             <p className="text-md sm:text-lg md:text-xl mb-4 sm:mb-6 md:mb-8">
               Zapewniamy niezawodne planowanie konferencji, rejestrację
-              uczestników , zarządzanie harmonogramem sesji i prezentacji oraz
-              publikację materiałów konferencyjnych
+              uczestników wraz z zarządzaniem harmonogramem sesji i prezentacji
+              oraz publikację materiałów konferencyjnych
             </p>
             <p className="text-md sm:text-lg md:text-xl mb-4 sm:mb-6 md:mb-8">
               Rozsiądz się wygodnie i zostaw wszystko nam...

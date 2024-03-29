@@ -50,6 +50,12 @@ const config: Config = {
         sidebar: "var(--sidebar)",
         max: "100vw",
       },
+      inset: {
+        navbar: "var(--navbar)",
+      },
+      boxShadow: {
+        navbarShadow: "0px 6px 20px 3px rgba(186, 182, 182, 1)",
+      },
     },
   },
   plugins: [],
