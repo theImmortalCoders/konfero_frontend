@@ -6,7 +6,7 @@ import { FaArrowRight } from "react-icons/fa6";
 export default function Home() {
   return (
     <main className="flex min-h-max min-w-screen bg-black2darkblue-gradient justify-center items-center">
-      <Box>
+      <Box className="bg-darkblue2blue-gradient w-[90%] lg:w-[70%]">
         <div className="grid grid-cols-1 xl:grid-cols-2 w-full h-full">
           <div className="pr-0 md:pr-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
