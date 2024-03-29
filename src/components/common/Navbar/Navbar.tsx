@@ -31,7 +31,9 @@ export default function Navbar() {
       </div>
 
       <div className="flex flex-row gap-4 md:gap-8 items-center">
-        <IoPersonCircleOutline className="w-8 h-8 text-darkblue" />
+        <a href="/login">
+          <IoPersonCircleOutline className="w-8 h-8 text-darkblue" />
+        </a>
         <div className="md:hidden">
           <button
             onClick={toggleMenu}
