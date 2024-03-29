@@ -15,7 +15,7 @@ export interface GetCurrentUserData {
     phone: string;
 }
 
-export async function getCurrentUser() {
+export async function getCurrentUser() : Promise<GetCurrentUserData | string> {
     try{
         const response: AxiosResponse<GetCurrentUserData> = await appAPI.get(
             `/api/user/me`,
