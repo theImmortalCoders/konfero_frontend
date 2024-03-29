@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: "475px",
+        mds: "799px",
+        mdl: "910px",
+        "3xl": "1760px",
+      },
       backgroundImage: {
         "darkblue2blue-gradient":
           "linear-gradient(to bottom right, rgb(var(--color-darkblue)), rgb(var(--color-blue)))",
@@ -43,6 +49,13 @@ const config: Config = {
       maxWidth: {
         sidebar: "var(--sidebar)",
         max: "100vw",
+      },
+      inset: {
+        navbar: "var(--navbar)",
+      },
+      boxShadow: {
+        navbarShadow: "0px 6px 20px 3px rgba(186, 182, 182, 1)",
+        whiteShadow: "0px 0px 30px 3px rgba(186, 182, 182, 1)",
       },
     },
   },
