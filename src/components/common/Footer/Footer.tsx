@@ -1,6 +1,6 @@
 import { FaFacebook, FaInstagram, FaYoutube, FaTwitch } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import Logo from "@/assets/logo/blue/logo_text_blue.png";
+import Logo from "@/assets/logo/blue/logo_img_blue.png";
 import Image from "next/image";
 
 function BottomLink({ children }: { children: React.ReactNode }) {
