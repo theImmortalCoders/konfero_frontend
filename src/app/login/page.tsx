@@ -1,13 +1,15 @@
 "use client"
 import { FaGoogle } from "react-icons/fa";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getCurrentUser } from "@/hooks/user";
 
 function Logo () {
     return (
         <div className="mb-12">
             <img src="/logo/blue/logo_text_blue.png" alt="logo" className="w-48"/>
         </div>
-    )
+    );
 }
 
 function LoginBoard () {
@@ -21,11 +23,28 @@ function LoginBoard () {
                 </div>
             </a>
             <p className="text-xs font-sans w-64 mt-4">Przetworzymy Twój adres e-mail, aby sprawdzić, czy jesteś już zarejestrowany.</p>
-    </div>
-    )
+        </div>
+    );
 }
 
 export default function Page () {
+    const router = useRouter();
+
+    const handleUserMe = async () => {
+        try {
+        const result = await getCurrentUser();
+        if (result !== "Brak autoryzacji użytkownika") {
+            router.push("/");
+        }
+        } catch (error) {
+            console.error("Error", error);
+        }
+    };
+
+    useEffect(() => {
+        handleUserMe();
+    }, []);
+
     useEffect(() => {
         document.cookie = "redirectUrl=http://localhost:3000";
     }, []);
@@ -35,5 +54,5 @@ export default function Page () {
             <Logo/>
             <LoginBoard/>
         </div>
-    )
+    );
 }
