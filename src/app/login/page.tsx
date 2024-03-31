@@ -6,7 +6,7 @@ import { getCurrentUser } from "@/hooks/user";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import Image from "next/image";
 import Box from "@/components/common/Box/Box";
-import { appFRONT } from "@/utils/appENV";
+import { appFRONT, appAPI } from "@/utils/appENV";
 import { useQuery } from "react-query";
 
 function LoginBoard() {
@@ -14,9 +14,9 @@ function LoginBoard() {
     <div className="flex flex-col justify-center items-center text-center text-darkblue">
       <p className="text-4xl mb-8">Witaj!</p>
       <p className="text-lg mb-8">Zaloguj się, aby uzyskać dostęp:</p>
-      <a href="http://localhost:8080/api/oauth2/authorize/google">
+      <a href={`${appAPI.defaults.baseURL}/api/oauth2/authorize/google`}>
         <div className="flex justify-center items-center w-full md:w-96 h-16 text-close2White text-lg bg-blue rounded-2xl px-8">
-          <FaGoogle className="text-base mr-2" />{" "}
+          <FaGoogle className="text-base mr-2" />
           <p className="text-sm xs:text-lg">Kontynuuj z Google</p>
         </div>
       </a>
