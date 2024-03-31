@@ -1,12 +1,12 @@
 "use client";
 import { FaGoogle } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/hooks/user";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import Image from "next/image";
 import Box from "@/components/common/Box/Box";
-import { NEXT_PUBLIC_FRONT_BASE_URL } from "@/utils/appENV";
+import { appFRONT } from "@/utils/appENV";
 
 function LoginBoard() {
   return (
@@ -27,7 +27,7 @@ function LoginBoard() {
   );
 }
 
-export default function Page() {
+export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
@@ -35,7 +35,23 @@ export default function Page() {
       try {
         const result = await getCurrentUser();
         if (result !== "Brak autoryzacji użytkownika") {
-          router.push("/");
+          const lastVisitedPage = localStorage.getItem("lastVisitedPage");
+          console.log("lastVisitedPage:", lastVisitedPage);
+          console.log("appFRONT.defaults.baseURL:", appFRONT.defaults.baseURL);
+          if (
+            lastVisitedPage &&
+            lastVisitedPage !== "/login" &&
+            appFRONT.defaults.baseURL &&
+            lastVisitedPage.includes(appFRONT.defaults.baseURL)
+          ) {
+            console.log(
+              "lastVisitedPage.includes(appFRONT.defaults.baseURL)",
+              lastVisitedPage.includes(appFRONT.defaults.baseURL)
+            );
+            router.push(lastVisitedPage);
+          } else {
+            router.push("/");
+          }
         }
       } catch (error) {
         console.error("Error", error);
@@ -43,7 +59,6 @@ export default function Page() {
     };
 
     handleUserMe();
-    document.cookie = `redirectUrl=${NEXT_PUBLIC_FRONT_BASE_URL}/${lastVisitedPage}`;
   }, [router]);
 
   return (
