@@ -1,11 +1,12 @@
 "use client";
 import { FaGoogle } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/hooks/user";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import Image from "next/image";
 import Box from "@/components/common/Box/Box";
+import { NEXT_PUBLIC_FRONT_BASE_URL } from "@/utils/appENV";
 
 function LoginBoard() {
   return (
@@ -29,24 +30,21 @@ function LoginBoard() {
 export default function Page() {
   const router = useRouter();
 
-  const handleUserMe = async () => {
-    try {
-      const result = await getCurrentUser();
-      if (result !== "Brak autoryzacji użytkownika") {
-        router.push("/");
+  useEffect(() => {
+    const handleUserMe = async () => {
+      try {
+        const result = await getCurrentUser();
+        if (result !== "Brak autoryzacji użytkownika") {
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error", error);
       }
-    } catch (error) {
-      console.error("Error", error);
-    }
-  };
+    };
 
-  useEffect(() => {
     handleUserMe();
-  }, []);
-
-  useEffect(() => {
-    document.cookie = "redirectUrl=http://localhost:3000";
-  }, []);
+    document.cookie = `redirectUrl=${NEXT_PUBLIC_FRONT_BASE_URL}/${lastVisitedPage}`;
+  }, [router]);
 
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-black2darkblue-gradient">
