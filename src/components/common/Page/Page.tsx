@@ -1,6 +1,6 @@
 export default function Page({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex min-h-max bg-yellow-300 z-0 item-center">
+    <main className="flex min-h-max min-w-screen bg-black2darkblue-gradient text-close2White justify-center items-center">
       {children}
     </main>
   );

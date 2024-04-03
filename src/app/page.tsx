@@ -2,11 +2,28 @@ import Box from "@/components/common/Box/Box";
 import Image from "next/image";
 import Laptop from "@/assets/home/laptop.jpg";
 import { FaArrowRight } from "react-icons/fa6";
+import Page from "@/components/common/Page/Page";
+import Link from "next/link";
 
+function Joinus() {
+  return (
+    <>
+      <Link
+        href="/login"
+        className="bg-blue text-close2White text-sm sm:text-md lg:text-lg font-medium py-2 px-4 md:py-3 md:px-6 rounded-2xl flex items-center justify-center"
+      >
+        <h1>Dołącz do nas</h1>
+        <div className="ml-3 md:ml-6 w-6 h-6 md:w-9 md:h-9 rounded-full bg-close2White flex items-center justify-center">
+          <FaArrowRight className="text-blue" />
+        </div>
+      </Link>
+    </>
+  );
+}
 export default function Home() {
   return (
-    <main className="flex min-h-max min-w-screen bg-black2darkblue-gradient justify-center items-center">
-      <Box className="bg-close2White w-[90%] lg:w-[70%] shadow-whiteShadow text-darkblue">
+    <Page>
+      <Box className="w-[90%] lg:w-[70%] text-darkblue">
         <div className="grid grid-cols-1 xl:grid-cols-2 w-full h-full">
           <div className="pr-0 md:pr-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
@@ -24,12 +41,7 @@ export default function Home() {
               Rozsiądz się wygodnie i zostaw wszystko nam...
             </p>
             <div className="flex items-center justify-center w-full">
-              <button className="bg-blue text-close2White text-sm sm:text-md lg:text-lg font-medium py-2 px-4 md:py-3 md:px-6 rounded-2xl flex items-center justify-center">
-                <a href="/login">Dołącz do nas</a>
-                <div className="ml-3 md:ml-6 w-6 h-6 md:w-9 md:h-9 rounded-full bg-close2White flex items-center justify-center">
-                  <FaArrowRight className="text-blue" />
-                </div>
-              </button>
+              <Joinus />
             </div>
           </div>
           <div className="w-full h-full hidden xl:flex items-center">
@@ -37,6 +49,6 @@ export default function Home() {
           </div>
         </div>
       </Box>
-    </main>
+    </Page>
   );
 }

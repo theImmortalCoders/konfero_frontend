@@ -37,23 +37,23 @@ export default function LoginPage() {
     isError,
   } = useQuery("currentUser", getCurrentUser);
 
-  useEffect(() => {
-    if (!isLoading && !isError && currentUserData) {
-      if (currentUserData !== "Brak autoryzacji użytkownika") {
-        const lastVisitedPage = localStorage.getItem("lastVisitedPage");
-        if (
-          lastVisitedPage &&
-          lastVisitedPage !== "/login" &&
-          appFRONT.defaults.baseURL &&
-          lastVisitedPage.includes(appFRONT.defaults.baseURL)
-        ) {
-          router.push(lastVisitedPage);
-        } else {
-          router.push("/");
-        }
+  console.log("currentUserData", currentUserData);
+
+  if (!isLoading && !isError && currentUserData) {
+    if (currentUserData !== "Brak autoryzacji użytkownika") {
+      const lastVisitedPage = localStorage.getItem("lastVisitedPage");
+      if (
+        lastVisitedPage &&
+        lastVisitedPage !== "/login" &&
+        appFRONT.defaults.baseURL &&
+        lastVisitedPage.includes(appFRONT.defaults.baseURL)
+      ) {
+        router.push(lastVisitedPage);
+      } else {
+        router.push("/");
       }
     }
-  }, [currentUserData, isLoading, isError, router]);
+  }
 
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-black2darkblue-gradient">
