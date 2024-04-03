@@ -47,7 +47,9 @@ export default function Navbar() {
     data?: GetCurrentUserData | string;
     isLoading: boolean;
     isError: any;
-  } = useQuery("currentUser", getCurrentUser);
+  } = useQuery("currentUser", getCurrentUser, {
+    staleTime: Infinity,
+  });
 
   if (isError) return <Error500 />;
 

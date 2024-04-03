@@ -15,7 +15,7 @@ export interface GetCurrentUserData {
   phone: string;
 }
 
-export async function getCurrentUser(): Promise<GetCurrentUserData | string> {
+export async function getCurrentUser(): Promise<GetCurrentUserData | null> {
   try {
     const response: AxiosResponse<GetCurrentUserData> = await appAPI.get(
       `/api/user/me`,
@@ -28,7 +28,7 @@ export async function getCurrentUser(): Promise<GetCurrentUserData | string> {
   } catch (error: any) {
     if (error.response.status === 401) {
       console.error("Brak autoryzacji użytkownika");
-      return "Brak autoryzacji użytkownika";
+      return null;
     } else {
       throw new Error("Wystąpił błąd podczas pobierania danych użytkownika");
     }
