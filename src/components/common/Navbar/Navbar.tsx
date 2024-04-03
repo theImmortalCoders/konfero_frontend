@@ -1,4 +1,5 @@
 "use client";
+import { AxiosResponse } from "axios";
 import { useState } from "react";
 import Image from "next/image";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
@@ -42,10 +43,11 @@ export default function Navbar() {
     data: currentUserData,
     isLoading,
     isError,
-  }: { data?: GetCurrentUserData; isLoading: boolean; isError: any } = useQuery(
-    "currentUser",
-    getCurrentUser
-  );
+  }: {
+    data?: GetCurrentUserData | string;
+    isLoading: boolean;
+    isError: any;
+  } = useQuery("currentUser", getCurrentUser);
 
   if (isError) return <Error500 />;
 
@@ -61,7 +63,10 @@ export default function Navbar() {
 
       <div className="flex flex-row gap-4 md:gap-8 items-center">
         <Link href="/login">
-          {isLoading || currentUserData === "Brak autoryzacji użytkownika" ? (
+          {isLoading ||
+          typeof currentUserData === "string" ||
+          !currentUserData ||
+          currentUserData === null ? (
             <IoPersonCircleOutline className="w-8 h-8 text-darkblue" />
           ) : (
             <Image
