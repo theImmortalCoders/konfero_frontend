@@ -7,7 +7,7 @@ export default function Box({
 }) {
   return (
     <main
-      className={`items-start h-auto z-0 rounded-3xl px-4 py-4 sm:px-8 sm:py-8 ${className}`}
+      className={`bg-close2White items-start shadow-whiteShadow h-auto z-0 rounded-3xl px-4 py-4 sm:px-8 sm:py-8 ${className}`}
     >
       {children}
     </main>

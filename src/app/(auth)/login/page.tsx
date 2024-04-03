@@ -1,13 +1,15 @@
 "use client";
 import { FaGoogle } from "react-icons/fa";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/hooks/user";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import Image from "next/image";
 import Box from "@/components/common/Box/Box";
-import { appFRONT, appAPI } from "@/utils/appENV";
+import { appAPI } from "@/utils/appENV";
 import { useQuery } from "react-query";
+import { useEffect, useState } from "react";
+import Error500 from "@/components/common/Error/Error500";
+import Page from "@/components/common/Page/Page";
 
 function LoginBoard() {
   return (
@@ -35,40 +37,44 @@ export default function LoginPage() {
     data: currentUserData,
     isLoading,
     isError,
-  } = useQuery("currentUser", getCurrentUser);
+  } = useQuery("currentUser", getCurrentUser, {
+    staleTime: Infinity,
+  });
+
+  const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isError && currentUserData) {
-      if (currentUserData !== "Brak autoryzacji użytkownika") {
-        const lastVisitedPage = localStorage.getItem("lastVisitedPage");
-        if (
-          lastVisitedPage &&
-          lastVisitedPage !== "/login" &&
-          appFRONT.defaults.baseURL &&
-          lastVisitedPage.includes(appFRONT.defaults.baseURL)
-        ) {
+      if (currentUserData !== null) {
+        const lastVisitedPage = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("lastVisitedPage="))
+          ?.split("=")[1];
+
+        if (lastVisitedPage && lastVisitedPage !== "/login") {
           router.push(lastVisitedPage);
         } else {
           router.push("/");
         }
       }
     }
-  }, [currentUserData, isLoading, isError, router]);
+    setTimeout(() => setShowLogin(true), 100);
+  }, [isLoading, isError, currentUserData, router]);
+
+  if (isError) return <Error500 />;
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-black2darkblue-gradient">
-      {!isLoading ? (
+    <Page>
+      {isLoading || !showLogin ? (
+        <h1>Trwa ładowanie danych...</h1>
+      ) : (
         <Box className="bg-close2White w-auto shadow-whiteShadow">
           <div className="mb-12 flex justify-center">
             <Image src={Logo} alt="Logo" className="w-48" />
           </div>
           <LoginBoard />
         </Box>
-      ) : (
-        <p className="text-sm xs:text-lg text-close2White">
-          Trwa ładowanie danych...
-        </p>
       )}
-    </div>
+    </Page>
   );
 }
