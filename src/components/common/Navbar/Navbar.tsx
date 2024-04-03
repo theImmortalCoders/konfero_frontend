@@ -8,29 +8,50 @@ import {
   IoCloseOutline,
 } from "react-icons/io5";
 import Link from "next/link";
+import { updateLastVisitedPage } from "@/utils/cookie";
+import { GetCurrentUserData, getCurrentUser } from "@/hooks/user";
+import { useQuery } from "react-query";
+import Error500 from "../Error/Error500";
 
 function Navbox() {
   return (
     <>
       <Link href="/aboutus">
-        <button>O nas</button>
+        <button onClick={() => updateLastVisitedPage("/aboutus")}>O nas</button>
       </Link>
       <Link href="/conference">
-        <button>Konferencje</button>
+        <button onClick={() => updateLastVisitedPage("/conference")}>
+          Konferencje
+        </button>
       </Link>
-      <Link href="/myconference">
-        <button>Moje konferencje</button>
+      <Link
+        href="/myconference"
+        onClick={() => updateLastVisitedPage("/myconference")}
+      >
+        Moje konferencje
       </Link>
     </>
   );
 }
+
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  const {
+    data: currentUserData,
+    isLoading,
+    isError,
+  }: { data?: GetCurrentUserData; isLoading: boolean; isError: any } = useQuery(
+    "currentUser",
+    getCurrentUser
+  );
+
+  if (isError) return <Error500 />;
+
   return (
     <nav className="max-w-screen h-navbar bg-close2White flex items-center justify-between px-4 md:px-8 shadow-navbarShadow sticky z-20">
-      <Link href="/">
+      <Link href="/" onClick={() => updateLastVisitedPage("/")}>
         <Image src={Logo} alt="Logo" width={70} height={70} />
       </Link>
 
@@ -40,7 +61,17 @@ export default function Navbar() {
 
       <div className="flex flex-row gap-4 md:gap-8 items-center">
         <Link href="/login">
-          <IoPersonCircleOutline className="w-8 h-8 text-darkblue" />
+          {isLoading || currentUserData === "Brak autoryzacji użytkownika" ? (
+            <IoPersonCircleOutline className="w-8 h-8 text-darkblue" />
+          ) : (
+            <Image
+              src={currentUserData.photo}
+              className="w-8 h-8 rounded-full"
+              width={32}
+              height={32}
+              alt="Avatar"
+            />
+          )}
         </Link>
         <button
           onClick={toggleMenu}
