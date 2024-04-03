@@ -12,7 +12,6 @@ import Link from "next/link";
 import { updateLastVisitedPage } from "@/utils/cookie";
 import { GetCurrentUserData, getCurrentUser } from "@/hooks/user";
 import { useQuery } from "react-query";
-import Error500 from "../Error/Error500";
 
 function Navbox() {
   return (
@@ -51,8 +50,6 @@ export default function Navbar() {
     staleTime: Infinity,
   });
 
-  if (isError) return <Error500 />;
-
   return (
     <nav className="max-w-screen h-navbar bg-close2White flex items-center justify-between px-4 md:px-8 shadow-navbarShadow sticky z-20">
       <Link href="/" onClick={() => updateLastVisitedPage("/")}>
@@ -68,7 +65,8 @@ export default function Navbar() {
           {isLoading ||
           typeof currentUserData === "string" ||
           !currentUserData ||
-          currentUserData === null ? (
+          currentUserData === null ||
+          isError ? (
             <IoPersonCircleOutline className="w-8 h-8 text-darkblue" />
           ) : (
             <Image
