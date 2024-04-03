@@ -23,8 +23,16 @@ export async function getCurrentUser(): Promise<GetCurrentUserData | null> {
         withCredentials: true,
       }
     );
-    console.log("Dane użytkownika pobrano poprawnie!");
-    return response.data;
+    if (response.status === 200) {
+      console.log("Dane użytkownika pobrano poprawnie!");
+      return response.data;
+    }
+    if (response.status === 401) {
+      console.error("Brak autoryzacji użytkownika");
+      return null;
+    } else {
+      throw new Error("Wystąpił błąd podczas pobierania danych użytkownika");
+    }
   } catch (error: any) {
     if (error.response.status === 401) {
       console.error("Brak autoryzacji użytkownika");

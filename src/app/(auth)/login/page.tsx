@@ -7,7 +7,7 @@ import Image from "next/image";
 import Box from "@/components/common/Box/Box";
 import { appAPI } from "@/utils/appENV";
 import { useQuery } from "react-query";
-import { useEffect, useState } from "react"; // Dodano useState
+import { useEffect, useState } from "react";
 import Error500 from "@/components/common/Error/Error500";
 import Page from "@/components/common/Page/Page";
 
@@ -62,16 +62,19 @@ export default function LoginPage() {
   }, [isLoading, isError, currentUserData, router]);
 
   if (isError) return <Error500 />;
-  if (isLoading || !showLogin) return <Page>Trwa ładowanie danych...</Page>;
 
   return (
     <Page>
-      <Box className="bg-close2White w-auto shadow-whiteShadow">
-        <div className="mb-12 flex justify-center">
-          <Image src={Logo} alt="Logo" className="w-48" />
-        </div>
-        <LoginBoard />
-      </Box>
+      {isLoading || !showLogin ? (
+        <h1>Trwa ładowanie danych...</h1>
+      ) : (
+        <Box className="bg-close2White w-auto shadow-whiteShadow">
+          <div className="mb-12 flex justify-center">
+            <Image src={Logo} alt="Logo" className="w-48" />
+          </div>
+          <LoginBoard />
+        </Box>
+      )}
     </Page>
   );
 }
