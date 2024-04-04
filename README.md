@@ -13,7 +13,7 @@ A web application for organizing scientific conferences is a tool designed to su
 - **Paweł Buczek** (@pablitoo1)
 - **Bartłomiej Krówka** (@bkrowka)
 - **Adrian Gola** (@Adrianxx11)
-- **Bogdan Bosak** (@bkrowka)
+- **Bogdan Bosak** (@Bombkerman)
 
 ## Features
 
