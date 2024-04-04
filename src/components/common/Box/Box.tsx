@@ -40,14 +40,14 @@ export function BoxWithImage({
         <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center text-darkblue p-4">
           <h1 className="text-4xl pt-[5%]">Tytuł konferencji</h1>
           <div className="w-full h-auto flex justify-around text-3xl pt-[10%]">
-            <p className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White">
+            <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White">
               <GoCalendar className="text-4xl" />
               <h1>Data konferencji</h1>
-            </p>
-            <p className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White">
+            </div>
+            <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White">
               <FaRegClock className="text-4xl" />
               <h1>Godzina konferencji</h1>
-            </p>
+            </div>
           </div>
           <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White pt-[20%]">
             <IoMdPin className="text-4xl" />
