@@ -13,7 +13,7 @@ export function Box({
 }) {
   return (
     <main
-      className={`bg-close2White my-20 items-start shadow-whiteShadow h-auto z-0 rounded-3xl px-4 py-4 sm:px-8 sm:py-8 ${className}`}
+      className={`bg-close2White items-start shadow-whiteShadow h-auto z-0 rounded-3xl px-4 py-4 sm:px-8 sm:py-8 ${className}`}
     >
       {children}
     </main>
@@ -33,7 +33,7 @@ export function BoxWithImage({
 }) {
   return (
     <div
-      className={`bg-close2White my-20 items-start shadow-whiteShadow h-auto z-0 rounded-3xl ${className}`}
+      className={`bg-close2White items-start shadow-whiteShadow h-auto z-0 rounded-3xl ${className}`}
     >
       <div className="relative w-full">
         <Image src={src} alt={alt} className="rounded-t-3xl w-full h-auto" />
