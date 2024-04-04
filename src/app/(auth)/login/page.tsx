@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/hooks/user";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import Image from "next/image";
 import Box from "@/components/common/Box/Box";
-import { appAPI } from "@/utils/appENV";
+import { NEXT_PUBLIC_FRONT_BASE_URL, appAPI } from "@/utils/appENV";
 import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import Error500 from "@/components/common/Error/Error500";
@@ -58,6 +58,7 @@ export default function LoginPage() {
         }
       }
     }
+    document.cookie = `redirectUrl=${NEXT_PUBLIC_FRONT_BASE_URL}`;
     setTimeout(() => setShowLogin(true), 100);
   }, [isLoading, isError, currentUserData, router]);
 
