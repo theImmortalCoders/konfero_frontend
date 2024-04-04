@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/hooks/user";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import Image from "next/image";
-import Box from "@/components/common/Box/Box";
+import { Box } from "@/components/common/Box/Box";
 import { NEXT_PUBLIC_FRONT_BASE_URL, appAPI } from "@/utils/appENV";
 import { useQuery } from "react-query";
 import { useEffect, useState } from "react";

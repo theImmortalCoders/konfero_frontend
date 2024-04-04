@@ -1,5 +1,5 @@
 import Page from "@/components/common/Page/Page";
 
-export default function MyConferencePage() {
-  return <Page>MyConferencePage</Page>;
+export default function MyConferenceListPage() {
+  return <Page>MyConferenceListPage</Page>;
 }
