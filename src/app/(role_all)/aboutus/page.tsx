@@ -16,17 +16,17 @@ export default function AboutUsPage() {
   }, []);
   return (
     <Page>
-      <div className="flex flex-col items-center w-full space-y-10 py-10">
+      <div className="flex flex-col items-center w-full space-y-10 md:px-4 py-10">
         <Box className="w-[90%] lg:w-[75%] xl:w-[60%] text-darkblue">
           <h1 className="text-xl md:text-2xl font-bold mb-4 text-center">Dlaczego Konfero?</h1> 
-          <p className="text-sm lg:text-base text-justify">
+          <p className="text-sm lg:text-base lg:text-justify">
             Konfero to innowacyjne narzędzie, które rewolucjonizuje sposób organizacji konferencji naukowych. Nasza aplikacja webowa została zaprojektowana z myślą o potrzebach organizatorów konferencji, aby wspierać ich w każdym etapie przygotowań i realizacji wydarzenia.
           </p>
         </Box>
-        <Box className="flex flex-col md:flex-row items-center w-[90%] lg:w-[75%] xl:w-[60%] text-darkblue space-x-0 md:space-x-8">
-          <div className="flex w-5/6 md:w-2/5 mt-5 lg:mt-0 justify-end order-2 md:order-1 relative">
+        <Box className="flex flex-col md:flex-row items-center w-[90%] lg:w-[75%] xl:w-[60%] text-darkblue space-x-0 md:space-x-8 lg:mr-[25%]">
+          <div className="flex w-5/6 md:w-2/5 mt-5 lg:mt-0 justify-end order-2 md:order-1 relative xl:right-16">
             <Image src={Photo_1} alt="Photo_1" className="w-full rounded-3xl" />
-            <div className={`flex flex-col w-3/4 h-3/5 m-4 p-4 rounded-xl bg-close2White font-bold bg-opacity-60 absolute transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`flex flex-col w-3/4 h-3/5 m-4 p-4 rounded-xl bg-close2White font-bold bg-opacity-90 absolute transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
               <p className="text-sm sm:text-base md:text-xs lg:text-sm">ORGANIZATORZY: 69</p>
               <p className="text-sm sm:text-base md:text-xs lg:text-sm">PRELEGENCI: 100</p>
               <p className="text-sm sm:text-base md:text-xs lg:text-sm">UŻYTKOWNICY: 2115</p>
@@ -34,19 +34,19 @@ export default function AboutUsPage() {
           </div>
           <div className="md:w-3/5 order-1 md:order-2">
             <h1 className="text-xl md:text-2xl font-bold mb-4 text-center">Zaufanie organizatorów</h1>
-            <p className="text-sm lg:text-base text-justify">
+            <p className="text-sm lg:text-base lg:text-justify">
               Nasza aplikacja jest idealna dla organizatorów konferencji naukowych wszelkich rozmiarów. Niezależnie od tego, czy jest to małe sympozjum, czy międzynarodowy kongres, Konfero zapewnia narzędzia niezbędne do stworzenia udanego wydarzenia.
             </p>
           </div>
         </Box>
-        <Box className="flex flex-col md:flex-row items-center w-[90%] lg:w-[75%] xl:w-[60%] text-darkblue space-x-0 md:space-x-8">
+        <Box className="flex flex-col md:flex-row items-center w-[90%] lg:w-[75%] xl:w-[60%] text-darkblue space-x-0 md:space-x-8 lg:ml-[25%]">
           <div>
             <h1 className="text-base sm:text-xl md:text-2xl font-bold mb-4 text-center">Współpraca i rozwój</h1>
-            <p className="text-sm lg:text-base text-justify">
+            <p className="text-sm lg:text-base lg:text-justify">
               Wierzymy w moc współpracy i otwartego dialogu. Nasz zespół regularnie uczestniczy w konferencjach branżowych, warsztatach i szkoleniach, aby być na bieżąco z najnowszymi trendami i najlepszymi praktykami w branży IT. To pozwala nam nie tylko rozwijać nasze umiejętności, ale także dzielić się wiedzą i doświadczeniem z całą społecznością.
             </p>
           </div>
-          <Image src={Photo_2} alt="Photo_2" className="w-5/6 md:w-2/5 mt-5 lg:mt-0 rounded-3xl" />
+          <Image src={Photo_2} alt="Photo_2" className="relative xl:left-16 w-5/6 md:w-2/5 mt-5 lg:mt-0 rounded-3xl" />
         </Box>
         <Box className="w-[90%] lg:w-[75%] xl:w-[60%] text-darkblue pb-0 sm:pb-0">
           <h1 className="text-xl md:text-2xl font-bold mb-6 text-center">Nasz zespół</h1>
