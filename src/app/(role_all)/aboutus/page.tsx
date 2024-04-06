@@ -1,3 +1,4 @@
+"use client";
 import Page from "@/components/common/Page/Page";
 import { Box } from "@/components/common/Box/Box";
 import Image from "next/image";
@@ -5,8 +6,14 @@ import Photo_1 from "@/assets/aboutus/decorative_photo_1.jpg";
 import Photo_2 from "@/assets/aboutus/decorative_photo_2.jpg";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import { FaUserTie } from "react-icons/fa";
+import { useEffect, useState } from 'react';
 
 export default function AboutUsPage() {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
   return (
     <Page>
       <div className="flex flex-col items-center w-full space-y-10 py-10">
@@ -16,9 +23,16 @@ export default function AboutUsPage() {
             Konfero to innowacyjne narzędzie, które rewolucjonizuje sposób organizacji konferencji naukowych. Nasza aplikacja webowa została zaprojektowana z myślą o potrzebach organizatorów konferencji, aby wspierać ich w każdym etapie przygotowań i realizacji wydarzenia.
           </p>
         </Box>
-        <Box className="flex flex-col md:flex-row  items-center w-[90%] lg:w-[75%] xl:w-[60%] text-darkblue space-x-0 md:space-x-8">
-            <Image src={Photo_1} alt="Photo_1" className="w-5/6 md:w-2/5 mt-5 lg:mt-0 rounded-3xl order-2 md:order-1" />
-          <div className="order-1 md:order-2">
+        <Box className="flex flex-col md:flex-row items-center w-[90%] lg:w-[75%] xl:w-[60%] text-darkblue space-x-0 md:space-x-8">
+          <div className="flex w-5/6 md:w-2/5 mt-5 lg:mt-0 justify-end order-2 md:order-1 relative">
+            <Image src={Photo_1} alt="Photo_1" className="w-full rounded-3xl" />
+            <div className={`flex flex-col w-3/4 h-3/5 m-4 p-4 rounded-xl bg-close2White font-bold bg-opacity-60 absolute transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+              <p className="text-sm sm:text-base md:text-xs lg:text-sm">ORGANIZATORZY: 69</p>
+              <p className="text-sm sm:text-base md:text-xs lg:text-sm">PRELEGENCI: 100</p>
+              <p className="text-sm sm:text-base md:text-xs lg:text-sm">UŻYTKOWNICY: 2115</p>
+            </div>
+          </div>
+          <div className="md:w-3/5 order-1 md:order-2">
             <h1 className="text-xl md:text-2xl font-bold mb-4 text-center">Zaufanie organizatorów</h1>
             <p className="text-sm lg:text-base text-justify">
               Nasza aplikacja jest idealna dla organizatorów konferencji naukowych wszelkich rozmiarów. Niezależnie od tego, czy jest to małe sympozjum, czy międzynarodowy kongres, Konfero zapewnia narzędzia niezbędne do stworzenia udanego wydarzenia.
