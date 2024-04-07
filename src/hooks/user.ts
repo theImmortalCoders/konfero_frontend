@@ -74,6 +74,7 @@ export async function getAllPendingBecomeOrganizerRequest(): Promise<GetAllPendi
       return response.data;
     }
     if (response.status === 401) {
+      window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
@@ -81,6 +82,7 @@ export async function getAllPendingBecomeOrganizerRequest(): Promise<GetAllPendi
     }
   } catch (error: any) {
     if (error.response.status === 401) {
+      window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
@@ -210,6 +212,7 @@ export async function updateProfileWithAdditionalData(
       console.log("Dane użytkownika zaktualizowane poprawnie!");
       return response.status;
     } else if (response.status === 401) {
+      window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
@@ -218,6 +221,7 @@ export async function updateProfileWithAdditionalData(
     }
   } catch (error: any) {
     if (error.response.status === 401) {
+      window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
@@ -248,6 +252,7 @@ export async function becomeOrganizerWithUpdateData(
       console.log("Użytkownik wysłał zapytanie o zostanie organizatorem!");
       return response.status;
     } else if (response.status === 401) {
+      window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
@@ -258,6 +263,7 @@ export async function becomeOrganizerWithUpdateData(
     }
   } catch (error: any) {
     if (error.response.status === 401) {
+      window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
@@ -281,6 +287,7 @@ export async function rewievOrganizerRequest(
       console.log("Prośba o zostanie organizatorem rozpatrzona");
       return response.status;
     } else if (response.status === 401) {
+      window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
@@ -291,6 +298,7 @@ export async function rewievOrganizerRequest(
     }
   } catch (error: any) {
     if (error.response.status === 401) {
+      window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
