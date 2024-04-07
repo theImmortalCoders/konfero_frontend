@@ -10,7 +10,7 @@ export async function deleteLecture(lectureId: number) {
       }
     );
     if (response.status === 200) {
-      console.log("Prelekcja zostało usunięte poprawnie!");
+      console.log("Prelekcja została usunięta poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
