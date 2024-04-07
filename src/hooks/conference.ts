@@ -160,7 +160,7 @@ interface Comment {
   author: Participant;
 }
 
-interface GetConferenceDetailsWithRoleFilteringData {
+export interface GetConferenceDetailsWithRoleFilteringData {
   id: number;
   startDateTime: string;
   endDateTime: string;
@@ -231,6 +231,101 @@ export async function cancelConference(conferenceId: number) {
     } else {
       console.error("Wystąpił błąd podczas anulowania konferencji");
       return "Wystąpił błąd podczas anulowania konferencji";
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+      return "Nie jesteś właścicielem konferencji lub nie masz roli";
+    } else {
+      throw new Error("Error500");
+    }
+  }
+}
+
+export interface AddNewConferenceData {
+  startDateTime: string;
+  name: string;
+  description: string;
+  logoId: number;
+  tagsIds: number[];
+  location: Location;
+  participantsLimit: number;
+  format: string;
+  photosIds: number[];
+}
+
+export async function addNewConference(
+  conferendeData: AddNewConferenceData
+) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.post(
+      `/api/conference`,
+      conferendeData,
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.status === 200) {
+      console.log("Konferencja została dodana poprawnie!");
+      return response.status;
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie jesteś organizatorem");
+      return "Nie jesteś organizatorem";
+    } else {
+      console.error(
+        "Wystąpił błąd podczas dodawania konferencji"
+      );
+      return "Wystąpił błąd podczas dodawania konferencji";
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie jesteś organizatorem");
+      return "Nie jesteś organizatorem";
+    } else {
+      throw new Error("Error500");
+    }
+  }
+}
+
+export async function updateInfoAboutConference(
+  conferenceId: number,
+  conferendeData: AddNewConferenceData
+) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.put(
+      `/api/conference/${conferenceId}`,
+      conferendeData,
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.status === 200) {
+      console.log("Dane konferencji zostały zaktualizowane poprawnie!");
+      return response.status;
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+      return "Nie jesteś właścicielem konferencji lub nie masz roli";
+    } else {
+      console.error(
+        "Wystąpił błąd podczas aktualizowania danych konferencji"
+      );
+      return "Wystąpił błąd podczas aktualizowania danych konferencji";
     }
   } catch (error: any) {
     if (error.response.status === 401) {
