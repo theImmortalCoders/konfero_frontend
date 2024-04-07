@@ -16,6 +16,9 @@ export async function deleteLecture(lectureId: number) {
       window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+      return "Nie jesteś właścicielem konferencji lub nie masz roli";
     } else {
       console.error("Wystąpił błąd podczas usuwania prelekcji");
       return "Wystąpił błąd podczas usuwania prelekcji";
@@ -25,6 +28,9 @@ export async function deleteLecture(lectureId: number) {
       window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+      return "Nie jesteś właścicielem konferencji lub nie masz roli";
     } else {
       throw new Error("Error500");
     }
@@ -127,6 +133,9 @@ export async function modifyLectureInfoByOrganizer(lectureId: number, modifyLect
         window.location.replace("/login");
         console.error("Brak autoryzacji użytkownika");
         return "Brak autoryzacji użytkownika";
+      } else if (response.status === 403) {
+        console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+        return "Nie jesteś właścicielem konferencji lub nie masz roli";
       } else {
         console.error("Wystąpił błąd podczas modyfikacji danych prelekcji");
         return "Wystąpił błąd podczas modyfikacji danych prelekcji";
@@ -136,6 +145,9 @@ export async function modifyLectureInfoByOrganizer(lectureId: number, modifyLect
         window.location.replace("/login");
         console.error("Brak autoryzacji użytkownika");
         return "Brak autoryzacji użytkownika";
+      } else if (error.response.status === 403) {
+        console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+        return "Nie jesteś właścicielem konferencji lub nie masz roli";
       } else {
         throw new Error("Error500");
       }
@@ -163,6 +175,9 @@ export async function modifyLectureInfoByLecturer(lectureId: number, modifyLectu
         window.location.replace("/login");
         console.error("Brak autoryzacji użytkownika");
         return "Brak autoryzacji użytkownika";
+      } else if (response.status === 403) {
+        console.error("Nie jesteś prelegentem");
+        return "Nie jesteś prelegentem";
       } else {
         console.error("Wystąpił błąd podczas modyfikacji danych prelekcji");
         return "Wystąpił błąd podczas modyfikacji danych prelekcji";
@@ -172,6 +187,9 @@ export async function modifyLectureInfoByLecturer(lectureId: number, modifyLectu
         window.location.replace("/login");
         console.error("Brak autoryzacji użytkownika");
         return "Brak autoryzacji użytkownika";
+      } else if (error.response.status === 403) {
+        console.error("Nie jesteś prelegentem");
+        return "Nie jesteś prelegentem";
       } else {
         throw new Error("Error500");
       }
@@ -207,6 +225,9 @@ export async function addLectureToConference(
         window.location.replace("/login");
         console.error("Brak autoryzacji użytkownika");
         return "Brak autoryzacji użytkownika";
+      } else if (response.status === 403) {
+        console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+        return "Nie jesteś właścicielem konferencji lub nie masz roli";
       } else {
         console.error(
           "Wystąpił błąd podczas dodawania prelekcji do konferencji"
@@ -218,6 +239,9 @@ export async function addLectureToConference(
         window.location.replace("/login");
         console.error("Brak autoryzacji użytkownika");
         return "Brak autoryzacji użytkownika";
+      } else if (error.response.status === 403) {
+        console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+        return "Nie jesteś właścicielem konferencji lub nie masz roli";
       } else {
         throw new Error("Error500");
       }
