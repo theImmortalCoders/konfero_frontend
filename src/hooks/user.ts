@@ -1,20 +1,20 @@
 import { appAPI } from "@/utils/appENV";
 import { AxiosResponse } from "axios";
 
-interface Logo {
+export interface Logo {
   id: number;
   path: string;
   hasThumbnail: boolean;
   authorId: number;
 }
 
-interface Location {
+export interface Location {
   locX: number;
   locY: number;
   name: string;
 }
 
-interface Organizer {
+export interface Organizer {
   id: number;
   username: string;
   email: string;
