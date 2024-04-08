@@ -78,19 +78,19 @@ export default function BecomeOrganiserForm ({
 }) {
     return (
         <div className="fixed flex items-center justify-center inset-0 z-10">
-            <div onClick={() => setIsOpen(false)} className="absolute inset-0 bg-close2Black opacity-100"></div>
-            <Box className="flex flex-col justify-center items-center w-5/6 xs:w-auto text-darkblue space-y-4">
+            <div onClick={() => setIsOpen(false)} className="absolute inset-0 bg-close2White opacity-15"></div>
+            <Box className="flex flex-col justify-center items-center w-5/6 xs:w-auto text-darkblue space-y-6">
                 <Image src={Logo} alt="Logo" className="w-36 md:w-48"/>
                 <p className="text-center font-bold">Podaj dane, aby uzyskać status organizatora</p>
-                <form action="" className="flex flex-col w-full h-fit space-y-6">
-                    <CompanyNameInput/>
-                    <PhoneNumberInput/>
-                    <AddressInput/>
-                    <div className="flex flex-col items-center space-y-4">
-                        <p className="text-center font-bold">Zatwierdź dane i poczekaj na rozpatrzenie prośby</p>
-                        <FormSubmitButton/> 
-                    </div>
-                </form>
+                    <form action="" className="flex flex-col w-full h-fit space-y-6">
+                        <CompanyNameInput/>
+                        <PhoneNumberInput/>
+                        <AddressInput/>
+                        <div className="flex flex-col items-center space-y-4">
+                            <p className="text-center font-bold">Zatwierdź dane i poczekaj na rozpatrzenie prośby</p>
+                            <FormSubmitButton/> 
+                        </div>
+                    </form>
             </Box>
         </div>
     )
