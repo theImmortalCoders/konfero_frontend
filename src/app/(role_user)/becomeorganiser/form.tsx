@@ -51,7 +51,7 @@ function CompanyNameInput ({
                 value={companyName}
                 onChange={(e) => {
                     const value = e.target.value;
-                    const isValid =  /^[\w\s\/\d\W]{0,100}$/i.test(value);
+                    const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,100}$/i.test(value);
           
                     if (isValid) {
                         setCompanyName(value);
@@ -83,7 +83,7 @@ function AddressInput ({
                 value={address}
                 onChange={(e) => {
                     const value = e.target.value;
-                    const isValid = /^[a-zA-Z\s\/\d]{0,100}$/.test(value);
+                    const isValid = /^[a-zA-Z\s\/\dąęłńóśźżĄĘŁŃÓŚŹŻ]{0,100}$/.test(value);
           
                     if (isValid) {
                         setAddress(value);
@@ -115,7 +115,7 @@ function CityInput ({
                 value={city}
                 onChange={(e) => {
                     const value = e.target.value;
-                    const isValid = /^[a-zA-Z\s]{0,30}$/.test(value);
+                    const isValid = /^[a-zA-Z\sąęłńóśźżĄĘŁŃÓŚŹŻ]{0,30}$/.test(value);
           
                     if (isValid) {
                         setCity(value);
