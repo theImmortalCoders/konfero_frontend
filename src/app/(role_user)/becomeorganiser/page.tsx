@@ -8,7 +8,7 @@ import Form from "./form";
 
 function Header ({ children }: { children: React.ReactNode }) {
     return (
-        <h1 className="text-xl md:text-2xl font-bold mb-4 text-center">{ children }</h1>
+        <h1 className="text-lg xs:text-xl md:text-2xl font-bold mb-4 text-center">{ children }</h1>
     )
   }
 
