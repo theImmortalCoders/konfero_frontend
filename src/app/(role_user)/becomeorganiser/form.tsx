@@ -2,6 +2,7 @@ import { Box } from "@/components/common/Box/Box"
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import Image from "next/image";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
+import { BecomeOrganizerData, becomeOrganizerWithUpdateData } from "@/hooks/user";
 
 function OrganiserFormInput ({
     type,
@@ -10,14 +11,14 @@ function OrganiserFormInput ({
     placeholder,
     value,
     onChange
-  }: {
+    }: {
     type: string;
     id: string;
     name: string;
     placeholder: string,
     value?: string,
     onChange?: React.ChangeEventHandler<HTMLInputElement>; 
-  }) {
+    }) {
     return (
         <input
             type={type}
@@ -33,8 +34,13 @@ function OrganiserFormInput ({
     )
 }
 
-function CompanyNameInput () {
-    const [CompanyName, setCompanyName] = useState<string>("");
+function CompanyNameInput ({
+    companyName,
+    setCompanyName
+    }: {
+    companyName: string;
+    setCompanyName: Dispatch<SetStateAction<string>>;
+    }) {
     return (
         <div className="relative">
             <OrganiserFormInput
@@ -42,13 +48,13 @@ function CompanyNameInput () {
                 id="name"
                 name="companyName"
                 placeholder=" "
-                value={CompanyName}
+                value={companyName}
                 onChange={(e) => {
                     const value = e.target.value;
                     const isValid =  /^[\w\s\/\d\W]{0,100}$/i.test(value);
           
                     if (isValid) {
-                      setCompanyName(value);
+                        setCompanyName(value);
                     //   console.log(value);
                     }
                 }}
@@ -60,8 +66,13 @@ function CompanyNameInput () {
     )
 }
 
-function AddressInput () {
-    const [address, setAddress] = useState<string>("");
+function AddressInput ({
+    address,
+    setAddress
+    }: {
+    address: string;
+    setAddress: Dispatch<SetStateAction<string>>;
+    }) {
     return (
         <div  className="relative">
             <OrganiserFormInput
@@ -75,7 +86,7 @@ function AddressInput () {
                     const isValid = /^[a-zA-Z\s\/\d]{0,100}$/.test(value);
           
                     if (isValid) {
-                      setAddress(value);
+                        setAddress(value);
                     //   console.log(value);
                     }
                 }}
@@ -87,8 +98,13 @@ function AddressInput () {
     )
 }
 
-function CityInput () {
-    const [cityName, setCityName] = useState<string>("");
+function CityInput ({
+    city,
+    setCity
+    }: {
+    city: string;
+    setCity: Dispatch<SetStateAction<string>>; 
+    }) {
     return (
         <div  className="relative">
             <OrganiserFormInput
@@ -96,13 +112,13 @@ function CityInput () {
                 id="city"
                 name="city"
                 placeholder=" "
-                value={cityName}
+                value={city}
                 onChange={(e) => {
                     const value = e.target.value;
                     const isValid = /^[a-zA-Z\s]{0,30}$/.test(value);
           
                     if (isValid) {
-                      setCityName(value);
+                        setCity(value);
                     //   console.log(value);
                     }
                 }}
@@ -114,8 +130,13 @@ function CityInput () {
     )
 }
 
-function PhoneNumberInput () {
-    const [phoneNumber, setPhoneNumber] = useState<string>("");
+function PhoneNumberInput ({
+    phoneNumber,
+    setPhoneNumber
+    }: {
+    phoneNumber: string;
+    setPhoneNumber: Dispatch<SetStateAction<string>>; 
+    }) {
     return (
         <div  className="relative">
             <OrganiserFormInput
@@ -129,8 +150,8 @@ function PhoneNumberInput () {
                     const isValid = /^\d{0,9}$/.test(value);
           
                     if (isValid) {
-                      setPhoneNumber(value);
-                    //   console.log(value);
+                        setPhoneNumber(value);
+                        console.log(value);
                     }
                 }}
             />
@@ -149,8 +170,28 @@ export default function BecomeOrganiserForm ({
     setIsOpen: Dispatch<SetStateAction<boolean>>
 }) {
 
+    const [companyName, setCompanyName] = useState<string>("");
+    const [address, setAddress] = useState<string>("");
+    const [city, setCity] = useState<string>("");
+    const [phone, setPhone] = useState<string>("");
+
     const submitForm  = async () => {
-        
+        if(!companyName || !address || !city || !phone.trim()) {
+            console.error("Wszystkie pola muszą być wypełnione");
+            return;
+        }
+        const organiserData: BecomeOrganizerData = { companyName, address, city, phone };
+        const result = await becomeOrganizerWithUpdateData(organiserData);
+
+        if(result !== "Brak autoryzacji użytkownika" && result !== "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora"){
+            setCompanyName("");
+            setAddress("");
+            setCity("");
+            setPhone("");
+        }
+        else {
+            console.error("Błąd wysyłania zgłoszenia");
+        }
     };
 
     return (
@@ -160,10 +201,10 @@ export default function BecomeOrganiserForm ({
                 <Image src={Logo} alt="Logo" className="w-36 md:w-48"/>
                 <p className="text-center font-bold">Podaj dane, aby uzyskać status organizatora</p>
                     <div className="flex flex-col w-full h-fit space-y-8">
-                        <CompanyNameInput/>
-                        <AddressInput/>
-                        <CityInput/>
-                        <PhoneNumberInput/>
+                        <CompanyNameInput companyName={companyName} setCompanyName={setCompanyName}/>
+                        <AddressInput address={address} setAddress={setAddress}/>
+                        <CityInput city={city} setCity={setCity}/>
+                        <PhoneNumberInput phoneNumber={phone} setPhoneNumber={setPhone}/>
                         <div className="flex flex-col items-center space-y-4">
                             <p className="text-center font-bold">Zatwierdź dane i poczekaj na rozpatrzenie prośby</p>
                             <button onClick={submitForm} className="text-nowrap w-fit bg-blue text-close2White text-lg font-medium py-2 px-6 rounded-3xl ">Zatwierdź</button>
