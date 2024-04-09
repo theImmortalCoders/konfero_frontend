@@ -1,5 +1,6 @@
+"use client";
 import { Box } from "@/components/common/Box/Box"
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
 import Image from "next/image";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import { BecomeOrganizerData, becomeOrganizerWithUpdateData } from "@/hooks/user";
@@ -151,7 +152,6 @@ function PhoneNumberInput ({
           
                     if (isValid) {
                         setPhoneNumber(value);
-                        console.log(value);
                     }
                 }}
             />
@@ -175,41 +175,69 @@ export default function BecomeOrganiserForm ({
     const [city, setCity] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
 
+    const [message, setMessage] = useState<string>("");
+
+    useEffect(() => {
+        if (
+          companyName !== "" ||
+          address !== "" ||
+          city !== "" ||
+          phone !== "" 
+        )
+          setMessage("");
+      }, [companyName, address, city, phone]);
+
     const submitForm  = async () => {
         if(!companyName || !address || !city || !phone.trim()) {
             console.error("Wszystkie pola muszą być wypełnione");
+            setMessage("Wszystkie pola muszą być wypełnione");
             return;
         }
-        const organiserData: BecomeOrganizerData = { companyName, address, city, phone };
-        const result = await becomeOrganizerWithUpdateData(organiserData);
 
-        if(result !== "Brak autoryzacji użytkownika" && result !== "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora"){
-            setCompanyName("");
-            setAddress("");
-            setCity("");
-            setPhone("");
-        }
-        else {
-            console.error("Błąd wysyłania zgłoszenia");
+        const organiserData: BecomeOrganizerData = { 
+            companyName: companyName, 
+            address: address, 
+            city: city, 
+            phone: phone 
+        };
+
+        try {
+            const result = await becomeOrganizerWithUpdateData(organiserData);
+            if(result !== "Brak autoryzacji użytkownika" && result !== "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora"){
+                setCompanyName("");
+                setAddress("");
+                setCity("");
+                setPhone("");
+                setMessage("Zgłoszenie zostało wysłane pomyślnie!");
+            }
+            else {
+                console.error("Błąd wysyłania zgłoszenia");
+                setMessage("Błąd wysyłania zgłoszenia");
+            }
+        }   
+        catch (error) {
+            console.error("Błąd wysyłania zgłoszenia", error);
+            setMessage("Błąd wysyłania zgłoszenia");
         }
     };
 
     return (
         <div className="fixed flex items-center justify-center inset-0 z-10">
             <div onClick={() => setIsOpen(false)} className="absolute inset-0 bg-close2White opacity-10"></div>
-            <Box className="flex flex-col justify-center items-center w-5/6 xs:w-auto text-darkblue space-y-6 z-20">
+            <Box className="flex flex-col justify-center items-center w-5/6 xs:w-auto text-darkblue space-y-5 z-20">
                 <Image src={Logo} alt="Logo" className="w-36 md:w-48"/>
                 <p className="text-center font-bold">Podaj dane, aby uzyskać status organizatora</p>
-                    <div className="flex flex-col w-full h-fit space-y-8">
-                        <CompanyNameInput companyName={companyName} setCompanyName={setCompanyName}/>
-                        <AddressInput address={address} setAddress={setAddress}/>
-                        <CityInput city={city} setCity={setCity}/>
-                        <PhoneNumberInput phoneNumber={phone} setPhoneNumber={setPhone}/>
-                        <div className="flex flex-col items-center space-y-4">
-                            <p className="text-center font-bold">Zatwierdź dane i poczekaj na rozpatrzenie prośby</p>
-                            <button onClick={submitForm} className="text-nowrap w-fit bg-blue text-close2White text-lg font-medium py-2 px-6 rounded-3xl ">Zatwierdź</button>
-                        </div>
+                <div className="flex flex-col w-full h-fit space-y-6">
+                    <CompanyNameInput companyName={companyName} setCompanyName={setCompanyName}/>
+                    <AddressInput address={address} setAddress={setAddress}/>
+                    <CityInput city={city} setCity={setCity}/>
+                    <PhoneNumberInput phoneNumber={phone} setPhoneNumber={setPhone}/>
+                    <div className="flex flex-col items-center space-y-3">
+                        <p className="text-center font-bold">Zatwierdź dane i poczekaj na rozpatrzenie prośby</p>
+                        <button onClick={submitForm} className="text-nowrap w-fit bg-blue text-close2White text-lg font-medium py-2 px-6 rounded-3xl ">Zatwierdź</button>
+                        <p className="text-xs text-center">{ message }</p>
                     </div>
+                </div>
             </Box>
         </div>
     )
