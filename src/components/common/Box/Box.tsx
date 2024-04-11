@@ -36,22 +36,26 @@ export function BoxWithImage({
       className={`bg-close2White items-start shadow-whiteShadow h-auto z-0 rounded-3xl ${className}`}
     >
       <div className="relative w-full">
-        <Image src={src} alt={alt} className="rounded-t-3xl w-full h-auto" />
-        <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center text-darkblue p-4">
+        <Image
+          src={src}
+          alt={alt}
+          className="rounded-t-3xl w-full h-auto filter brightness-50"
+        />
+        <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center text-close2White p-4">
           <h1 className="text-4xl pt-[5%]">Tytuł konferencji</h1>
           <div className="w-full h-auto flex justify-around text-3xl pt-[10%]">
-            <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White">
+            <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
               <GoCalendar className="text-4xl" />
               <h1>Data konferencji</h1>
             </div>
-            <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White">
+            <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
               <FaRegClock className="text-4xl" />
               <h1>Godzina konferencji</h1>
             </div>
           </div>
-          <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White pt-[20%]">
+          <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center pt-[20%]">
             <IoMdPin className="text-4xl" />
-            <h1 className="text-close2White text-3xl">Miejsce konferencji</h1>
+            <h1 className=" text-3xl">Miejsce konferencji</h1>
           </div>
         </div>
       </div>
