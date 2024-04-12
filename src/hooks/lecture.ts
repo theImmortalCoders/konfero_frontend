@@ -40,8 +40,9 @@ export async function deleteLecture(lectureId: number) {
 interface Image {
     id: number;
     path: string;
-    hasThumbnail: boolean;
+    description: string;
     authorId: number;
+    fileType: string;
 }
   
 interface Lecturer {
@@ -50,11 +51,6 @@ interface Lecturer {
     email: string;
     photo: string;
     verified: boolean;
-}
-  
-interface Material {
-    url: string;
-    authorId: number;
 }
   
 interface Interested {
@@ -74,7 +70,7 @@ export interface GetLectureDetailsData {
     image: Image;
     conferenceId: number;
     lecturers: Lecturer[];
-    materials: Material[];
+    materials: Image[];
     interested: Interested[];
     place: string;
 }

@@ -133,8 +133,9 @@ interface Participant {
 interface Image {
   id: number;
   path: string;
-  hasThumbnail: boolean;
+  description: string;
   authorId: number;
+  fileType: string;
 }
 
 interface Lecture {
@@ -144,13 +145,6 @@ interface Lecture {
   durationMinutes: number;
   image: Image;
   place: string;
-}
-
-interface Photo {
-  id: number;
-  path: string;
-  hasThumbnail: boolean;
-  authorId: number;
 }
 
 interface Comment {
@@ -176,7 +170,7 @@ export interface GetConferenceDetailsWithRoleFilteringData {
   canceled: boolean;
   participantsLimit: number;
   format: string;
-  photos: Photo[];
+  photos: Image[];
   verified: boolean;
   comments: Comment[];
   participantsFull: boolean;
@@ -213,7 +207,7 @@ export async function getConferenceDetailsWithRoleFiltering(conferenceId: number
 export async function cancelConference(conferenceId: number) {
   try {
     const response: AxiosResponse<void> = await appAPI.patch(
-      `/api/lecture/${conferenceId}/organizer`,
+      `/api/lecture/${conferenceId}/cancel`,
       {
         withCredentials: true,
       }
