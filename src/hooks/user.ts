@@ -4,8 +4,9 @@ import { AxiosResponse } from "axios";
 export interface Logo {
   id: number;
   path: string;
-  hasThumbnail: boolean;
+  description: string;
   authorId: number;
+  fileType: string;
 }
 
 export interface Location {
@@ -38,7 +39,7 @@ interface Conference {
   participantsFull: boolean;
 }
 
-interface User {
+export interface UserData {
   id: number;
   googleId: string;
   username: string;
@@ -57,7 +58,7 @@ interface User {
 
 export interface GetAllPendingBecomeOrganizerRequestData {
   id: number;
-  user: User;
+  user: UserData;
   status: string;
 }
 
@@ -97,23 +98,9 @@ export async function getAllPendingBecomeOrganizerRequest(): Promise<GetAllPendi
   }
 }
 
-export interface GetCurrentUserData {
-  id: number;
-  googleId: string;
-  username: string;
-  role: string;
-  email: string;
-  photo: string;
-  active: boolean;
-  companyName: string;
-  address: string;
-  city: string;
-  phone: string;
-}
-
-export async function getCurrentUser(): Promise<GetCurrentUserData | null> {
+export async function getCurrentUser(): Promise<UserData | null> {
   try {
-    const response: AxiosResponse<GetCurrentUserData> = await appAPI.get(
+    const response: AxiosResponse<UserData> = await appAPI.get(
       `/api/user/me`,
       {
         withCredentials: true,
