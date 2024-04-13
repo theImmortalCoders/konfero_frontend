@@ -1,13 +1,28 @@
+"use client";
 import Page from "@/components/common/Page/Page";
 import Logo from "@/assets/home/laptop.jpg";
 import { Box, BoxWithImage } from "@/components/common/Box/Box";
 import Image from "next/image";
+import { useQuery } from "react-query";
+import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
+import Error500 from "@/components/common/Error/Error500";
 
 export default function MyConferencePage({
   params,
 }: {
   params: { conferenceId: string };
 }) {
+  const {
+    data: conferenceIdData,
+    isLoading,
+    isError,
+  } = useQuery("conferenceId", () =>
+    getConferenceDetailsWithRoleFiltering(parseInt(params.conferenceId))
+  );
+
+  console.log("conferenceIdData", conferenceIdData);
+  if (isError) return <Error500 />;
+
   return (
     <Page>
       <BoxWithImage
