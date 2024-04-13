@@ -56,7 +56,6 @@ function CompanyNameInput ({
           
                     if (isValid) {
                         setCompanyName(value);
-                    //   console.log(value);
                     }
                 }}
             />
@@ -88,7 +87,6 @@ function AddressInput ({
           
                     if (isValid) {
                         setAddress(value);
-                    //   console.log(value);
                     }
                 }}
             />
@@ -120,7 +118,6 @@ function CityInput ({
           
                     if (isValid) {
                         setCity(value);
-                    //   console.log(value);
                     }
                 }}
             />
