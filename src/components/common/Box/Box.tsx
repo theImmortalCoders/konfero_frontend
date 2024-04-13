@@ -1,8 +1,5 @@
 import { StaticImageData } from "next/image";
 import Image from "next/image";
-import { GoCalendar } from "react-icons/go";
-import { FaRegClock } from "react-icons/fa";
-import { IoMdPin } from "react-icons/io";
 
 export function Box({
   children,
@@ -28,7 +25,7 @@ export function BoxWithImage({
 }: {
   children: React.ReactNode;
   className?: string;
-  src: StaticImageData;
+  src: StaticImageData | string;
   alt: string;
 }) {
   return (
@@ -41,25 +38,8 @@ export function BoxWithImage({
           alt={alt}
           className="rounded-t-3xl w-full h-auto filter brightness-50"
         />
-        <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center text-close2White p-4">
-          <h1 className="text-4xl pt-[5%]">Tytuł konferencji</h1>
-          <div className="w-full h-auto flex justify-around text-3xl pt-[10%]">
-            <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
-              <GoCalendar className="text-4xl" />
-              <h1>Data konferencji</h1>
-            </div>
-            <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
-              <FaRegClock className="text-4xl" />
-              <h1>Godzina konferencji</h1>
-            </div>
-          </div>
-          <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center pt-[20%]">
-            <IoMdPin className="text-4xl" />
-            <h1 className=" text-3xl">Miejsce konferencji</h1>
-          </div>
-        </div>
+        {children}
       </div>
-      <div className="px-4 py-2 sm:px-8 sm:py-4 w-full">{children}</div>
     </div>
   );
 }

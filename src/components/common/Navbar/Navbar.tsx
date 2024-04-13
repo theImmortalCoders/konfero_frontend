@@ -10,7 +10,7 @@ import {
 } from "react-icons/io5";
 import Link from "next/link";
 import { updateLastVisitedPage } from "@/utils/cookie";
-import { GetCurrentUserData, getCurrentUser } from "@/hooks/user";
+import { UserData, getCurrentUser } from "@/hooks/user";
 import { useQuery } from "react-query";
 
 function Navbox() {
@@ -43,7 +43,7 @@ export default function Navbar() {
     isLoading,
     isError,
   }: {
-    data?: GetCurrentUserData | string;
+    data?: UserData | string;
     isLoading: boolean;
     isError: any;
   } = useQuery("currentUser", getCurrentUser, {
