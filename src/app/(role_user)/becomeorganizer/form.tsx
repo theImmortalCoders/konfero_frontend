@@ -6,19 +6,19 @@ import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import { BecomeOrganizerData, becomeOrganizerWithUpdateData } from "@/hooks/user";
 
 function OrganiserFormInput ({
-    type,
-    id,
-    name,
-    placeholder,
-    value,
-    onChange
+        type,
+        id,
+        name,
+        placeholder,
+        value,
+        onChange
     }: {
-    type: string;
-    id: string;
-    name: string;
-    placeholder: string,
-    value?: string,
-    onChange?: React.ChangeEventHandler<HTMLInputElement>; 
+        type: string;
+        id: string;
+        name: string;
+        placeholder: string,
+        value?: string,
+        onChange?: React.ChangeEventHandler<HTMLInputElement>; 
     }) {
     return (
         <input
@@ -163,10 +163,8 @@ function PhoneNumberInput ({
 }
 
 export default function BecomeOrganiserForm ({
-    isOpen,
     setIsOpen
 }: {
-    isOpen: boolean,
     setIsOpen: Dispatch<SetStateAction<boolean>>
 }) {
 
@@ -188,9 +186,15 @@ export default function BecomeOrganiserForm ({
       }, [companyName, address, city, phone]);
 
     const submitForm  = async () => {
-        if(!companyName || !address || !city || !phone.trim()) {
+        if(!companyName || !address || !city || !phone) {
             console.error("Wszystkie pola muszą być wypełnione");
             setMessage("Wszystkie pola muszą być wypełnione");
+            return;
+        }
+
+        if(phone.length !== 9) {
+            console.error("Numer telefonu musi mieć dokładnie 9 cyfr!");
+            setMessage("Numer telefonu musi mieć dokładnie 9 cyfr!");
             return;
         }
 
@@ -223,7 +227,7 @@ export default function BecomeOrganiserForm ({
 
     return (
         <div className="fixed flex items-center justify-center inset-0 z-10">
-            <div onClick={() => setIsOpen(false)} className="absolute inset-0 bg-close2White opacity-10"></div>
+            <div onClick={() => setIsOpen(false)} className="absolute inset-0 bg-darkblue opacity-80"></div>
             <Box className="flex flex-col justify-center items-center w-5/6 xs:w-auto text-darkblue space-y-5 z-20">
                 <Image src={Logo} alt="Logo" className="w-36 md:w-48"/>
                 <p className="text-center font-bold">Podaj dane, aby uzyskać status organizatora</p>
