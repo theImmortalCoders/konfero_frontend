@@ -2,17 +2,12 @@
 import Page from "@/components/common/Page/Page";
 import Logo from "@/assets/home/laptop.jpg";
 import { Box, BoxWithImage } from "@/components/common/Box/Box";
-import Image, { StaticImageData } from "next/image";
 import { useQuery } from "react-query";
-import {
-  GetConferenceDetailsWithRoleFilteringData,
-  getConferenceDetailsWithRoleFiltering,
-} from "@/hooks/conference";
+import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
 import Error500 from "@/components/common/Error/Error500";
-import { FaChevronRight, FaRegCalendarCheck } from "react-icons/fa";
-import { IoMdPin } from "react-icons/io";
-import { FaRegCalendarXmark } from "react-icons/fa6";
-import Link from "next/link";
+import MyConferencePageImageBox from "@/components/myconferenceId/MyConferencePageImageBox";
+import People from "@/components/myconferenceId/PeopleBox";
+import AllImagesCarousel from "@/components/myconferenceId/Carousel/AllImagesCarousel";
 
 export default function MyConferencePage({
   params,
@@ -103,8 +98,8 @@ export default function MyConferencePage({
           </Box>
           <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-20">
             <h1 className="w-full flex justify-center text-3xl">Zdjęcia</h1>
-            <div className="w-full grid-cols-4 grid gap-8 pt-4">
-              <Image src={""} alt={""} />
+            <div className="w-full pt-4">
+              <AllImagesCarousel photos={conferenceIdData.photos} />
             </div>
           </Box>
         </>
@@ -112,81 +107,5 @@ export default function MyConferencePage({
         <p className="text-2xl text-close2White">Trwa ładowanie danych...</p>
       )}
     </Page>
-  );
-}
-
-function People({
-  username,
-  photo,
-  email,
-}: {
-  username: string;
-  photo: string | StaticImageData;
-  email?: string;
-}) {
-  return (
-    <div className="w-full">
-      <p className="w-full flex justify-center items-center">
-        <Image
-          src={photo}
-          alt={"Logo"}
-          className="rounded-full"
-          width={80}
-          height={80}
-        />
-      </p>
-      <span className="w-full flex justify-center pt-1 text-md">
-        {username}
-      </span>
-      <span className="w-full flex justify-center text-xs">{email}</span>
-    </div>
-  );
-}
-
-function MyConferencePageImageBox({
-  conferenceIdData,
-}: {
-  conferenceIdData: GetConferenceDetailsWithRoleFilteringData;
-}) {
-  return (
-    <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center text-close2White p-4">
-      <h1 className="text-4xl pt-[5%]">{conferenceIdData.name}</h1>
-      <div className="w-full h-auto flex justify-around text-3xl pt-[10%]">
-        <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
-          <FaRegCalendarCheck className="text-4xl" />
-          <h1 className="text-lg">
-            {conferenceIdData.startDateTime.split("T")[0]}{" "}
-            {conferenceIdData.startDateTime
-              .split("T")[1]
-              .split(":")
-              .slice(0, 2)
-              .join(":")}
-          </h1>
-        </div>
-        <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
-          <FaRegCalendarXmark className="text-4xl" />
-          <h1 className="text-lg">
-            {conferenceIdData.endDateTime.split("T")[0]}{" "}
-            {conferenceIdData.endDateTime
-              .split("T")[1]
-              .split(":")
-              .slice(0, 2)
-              .join(":")}
-          </h1>
-        </div>
-      </div>
-      <div className="flex-col flex gap-x-3 w-full h-auto items-center justify-center pt-[18%]">
-        <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
-          <IoMdPin className="text-4xl" />
-          <h1 className=" text-3xl">{conferenceIdData.location.name}</h1>
-        </div>
-        <Link
-          href={`https://www.google.com/maps/place/${conferenceIdData.location.locX}+${conferenceIdData.location.locY}`}
-          className={"pt-2 hover:underline flex items-center gap-2"}
-        >
-          Zobacz lokalizację na mapie <FaChevronRight />
-        </Link>
-      </div>
-    </div>
   );
 }

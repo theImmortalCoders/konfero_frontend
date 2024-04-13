@@ -89,14 +89,14 @@ export interface GetAllConferencesData {
   empty: boolean;
 }
 
-export async function getAllConferences(): Promise<GetAllConferencesData | string> {
+export async function getAllConferences(): Promise<
+  GetAllConferencesData | string
+> {
   try {
-    const response: AxiosResponse<GetAllConferencesData | string> = await appAPI.get(
-      `/api/conference`,
-      {
+    const response: AxiosResponse<GetAllConferencesData | string> =
+      await appAPI.get(`/api/conference`, {
         withCredentials: true,
-      }
-    );
+      });
     if (response.status === 200) {
       console.log("Wszystkie konferencje pobrano poprawnie!");
       return response.data;
@@ -105,14 +105,18 @@ export async function getAllConferences(): Promise<GetAllConferencesData | strin
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error("Wystąpił błąd podczas pobierania wszystkich konferencji");
+      throw new Error(
+        "Wystąpił błąd podczas pobierania wszystkich konferencji"
+      );
     }
   } catch (error: any) {
     if (error.response.status === 401) {
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error("Wystąpił błąd podczas pobierania wszystkich konferencji");
+      throw new Error(
+        "Wystąpił błąd podczas pobierania wszystkich konferencji"
+      );
     }
   }
 }
@@ -130,7 +134,7 @@ interface Participant {
   verified: boolean;
 }
 
-interface Image {
+export interface Image {
   id: number;
   path: string;
   description: string;
@@ -176,14 +180,15 @@ export interface GetConferenceDetailsWithRoleFilteringData {
   participantsFull: boolean;
 }
 
-export async function getConferenceDetailsWithRoleFiltering(conferenceId: number): Promise<GetConferenceDetailsWithRoleFilteringData | string> {
+export async function getConferenceDetailsWithRoleFiltering(
+  conferenceId: number
+): Promise<GetConferenceDetailsWithRoleFilteringData | string> {
   try {
-    const response: AxiosResponse<GetConferenceDetailsWithRoleFilteringData | string> = await appAPI.get(
-      `/api/conference/${conferenceId}/details`,
-      {
-        withCredentials: true,
-      }
-    );
+    const response: AxiosResponse<
+      GetConferenceDetailsWithRoleFilteringData | string
+    > = await appAPI.get(`/api/conference/${conferenceId}/details`, {
+      withCredentials: true,
+    });
     if (response.status === 200) {
       console.log("Szczegóły konferencji pobrano poprawnie!");
       return response.data;
@@ -192,14 +197,18 @@ export async function getConferenceDetailsWithRoleFiltering(conferenceId: number
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error("Wystąpił błąd podczas pobierania szczegółów konferencji");
+      throw new Error(
+        "Wystąpił błąd podczas pobierania szczegółów konferencji"
+      );
     }
   } catch (error: any) {
     if (error.response.status === 401) {
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error("Wystąpił błąd podczas pobierania szczegółów konferencji");
+      throw new Error(
+        "Wystąpił błąd podczas pobierania szczegółów konferencji"
+      );
     }
   }
 }
@@ -252,9 +261,7 @@ export interface AddNewConferenceData {
   photosIds: number[];
 }
 
-export async function addNewConference(
-  conferendeData: AddNewConferenceData
-) {
+export async function addNewConference(conferendeData: AddNewConferenceData) {
   try {
     const response: AxiosResponse<void> = await appAPI.post(
       `/api/conference`,
@@ -274,9 +281,7 @@ export async function addNewConference(
       console.error("Nie jesteś organizatorem");
       return "Nie jesteś organizatorem";
     } else {
-      console.error(
-        "Wystąpił błąd podczas dodawania konferencji"
-      );
+      console.error("Wystąpił błąd podczas dodawania konferencji");
       return "Wystąpił błąd podczas dodawania konferencji";
     }
   } catch (error: any) {
@@ -316,9 +321,7 @@ export async function updateInfoAboutConference(
       console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
       return "Nie jesteś właścicielem konferencji lub nie masz roli";
     } else {
-      console.error(
-        "Wystąpił błąd podczas aktualizowania danych konferencji"
-      );
+      console.error("Wystąpił błąd podczas aktualizowania danych konferencji");
       return "Wystąpił błąd podczas aktualizowania danych konferencji";
     }
   } catch (error: any) {
