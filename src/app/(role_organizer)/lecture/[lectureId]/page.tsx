@@ -54,8 +54,27 @@ export default function MyConferencePage({
                 />
               ))}
             </div>
-            <div className="h-[2px] w-full bg-darkblue mt-2" />
-            <TitleHeader title={"Materiały"} />
+            {lectureIdData.materials.length !== 0 ? (
+              <>
+                <div className="h-[2px] w-full bg-darkblue mt-2" />
+                <TitleHeader title={"Materiały"} />
+              </>
+            ) : null}
+            {lectureIdData.interested.length !== 0 ? (
+              <>
+                <div className="h-[2px] w-full bg-darkblue mt-2" />
+                <TitleHeader title={"Zainteresowani"} />
+                <div className="w-full grid grid-cols-4 gap-8 pt-4">
+                  {lectureIdData.interested.map((interested, index) => (
+                    <People
+                      key={index}
+                      username={interested.username}
+                      photo={interested.photo}
+                    />
+                  ))}
+                </div>
+              </>
+            ) : null}
           </BoxWithImage>
         </>
       ) : (

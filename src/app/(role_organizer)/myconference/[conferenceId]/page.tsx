@@ -63,7 +63,7 @@ export default function MyConferencePage({
             <TitleHeader title={"Uczestnicy"} />
             {!conferenceIdData.participantsFull ? (
               <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
-                Pozostało x / ${conferenceIdData.participantsLimit}
+                Pozostało x / {conferenceIdData.participantsLimit}
               </h1>
             ) : (
               <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
