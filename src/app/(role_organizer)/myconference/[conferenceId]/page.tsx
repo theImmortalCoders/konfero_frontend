@@ -8,6 +8,7 @@ import Error500 from "@/components/common/Error/Error500";
 import MyConferencePageImageBox from "@/components/myconferenceId/MyConferencePageImageBox";
 import People from "@/components/myconferenceId/PeopleBox";
 import AllImagesCarousel from "@/components/myconferenceId/Carousel/AllImagesCarousel";
+import TitleHeader from "@/components/common/Box/TitleHeader";
 
 export default function MyConferencePage({
   params,
@@ -108,13 +109,5 @@ export default function MyConferencePage({
         <p className="text-2xl text-close2White">Trwa ładowanie danych...</p>
       )}
     </Page>
-  );
-}
-
-function TitleHeader({ title }: { title: string }) {
-  return (
-    <h1 className="w-full flex justify-center text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">
-      {title}:
-    </h1>
   );
 }
