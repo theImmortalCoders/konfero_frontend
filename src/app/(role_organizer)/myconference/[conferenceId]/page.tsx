@@ -33,19 +33,20 @@ export default function MyConferencePage({
         <>
           <BoxWithImage
             className="text-darkblue w-[90%] lg:w-[60%] mt-20 mb-5"
+            //src={conferenceIdData.logo.id}
             src={Logo}
             alt={"Logo"}
           >
             <MyConferencePageImageBox conferenceIdData={conferenceIdData} />
             <div className="px-4 py-2 sm:px-8 sm:py-4 w-full">
-              <h1 className="w-full flex justify-center text-3xl">
-                {conferenceIdData.name}:
-              </h1>
-              <p className="text-1xl pt-4">{conferenceIdData.description}</p>
+              <TitleHeader title={conferenceIdData.name} />
+              <p className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg pt-2 sm:pt-3 md:pt-4 lg:pt-3 xl:pt-4">
+                {conferenceIdData.description}
+              </p>
             </div>
           </BoxWithImage>
           <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-            <h1 className="w-full flex justify-center text-3xl">Organizator</h1>
+            <TitleHeader title={"Organizator"} />
             <div className="w-full grid-cols-4 grid gap-8 pt-4">
               <People
                 username={conferenceIdData.organizer.username}
@@ -55,20 +56,20 @@ export default function MyConferencePage({
             </div>
           </Box>
           <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-            <h1 className="w-full flex justify-center text-3xl">Prowadzący</h1>
-            <div className="w-full grid-cols-4 grid gap-8 pt-4">
-              <People
-                username={conferenceIdData.organizer.username}
-                photo={conferenceIdData.organizer.photo}
-                email={conferenceIdData.organizer.email}
-              />
-            </div>
+            <TitleHeader title={"Wykłady"} />
           </Box>
           <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-            <h1 className="w-full flex justify-center text-3xl">Wykłady</h1>
-          </Box>
-          <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-            <h1 className="w-full flex justify-center text-3xl">Uczestnicy</h1>
+            <TitleHeader title={"Uczestnicy"} />
+            {!conferenceIdData.participantsFull ? (
+              <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
+                Pozostało x / ${conferenceIdData.participantsLimit}
+              </h1>
+            ) : (
+              <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
+                Niestety brak wolnych miejsc
+              </h1>
+            )}
+
             <div className="w-full grid-cols-4 grid gap-8 pt-4">
               <People
                 username={conferenceIdData.organizer.username}
@@ -97,7 +98,7 @@ export default function MyConferencePage({
             </div>
           </Box>
           <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-20">
-            <h1 className="w-full flex justify-center text-3xl">Zdjęcia</h1>
+            <TitleHeader title={"Zdjęcia"} />
             <div className="w-full pt-4">
               <AllImagesCarousel photos={conferenceIdData.photos} />
             </div>
@@ -107,5 +108,13 @@ export default function MyConferencePage({
         <p className="text-2xl text-close2White">Trwa ładowanie danych...</p>
       )}
     </Page>
+  );
+}
+
+function TitleHeader({ title }: { title: string }) {
+  return (
+    <h1 className="w-full flex justify-center text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">
+      {title}:
+    </h1>
   );
 }

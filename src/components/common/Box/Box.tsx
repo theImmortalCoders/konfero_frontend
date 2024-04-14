@@ -1,3 +1,4 @@
+import APIImageComponent from "@/hooks/imageAPI";
 import { StaticImageData } from "next/image";
 import Image from "next/image";
 
@@ -25,7 +26,7 @@ export function BoxWithImage({
 }: {
   children: React.ReactNode;
   className?: string;
-  src: StaticImageData | string;
+  src: StaticImageData | string | number;
   alt: string;
 }) {
   return (
@@ -33,11 +34,15 @@ export function BoxWithImage({
       className={`bg-close2White items-start shadow-whiteShadow h-auto z-0 rounded-3xl ${className}`}
     >
       <div className="relative w-full">
-        <Image
-          src={src}
-          alt={alt}
-          className="rounded-t-3xl w-full h-auto filter brightness-50"
-        />
+        {typeof src !== "number" ? (
+          <Image
+            src={src}
+            alt={alt}
+            className="rounded-t-3xl w-full h-auto filter brightness-50"
+          />
+        ) : (
+          <APIImageComponent imageId={src} type={"IMAGE"} />
+        )}
         {children}
       </div>
     </div>
