@@ -16,6 +16,7 @@ export default function MaterialTableWrapper({
             <th className="text-center text-darkblue">Opis</th>
             <th className="text-center text-darkblue">Autor</th>
             <th className="text-center text-darkblue">Typ pliku</th>
+            <th className="text-center text-darkblue">Data dodania</th>
           </tr>
         </thead>
         <tbody>

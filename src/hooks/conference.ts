@@ -140,6 +140,7 @@ export interface ImageInterface {
   description: string;
   authorId: number;
   fileType: string;
+  createdDate: string;
 }
 
 export interface Lecture {

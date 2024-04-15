@@ -40,7 +40,7 @@ export default function MaterialBlock({
       </td>
       <td className="text-center text-darkblue">
         <Link href={`${NEXT_PUBLIC_API_BASE_URL}/api/file/${material.id}`}>
-          {material.description}{" "}
+          {material.description}
         </Link>
       </td>
       <td className="text-center text-darkblue">
@@ -50,7 +50,12 @@ export default function MaterialBlock({
       </td>
       <td className="text-center text-darkblue">
         <Link href={`${NEXT_PUBLIC_API_BASE_URL}/api/file/${material.id}`}>
-          {material.fileType}{" "}
+          {material.fileType}
+        </Link>
+      </td>
+      <td className="text-center text-darkblue">
+        <Link href={`${NEXT_PUBLIC_API_BASE_URL}/api/file/${material.id}`}>
+          {material.createdDate !== null ? material.createdDate : "Brak daty"}
         </Link>
       </td>
     </tr>

@@ -38,208 +38,213 @@ export async function deleteLecture(lectureId: number) {
 }
 
 interface Image {
-    id: number;
-    path: string;
-    description: string;
-    authorId: number;
-    fileType: string;
-}
-  
-interface Lecturer {
-    id: number;
-    username: string;
-    email: string;
-    photo: string;
-    verified: boolean;
-}
-  
-interface Interested {
-    id: number;
-    username: string;
-    email: string;
-    photo: string;
-    verified: boolean;
-}
-  
-export interface GetLectureDetailsData {
-    id: number;
-    name: string;
-    description: string;
-    startDateTime: string;
-    durationMinutes: number;
-    image: Image;
-    conferenceId: number;
-    lecturers: Lecturer[];
-    materials: Image[];
-    interested: Interested[];
-    place: string;
+  id: number;
+  path: string;
+  description: string;
+  authorId: number;
+  fileType: string;
+  createdDate: string;
 }
 
-export async function getLectureDetails(lectureId: number): Promise<GetLectureDetailsData | string> {
-    try {
-      const response: AxiosResponse<GetLectureDetailsData | string> = await appAPI.get(
-        `/api/lecture/${lectureId}`,
-        {
-          withCredentials: true,
-        }
-      );
-      if (response.status === 200) {
-        console.log("Szczegóły prelekcji pobrano poprawnie!");
-        return response.data;
-      }
-      if (response.status === 401) {
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else {
-        throw new Error("Wystąpił błąd podczas pobierania szczegółów prelekcji");
-      }
-    } catch (error: any) {
-      if (error.response.status === 401) {
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else {
-        throw new Error("Wystąpił błąd podczas pobierania szczegółów prelekcji");
-      }
+interface Lecturer {
+  id: number;
+  username: string;
+  email: string;
+  photo: string;
+  verified: boolean;
+}
+
+interface Interested {
+  id: number;
+  username: string;
+  email: string;
+  photo: string;
+  verified: boolean;
+}
+
+export interface GetLectureDetailsData {
+  id: number;
+  name: string;
+  description: string;
+  startDateTime: string;
+  durationMinutes: number;
+  image: Image;
+  conferenceId: number;
+  lecturers: Lecturer[];
+  materials: Image[];
+  interested: Interested[];
+  place: string;
+}
+
+export async function getLectureDetails(
+  lectureId: number
+): Promise<GetLectureDetailsData | string> {
+  try {
+    const response: AxiosResponse<GetLectureDetailsData | string> =
+      await appAPI.get(`/api/lecture/${lectureId}`, {
+        withCredentials: true,
+      });
+    if (response.status === 200) {
+      console.log("Szczegóły prelekcji pobrano poprawnie!");
+      return response.data;
     }
+    if (response.status === 401) {
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      throw new Error("Wystąpił błąd podczas pobierania szczegółów prelekcji");
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      throw new Error("Wystąpił błąd podczas pobierania szczegółów prelekcji");
+    }
+  }
 }
 
 export interface ModifyLectureInfoByOrganizerData {
-  name: string,
-  description: string,
-  startDateTime: string,
-  durationMinutes: number,
-  imageId: number,
-  lecturersIds: number[],
-  place: string,
+  name: string;
+  description: string;
+  startDateTime: string;
+  durationMinutes: number;
+  imageId: number;
+  lecturersIds: number[];
+  place: string;
 }
 
-export async function modifyLectureInfoByOrganizer(lectureId: number, modifyLectureInfoData: ModifyLectureInfoByOrganizerData) {
-    try {
-      const response: AxiosResponse<void> = await appAPI.patch(
-        `/api/lecture/${lectureId}/organizer`,
-        modifyLectureInfoData,
-        {
-          withCredentials: true,
-        }
-      );
-      if (response.status === 200) {
-        console.log("Dane prelekcji zmodyfikowano poprawnie!");
-        return response.status;
-      } else if (response.status === 401) {
-        window.location.replace("/login");
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else if (response.status === 403) {
-        console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
-        return "Nie jesteś właścicielem konferencji lub nie masz roli";
-      } else {
-        console.error("Wystąpił błąd podczas modyfikacji danych prelekcji");
-        return "Wystąpił błąd podczas modyfikacji danych prelekcji";
+export async function modifyLectureInfoByOrganizer(
+  lectureId: number,
+  modifyLectureInfoData: ModifyLectureInfoByOrganizerData
+) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.patch(
+      `/api/lecture/${lectureId}/organizer`,
+      modifyLectureInfoData,
+      {
+        withCredentials: true,
       }
-    } catch (error: any) {
-      if (error.response.status === 401) {
-        window.location.replace("/login");
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else if (error.response.status === 403) {
-        console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
-        return "Nie jesteś właścicielem konferencji lub nie masz roli";
-      } else {
-        throw new Error("Error500");
-      }
+    );
+    if (response.status === 200) {
+      console.log("Dane prelekcji zmodyfikowano poprawnie!");
+      return response.status;
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+      return "Nie jesteś właścicielem konferencji lub nie masz roli";
+    } else {
+      console.error("Wystąpił błąd podczas modyfikacji danych prelekcji");
+      return "Wystąpił błąd podczas modyfikacji danych prelekcji";
     }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+      return "Nie jesteś właścicielem konferencji lub nie masz roli";
+    } else {
+      throw new Error("Error500");
+    }
+  }
 }
 
 export interface ModifyLectureInfoByLecturerData {
-    description: string,
-    imageId: number,
+  description: string;
+  imageId: number;
 }
 
-export async function modifyLectureInfoByLecturer(lectureId: number, modifyLectureInfoData: ModifyLectureInfoByLecturerData) {
-    try {
-      const response: AxiosResponse<void> = await appAPI.patch(
-        `/api/lecture/${lectureId}/lecturer`,
-        modifyLectureInfoData,
-        {
-          withCredentials: true,
-        }
-      );
-      if (response.status === 200) {
-        console.log("Dane prelekcji zmodyfikowano poprawnie!");
-        return response.status;
-      } else if (response.status === 401) {
-        window.location.replace("/login");
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else if (response.status === 403) {
-        console.error("Nie jesteś prelegentem");
-        return "Nie jesteś prelegentem";
-      } else {
-        console.error("Wystąpił błąd podczas modyfikacji danych prelekcji");
-        return "Wystąpił błąd podczas modyfikacji danych prelekcji";
+export async function modifyLectureInfoByLecturer(
+  lectureId: number,
+  modifyLectureInfoData: ModifyLectureInfoByLecturerData
+) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.patch(
+      `/api/lecture/${lectureId}/lecturer`,
+      modifyLectureInfoData,
+      {
+        withCredentials: true,
       }
-    } catch (error: any) {
-      if (error.response.status === 401) {
-        window.location.replace("/login");
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else if (error.response.status === 403) {
-        console.error("Nie jesteś prelegentem");
-        return "Nie jesteś prelegentem";
-      } else {
-        throw new Error("Error500");
-      }
+    );
+    if (response.status === 200) {
+      console.log("Dane prelekcji zmodyfikowano poprawnie!");
+      return response.status;
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie jesteś prelegentem");
+      return "Nie jesteś prelegentem";
+    } else {
+      console.error("Wystąpił błąd podczas modyfikacji danych prelekcji");
+      return "Wystąpił błąd podczas modyfikacji danych prelekcji";
     }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie jesteś prelegentem");
+      return "Nie jesteś prelegentem";
+    } else {
+      throw new Error("Error500");
+    }
+  }
 }
 
 export interface AddLectureToConferenceData {
-    name: string,
-    description: string,
-    startDateTime: string,
-    durationMinutes: number,
-    imageId: number,
-    lecturersIds: number[],
-    place: string,
+  name: string;
+  description: string;
+  startDateTime: string;
+  durationMinutes: number;
+  imageId: number;
+  lecturersIds: number[];
+  place: string;
 }
 
 export async function addLectureToConference(
-    conferenceId: number,
-    conferendeData: AddLectureToConferenceData
+  conferenceId: number,
+  conferendeData: AddLectureToConferenceData
 ) {
-    try {
-      const response: AxiosResponse<void> = await appAPI.post(
-        `/api/lecture/${conferenceId}`,
-        conferendeData,
-        {
-          withCredentials: true,
-        }
-      );
-      if (response.status === 200) {
-        console.log("Prelekcja została dodana do konferencji!");
-        return response.status;
-      } else if (response.status === 401) {
-        window.location.replace("/login");
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else if (response.status === 403) {
-        console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
-        return "Nie jesteś właścicielem konferencji lub nie masz roli";
-      } else {
-        console.error(
-          "Wystąpił błąd podczas dodawania prelekcji do konferencji"
-        );
-        return "Wystąpił błąd podczas dodawania prelekcji do konferencji";
+  try {
+    const response: AxiosResponse<void> = await appAPI.post(
+      `/api/lecture/${conferenceId}`,
+      conferendeData,
+      {
+        withCredentials: true,
       }
-    } catch (error: any) {
-      if (error.response.status === 401) {
-        window.location.replace("/login");
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else if (error.response.status === 403) {
-        console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
-        return "Nie jesteś właścicielem konferencji lub nie masz roli";
-      } else {
-        throw new Error("Error500");
-      }
+    );
+    if (response.status === 200) {
+      console.log("Prelekcja została dodana do konferencji!");
+      return response.status;
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+      return "Nie jesteś właścicielem konferencji lub nie masz roli";
+    } else {
+      console.error("Wystąpił błąd podczas dodawania prelekcji do konferencji");
+      return "Wystąpił błąd podczas dodawania prelekcji do konferencji";
     }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+      return "Nie jesteś właścicielem konferencji lub nie masz roli";
+    } else {
+      throw new Error("Error500");
+    }
+  }
 }
