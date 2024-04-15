@@ -23,7 +23,7 @@ export default function MaterialBlock({
         {material.fileType == "VIDEO" && <FaFileVideo />}
         {material.fileType == "SOUND" && <FaFileAudio />}
         {material.fileType == "UNDEFINED" && <FaFile />}
-        <h1>{material.description}</h1>
+        <h1>{material.description}</h1>A
         {material.authorId !== null ? (
           <h1>{material.authorId}</h1>
         ) : (

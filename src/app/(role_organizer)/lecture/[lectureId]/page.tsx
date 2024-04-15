@@ -60,9 +60,23 @@ export default function MyConferencePage({
                 <div className="h-[2px] w-full bg-darkblue mt-2" />
                 <TitleHeader title={"Materiały"} />
                 <div className="w-full flex justify-center items-center flex-col">
-                  {lectureIdData.materials.map((material, index) => (
-                    <MaterialBlock key={index} material={material} />
-                  ))}
+                  <table
+                    className={"table-auto min-w-[40rem] w-full text-gray-400"}
+                  >
+                    <thead>
+                      <tr>
+                        <th className="text-center text-darkblue">Logo</th>
+                        <th className="text-center text-darkblue">Opis</th>
+                        <th className="text-center text-darkblue">Autor</th>
+                        <th className="text-center text-darkblue">Typ pliku</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {lectureIdData.materials.map((material, index) => (
+                        <MaterialBlock key={index} material={material} />
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </>
             ) : null}
