@@ -8,6 +8,9 @@ import People from "@/components/myconferenceId/PeopleBox";
 import { getLectureDetails } from "@/hooks/lecture";
 import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
+import Link from "next/link";
+import { NEXT_PUBLIC_API_BASE_URL, appAPI } from "@/utils/appENV";
+import { ImageInterface } from "@/hooks/conference";
 
 export default function MyConferencePage({
   params,
@@ -58,6 +61,11 @@ export default function MyConferencePage({
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2" />
                 <TitleHeader title={"Materiały"} />
+                <div className="w-full flex justify-center items-center flex-col">
+                  {lectureIdData.materials.map((material, index) => (
+                    <Materials key={index} material={material} />
+                  ))}
+                </div>
               </>
             ) : null}
             {lectureIdData.interested.length !== 0 ? (
@@ -81,5 +89,20 @@ export default function MyConferencePage({
         <p className="text-2xl text-close2White">Trwa ładowanie danych...</p>
       )}
     </Page>
+  );
+}
+
+function Materials({ material }: { material: ImageInterface }) {
+  return (
+    <Link
+      href={`${NEXT_PUBLIC_API_BASE_URL}/api/file/${material.id}`}
+      className="w-[80%] z-10"
+    >
+      <div className="flex flex-row">
+        <h1>{material.description}</h1>
+        <h1>{material.authorId}</h1>
+        <h1>{material.fileType}</h1>
+      </div>
+    </Link>
   );
 }
