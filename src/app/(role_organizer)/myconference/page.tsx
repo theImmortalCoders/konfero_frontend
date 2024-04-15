@@ -2,12 +2,14 @@
 
 import Page from "@/components/common/Page/Page";
 import ListItem from "@/components/MyconferenceList/ListItem"
-import { getAllConferences } from "@/hooks/conference"
+import {getAllConferences, GetAllConferencesData} from "@/hooks/conference"
+import {useRouter} from "next/navigation";
+import {useEffect} from "react";
 import {useQuery} from "react-query";
-import {Property} from "csstype";
 
 export default function MyConferenceListPage() {
 
+  const router = useRouter();
 
   const {
     data,
@@ -18,15 +20,18 @@ export default function MyConferenceListPage() {
     staleTime: Infinity,
   })
 
+  useEffect(() => {
+    router.refresh();
+  }, []);
+
   return(
     <Page>
       <div className="flex flex-col items-center my-8 space-y-7 w-2/3">
-        <p>{status}</p>
         {
-          status === 'success'?
-          data?.content.map((conf) => {
-            return (<ListItem key={`${conf.id}`} conference={conf}/>);
-          }) : null
+          status === "success" ?
+          (data as GetAllConferencesData)?.content?.map((conf) => {
+            return (<ListItem key={`${(conf).id}`} conference={conf}/>);
+          }) : <></>
         }
       </div>
     </Page>
