@@ -16,25 +16,25 @@ export default function MaterialBlock({
 }) {
   return (
     <tr>
-      <td className="text-center text-darkblue flex flex-row items-center">
+      <td className="w-full h-8 text-center text-darkblue flex flex-row items-center">
         <Link
           href={`${NEXT_PUBLIC_API_BASE_URL}/api/file/${material.id}`}
-          className="w-full"
+          className="w-full h-[50%] justify-center items-center"
         >
           {material.fileType === "IMAGE" && (
-            <FaFileImage className="flex items-center w-full" />
+            <FaFileImage className="flex w-full h-full justify-center items-center " />
           )}
           {material.fileType === "DOCUMENT" && (
-            <FaFileAlt className="flex items-center w-full" />
+            <FaFileAlt className="flex w-full h-full justify-center items-center " />
           )}
           {material.fileType === "VIDEO" && (
-            <FaFileVideo className="flex items-center w-full" />
+            <FaFileVideo className="flex w-full h-full justify-center items-center " />
           )}
           {material.fileType === "SOUND" && (
-            <FaFileAudio className="flex items-center w-full" />
+            <FaFileAudio className="flex w-full h-full justify-center items-center " />
           )}
           {material.fileType === "UNDEFINED" && (
-            <FaFile className="flex items-center w-full" />
+            <FaFile className="flex w-full h-full justify-center items-center " />
           )}
         </Link>
       </td>
