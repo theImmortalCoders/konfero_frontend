@@ -134,7 +134,7 @@ interface Participant {
   verified: boolean;
 }
 
-export interface Image {
+export interface ImageInterface {
   id: number;
   path: string;
   description: string;
@@ -147,7 +147,7 @@ interface Lecture {
   name: string;
   startDateTime: string;
   durationMinutes: number;
-  image: Image;
+  image: ImageInterface;
   place: string;
 }
 
@@ -174,7 +174,7 @@ export interface GetConferenceDetailsWithRoleFilteringData {
   canceled: boolean;
   participantsLimit: number;
   format: string;
-  photos: Image[];
+  photos: ImageInterface[];
   verified: boolean;
   comments: Comment[];
   participantsFull: boolean;

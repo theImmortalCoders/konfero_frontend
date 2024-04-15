@@ -1,8 +1,13 @@
 import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import { ImageInterface } from "@/hooks/conference";
 import SingleImageCarousel from "./SingleImageCarousel";
-import { Image } from "@/hooks/conference";
 
-export default function AllImagesCarousel({ photos }: { photos: Image[] }) {
+export default function AllImagesCarousel({
+  photos,
+}: {
+  photos: ImageInterface[];
+}) {
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -17,25 +22,23 @@ export default function AllImagesCarousel({ photos }: { photos: Image[] }) {
       items: 1,
     },
   };
-  console.log("photos1", photos);
+
   return (
     <Carousel
       responsive={responsive}
       ssr
       showDots={true}
       slidesToSlide={1}
-      containerClass={`w-full flex justify-start items-center lg:w-[70vw] mt-2 pb-10 hidden`}
+      containerClass={`w-full flex justify-start items-center mt-2 pb-10`}
       itemClass={"px-3 flex justify-start items-center"}
-      deviceType={""}
       centerMode={false}
       className={`mb-4 flex items-center ${
         photos && photos.length > 3 ? "justify-start" : "justify-center"
       }`}
     >
-      {photos &&
-        photos.map((photos, index) => (
-          <SingleImageCarousel key={index} photos={photos} />
-        ))}
+      {photos.map((photo, index) => (
+        <SingleImageCarousel key={index} photo={photo} />
+      ))}
     </Carousel>
   );
 }
