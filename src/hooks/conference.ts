@@ -142,7 +142,7 @@ export interface ImageInterface {
   fileType: string;
 }
 
-interface Lecture {
+export interface Lecture {
   id: number;
   name: string;
   startDateTime: string;

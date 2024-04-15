@@ -9,7 +9,7 @@ import MyConferencePageImageBox from "@/components/myconferenceId/MyConferencePa
 import People from "@/components/myconferenceId/PeopleBox";
 import AllImagesCarousel from "@/components/myconferenceId/Carousel/AllImagesCarousel";
 import TitleHeader from "@/components/common/Box/TitleHeader";
-import SingleImageCarousel from "@/components/myconferenceId/Carousel/SingleImageCarousel";
+import LectureBox from "@/components/myconferenceId/LectureBox";
 
 export default function MyConferencePage({
   params,
@@ -58,6 +58,11 @@ export default function MyConferencePage({
           </Box>
           <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
             <TitleHeader title={"Wykłady"} />
+            <div className="w-full pt-4">
+              {conferenceIdData.lectures.map((lecture, index) => (
+                <LectureBox key={index} lecture={lecture} />
+              ))}
+            </div>
           </Box>
           <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
             <TitleHeader title={"Uczestnicy"} />
