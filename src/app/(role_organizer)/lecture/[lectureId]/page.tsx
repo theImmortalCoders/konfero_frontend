@@ -9,6 +9,7 @@ import { getLectureDetails } from "@/hooks/lecture";
 import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
 import MaterialBlock from "@/components/MaterialBlock";
+import MaterialTableWrapper from "@/components/MaterialTableWrapper";
 
 export default function MyConferencePage({
   params,
@@ -59,25 +60,7 @@ export default function MyConferencePage({
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2" />
                 <TitleHeader title={"Materiały"} />
-                <div className="w-full flex justify-center items-center flex-col">
-                  <table
-                    className={"table-auto min-w-[40rem] w-full text-gray-400"}
-                  >
-                    <thead>
-                      <tr>
-                        <th className="text-center text-darkblue">Logo</th>
-                        <th className="text-center text-darkblue">Opis</th>
-                        <th className="text-center text-darkblue">Autor</th>
-                        <th className="text-center text-darkblue">Typ pliku</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {lectureIdData.materials.map((material, index) => (
-                        <MaterialBlock key={index} material={material} />
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <MaterialTableWrapper lectureIdData={lectureIdData} />
               </>
             ) : null}
             {lectureIdData.interested.length !== 0 ? (
