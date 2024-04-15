@@ -22,10 +22,10 @@ export default function People({
           />
         </div>
       </div>
-      <span className="w-full flex justify-center pt-1 text-xs sm:text-sm md:text-md lg:text-sm xl:text-md">
+      <span className="w-full flex justify-center pt-1 text-xs sm:text-sm md:text-md lg:text-sm xl:text-md text-center">
         {username}
       </span>
-      <span className="w-full hidden sm:flex justify-center text-xxs sm:text-xs md:text-tiny lg:text-xs xl:text-tiny">
+      <span className="w-full hidden sm:flex justify-center text-xxs sm:text-xs md:text-tiny lg:text-xs xl:text-tiny text-center">
         {email}
       </span>
     </div>

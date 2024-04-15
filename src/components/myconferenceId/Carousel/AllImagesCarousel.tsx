@@ -10,11 +10,11 @@ export default function AllImagesCarousel({
 }) {
   const responsive = {
     desktop: {
-      breakpoint: { max: 3000, min: 1024 },
+      breakpoint: { max: 3000, min: 1424 },
       items: 4,
     },
     tablet: {
-      breakpoint: { max: 1424, min: 464 },
+      breakpoint: { max: 1424, min: 664 },
       items: 2,
     },
     mobile: {
@@ -28,10 +28,9 @@ export default function AllImagesCarousel({
       responsive={responsive}
       ssr
       showDots={true}
-      slidesToSlide={1}
       containerClass={`w-full flex justify-start items-center mt-2 pb-10`}
       itemClass={"px-3 flex justify-start items-center"}
-      centerMode={false}
+      centerMode={true}
       className={`mb-4 flex items-center ${
         photos && photos.length > 3 ? "justify-start" : "justify-center"
       }`}
