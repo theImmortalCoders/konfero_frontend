@@ -44,7 +44,7 @@ export async function deleteConference(conferenceId: number) {
   }
 }
 
-interface Content {
+export interface Content {
   id: number;
   startDateTime: string;
   endDateTime: string;
