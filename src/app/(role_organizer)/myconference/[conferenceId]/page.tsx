@@ -22,7 +22,7 @@ export default function MyConferencePage({
     data: conferenceIdData,
     isLoading,
     isError,
-  } = useQuery("conferenceId", () =>
+  } = useQuery(`conferenceId${parseInt(params.conferenceId)}`, () =>
     getConferenceDetailsWithRoleFiltering(parseInt(params.conferenceId))
   );
 

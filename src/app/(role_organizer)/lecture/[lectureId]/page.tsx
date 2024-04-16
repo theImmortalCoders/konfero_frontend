@@ -11,7 +11,7 @@ import TitleHeader from "@/components/common/Box/TitleHeader";
 import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrapper";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 
-export default function MyConferencePage({
+export default function LecturePage({
   params,
 }: {
   params: { lectureId: string };
@@ -20,7 +20,7 @@ export default function MyConferencePage({
     data: lectureIdData,
     isLoading,
     isError,
-  } = useQuery("lectureId", () =>
+  } = useQuery(`lectureId_${parseInt(params.lectureId)}`, () =>
     getLectureDetails(parseInt(params.lectureId))
   );
 
