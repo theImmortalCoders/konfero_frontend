@@ -10,6 +10,7 @@ import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import Error500 from "@/components/common/Error/Error500";
 import Page from "@/components/common/Page/Page";
+import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 
 function LoginBoard() {
   return (
@@ -67,7 +68,7 @@ export default function LoginPage() {
   return (
     <Page className="justify-center">
       {isLoading || !showLogin ? (
-        <h1>Trwa ładowanie danych...</h1>
+        <LoadingMessage />
       ) : (
         <Box className="bg-close2White w-auto shadow-whiteShadow">
           <div className="mb-12 flex justify-center">

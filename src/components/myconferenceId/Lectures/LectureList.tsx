@@ -1,5 +1,5 @@
 import { Lecture } from "@/hooks/conference";
-import ListItemImage from "../common/List/ListItemImage";
+import ListItemImage from "../../common/List/ListItemImage";
 
 export default function LectureList({ lecture }: { lecture: Lecture }) {
   console.log("lecture", lecture);

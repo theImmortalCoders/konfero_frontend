@@ -91,8 +91,8 @@ export default function Navbar() {
       </div>
 
       {isMenuOpen && (
-        <div className="md:hidden absolute top-navbar left-0 w-full bg-close2White shadow-md py-4">
-          <div className="flex flex-col items-center gap-4">
+        <div className="md:hidden absolute top-navbar left-0 w-full bg-close2White shadow-md py-4 z-50">
+          <div className="flex flex-col items-center gap-4 z-50">
             <Navbox />
           </div>
         </div>

@@ -19,7 +19,6 @@ export default function ConferenceList({
   function formatDate(dateToFormat: string) {
     return new Date(dateToFormat).toLocaleString();
   }
-  console.log("conference", conference);
   return deleted ? (
     <></>
   ) : (

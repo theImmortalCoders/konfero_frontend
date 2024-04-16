@@ -6,7 +6,6 @@ export default function MaterialTableWrapper({
 }: {
   lectureIdData: GetLectureDetailsData;
 }) {
-  console.log("lectureIdData", lectureIdData);
   return (
     <div className="w-full flex justify-center items-center flex-col mb-4">
       <table className={"table-auto min-w-[40rem] w-full text-gray-400"}>

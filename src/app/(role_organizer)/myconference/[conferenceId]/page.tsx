@@ -1,14 +1,17 @@
 "use client";
 import Page from "@/components/common/Page/Page";
-import { Box, BoxWithImage } from "@/components/common/Box/Box";
+import { Box } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
 import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
 import Error500 from "@/components/common/Error/Error500";
-import MyConferencePageImageBox from "@/components/myconferenceId/MyConferencePageImageBox";
-import People from "@/components/myconferenceId/PeopleBox";
-import AllImagesCarousel from "@/components/myconferenceId/Carousel/AllImagesCarousel";
+import People from "@/components/myconferenceId/Participants/People";
 import TitleHeader from "@/components/common/Box/TitleHeader";
-import LectureBox from "@/components/myconferenceId/LectureList";
+import LoadingMessage from "@/components/common/Loading/LoadingMessage";
+import { Organizer } from "@/hooks/user";
+import Participants from "@/components/myconferenceId/Participants/Participants";
+import Photos from "@/components/myconferenceId/Photos/Photos";
+import Lectures from "@/components/myconferenceId/Lectures/Lectures";
+import Title from "@/components/myconferenceId/Title/Title";
 
 export default function MyConferencePage({
   params,
@@ -31,80 +34,36 @@ export default function MyConferencePage({
       conferenceIdData &&
       typeof conferenceIdData !== "string" ? (
         <>
-          <BoxWithImage
-            className="text-darkblue w-[90%] lg:w-[60%] mt-20 mb-5"
-            src={conferenceIdData.logo.id}
-            alt={"Logo"}
-          >
-            <MyConferencePageImageBox conferenceIdData={conferenceIdData} />
-            <div className="px-4 py-2 sm:px-8 sm:py-4 w-full">
-              <TitleHeader title={conferenceIdData.name} />
-              <p className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg pt-2 sm:pt-3 md:pt-4 lg:pt-3 xl:pt-4">
-                {conferenceIdData.description}
-              </p>
-            </div>
-          </BoxWithImage>
-          <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-            <TitleHeader title={"Organizator"} />
-            <div className="w-full grid-cols-4 grid gap-8 pt-4">
-              <People
-                username={conferenceIdData.organizer.username}
-                photo={conferenceIdData.organizer.photo}
-                email={conferenceIdData.organizer.email}
-              />
-            </div>
-          </Box>
+          <Title conferenceIdData={conferenceIdData} />
+          <Organizers organizer={conferenceIdData.organizer} />
           {conferenceIdData.lectures.length !== 0 ? (
-            <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-              <TitleHeader title={"Wykłady"} />
-              <div className="w-full pt-4">
-                {conferenceIdData.lectures.map((lecture, index) => (
-                  <LectureBox key={index} lecture={lecture} />
-                ))}
-              </div>
-            </Box>
+            <Lectures lectures={conferenceIdData.lectures} />
           ) : null}
           {conferenceIdData.participants !== null ? (
-            <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-              <TitleHeader title={"Uczestnicy"} />
-
-              {!conferenceIdData.participantsFull ? (
-                <>
-                  <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
-                    Pozostało{" "}
-                    {conferenceIdData.participantsLimit -
-                      conferenceIdData.participants.length}{" "}
-                    / {conferenceIdData.participantsLimit}
-                  </h1>
-                  <div className="w-full grid-cols-4 grid gap-8 pt-4">
-                    {conferenceIdData.participants.map(
-                      (participants, index) => (
-                        <People
-                          key={index}
-                          username={participants.username}
-                          photo={participants.photo}
-                        />
-                      )
-                    )}
-                  </div>
-                </>
-              ) : (
-                <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
-                  Niestety brak wolnych miejsc
-                </h1>
-              )}
-            </Box>
+            <Participants conferenceIdData={conferenceIdData} />
           ) : null}
-          <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-20">
-            <TitleHeader title={"Zdjęcia"} />
-            <div className="w-full pt-4">
-              <AllImagesCarousel photos={conferenceIdData.photos} />
-            </div>
-          </Box>
+          {conferenceIdData.photos.length !== 0 ? (
+            <Photos photos={conferenceIdData.photos} />
+          ) : null}
         </>
       ) : (
-        <p className="text-2xl text-close2White">Trwa ładowanie danych...</p>
+        <LoadingMessage />
       )}
     </Page>
+  );
+}
+
+function Organizers({ organizer }: { organizer: Organizer }) {
+  return (
+    <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
+      <TitleHeader title={"Organizator"} />
+      <div className="w-full grid-cols-4 grid gap-8 pt-4">
+        <People
+          username={organizer.username}
+          photo={organizer.photo}
+          email={organizer.email}
+        />
+      </div>
+    </Box>
   );
 }

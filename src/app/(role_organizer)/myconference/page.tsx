@@ -6,6 +6,7 @@ import { useQuery } from "react-query";
 import ConferenceList from "@/components/myconference/list/ConferenceList";
 import Error500 from "@/components/common/Error/Error500";
 import ConferenceSearch from "@/components/myconference/ConferenceSearch";
+import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 
 export default function MyConferenceListPage() {
   const { data, isLoading, isError } = useQuery({
@@ -29,9 +30,7 @@ export default function MyConferenceListPage() {
           </div>
         </div>
       ) : (
-        <h1 className="text-2xl text-close2White pt-[20%]">
-          Trwa ładowanie danych...
-        </h1>
+        <LoadingMessage />
       )}
     </Page>
   );

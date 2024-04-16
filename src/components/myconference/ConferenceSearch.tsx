@@ -1,7 +1,6 @@
 import { GetAllConferencesData } from "@/hooks/conference";
 import { Box } from "../common/Box/Box";
-import Link from "next/link";
-import { FaPlus } from "react-icons/fa6";
+import AddButton from "../common/List/AddButton";
 
 export default function ConferenceSearch({
   data,
@@ -13,13 +12,7 @@ export default function ConferenceSearch({
       <div className="flex justify-between items-center font-black text-darkblue w-full">
         Znalezione konferencje:{" "}
         {(data as GetAllConferencesData)?.numberOfElements}
-        <Link
-          href={"/"}
-          className="flex justify-center items-center gap-x-2 px-2 py-2 sm:py-0 w-min md:text-nowrap border-2 border-black rounded-xl"
-        >
-          <p className="sm:inline-block hidden">Dodaj Konferencje</p>
-          <FaPlus />
-        </Link>
+        <AddButton href={"/addconference"}>Dodaj Konferencje</AddButton>
       </div>
     </Box>
   );
