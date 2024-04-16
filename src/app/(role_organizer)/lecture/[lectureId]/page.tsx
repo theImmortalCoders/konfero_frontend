@@ -4,13 +4,14 @@ import Logo from "@/assets/home/laptop.jpg";
 import { BoxWithImage } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
 import Error500 from "@/components/common/Error/Error500";
-import People from "@/components/myconferenceId/PeopleBox";
+import People from "@/components/myconferenceId/Participants/People";
 import { getLectureDetails } from "@/hooks/lecture";
 import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
 import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrapper";
+import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 
-export default function MyConferencePage({
+export default function LecturePage({
   params,
 }: {
   params: { lectureId: string };
@@ -19,7 +20,7 @@ export default function MyConferencePage({
     data: lectureIdData,
     isLoading,
     isError,
-  } = useQuery("lectureId", () =>
+  } = useQuery(`lectureId_${parseInt(params.lectureId)}`, () =>
     getLectureDetails(parseInt(params.lectureId))
   );
 
@@ -78,7 +79,7 @@ export default function MyConferencePage({
           </BoxWithImage>
         </>
       ) : (
-        <p className="text-2xl text-close2White">Trwa ładowanie danych...</p>
+        <LoadingMessage />
       )}
     </Page>
   );

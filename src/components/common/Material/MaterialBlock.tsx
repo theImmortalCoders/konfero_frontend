@@ -1,4 +1,4 @@
-import { ImageInterface } from "@/hooks/conference";
+import { ImageInterface } from "@/hooks/imageAPI";
 import { NEXT_PUBLIC_API_BASE_URL } from "@/utils/appENV";
 import Link from "next/link";
 import {

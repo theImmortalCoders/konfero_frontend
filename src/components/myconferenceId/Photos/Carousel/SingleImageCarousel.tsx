@@ -1,5 +1,4 @@
-import { ImageInterface } from "@/hooks/conference";
-import APIImageComponent from "@/hooks/imageAPI";
+import APIImageComponent, { ImageInterface } from "@/hooks/imageAPI";
 
 export default function SingleImageCarousel({
   photo,
