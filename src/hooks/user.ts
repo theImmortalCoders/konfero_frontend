@@ -1,13 +1,6 @@
 import { appAPI } from "@/utils/appENV";
 import { AxiosResponse } from "axios";
-
-export interface Logo {
-  id: number;
-  path: string;
-  description: string;
-  authorId: number;
-  fileType: string;
-}
+import { LogoInterface } from "./imageAPI";
 
 export interface Location {
   locX: number;
@@ -29,7 +22,7 @@ interface Conference {
   endDateTime: string;
   organizer: Organizer;
   name: string;
-  logo: Logo;
+  logo: LogoInterface;
   location: Location;
   finished: boolean;
   canceled: boolean;
@@ -62,14 +55,15 @@ export interface GetAllPendingBecomeOrganizerRequestData {
   status: string;
 }
 
-export async function getAllPendingBecomeOrganizerRequest(): Promise<GetAllPendingBecomeOrganizerRequestData[] | string> {
+export async function getAllPendingBecomeOrganizerRequest(): Promise<
+  GetAllPendingBecomeOrganizerRequestData[] | string
+> {
   try {
-    const response: AxiosResponse<GetAllPendingBecomeOrganizerRequestData[] | string> = await appAPI.get(
-      `/api/user/organizer-requests`,
-      {
-        withCredentials: true,
-      }
-    );
+    const response: AxiosResponse<
+      GetAllPendingBecomeOrganizerRequestData[] | string
+    > = await appAPI.get(`/api/user/organizer-requests`, {
+      withCredentials: true,
+    });
     if (response.status === 200) {
       console.log("Prośby o zostanie organizatorem pobrano poprawnie!");
       return response.data;
@@ -78,34 +72,35 @@ export async function getAllPendingBecomeOrganizerRequest(): Promise<GetAllPendi
       window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
-    } else if(response.status === 403) {
+    } else if (response.status === 403) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
-      throw new Error("Wystąpił błąd podczas pobierania próśb o zostanie organizatorem");
+      throw new Error(
+        "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem"
+      );
     }
   } catch (error: any) {
     if (error.response.status === 401) {
       window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
-    } else if(error.response.status === 403) {
+    } else if (error.response.status === 403) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
-      throw new Error("Wystąpił błąd podczas pobierania próśb o zostanie organizatorem");
+      throw new Error(
+        "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem"
+      );
     }
   }
 }
 
 export async function getCurrentUser(): Promise<UserData | null> {
   try {
-    const response: AxiosResponse<UserData> = await appAPI.get(
-      `/api/user/me`,
-      {
-        withCredentials: true,
-      }
-    );
+    const response: AxiosResponse<UserData> = await appAPI.get(`/api/user/me`, {
+      withCredentials: true,
+    });
     if (response.status === 200) {
       console.log("Dane użytkownika pobrano poprawnie!");
       return response.data;
@@ -141,7 +136,7 @@ export async function changeUserRole(userId: number, newRole: string) {
       window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
-    } else if(response.status === 403) {
+    } else if (response.status === 403) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
@@ -153,7 +148,7 @@ export async function changeUserRole(userId: number, newRole: string) {
       window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
-    } else if(error.response.status === 403) {
+    } else if (error.response.status === 403) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
@@ -177,7 +172,7 @@ export async function banUser(userId: number) {
       window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
-    } else if(response.status === 403) {
+    } else if (response.status === 403) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
@@ -189,7 +184,7 @@ export async function banUser(userId: number) {
       window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
-    } else if(error.response.status === 403) {
+    } else if (error.response.status === 403) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
@@ -279,7 +274,7 @@ export async function becomeOrganizerWithUpdateData(
 
 export async function rewievOrganizerRequest(
   requestId: number,
-  approve: boolean,
+  approve: boolean
 ) {
   try {
     const response: AxiosResponse<void> = await appAPI.put(
@@ -295,7 +290,7 @@ export async function rewievOrganizerRequest(
       window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
-    } else if(response.status === 403) {
+    } else if (response.status === 403) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
@@ -309,7 +304,7 @@ export async function rewievOrganizerRequest(
       window.location.replace("/login");
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
-    } else if(error.response.status === 403) {
+    } else if (error.response.status === 403) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {

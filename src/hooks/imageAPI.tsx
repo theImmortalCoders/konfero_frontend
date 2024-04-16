@@ -1,5 +1,23 @@
+"use client";
 import { useEffect, useState } from "react";
 import { appAPI } from "@/utils/appENV";
+
+export interface LogoInterface {
+  id: number;
+  path: string;
+  description: string;
+  authorId: number;
+  fileType: string;
+}
+
+export interface ImageInterface {
+  id: number;
+  path: string;
+  description: string;
+  authorId: number;
+  fileType: string;
+  createdDate: string;
+}
 
 interface APIImageComponentProps {
   imageId: number;
@@ -26,25 +44,25 @@ const APIImageComponent: React.FC<APIImageComponentProps> = ({
             setDefaultImage("question.jpg");
           }
         } else {
-            const response = await appAPI.get(`/api/file/${imageId}/image`, {
-              responseType: "arraybuffer",
-            });
+          const response = await appAPI.get(`/api/file/${imageId}/image`, {
+            responseType: "arraybuffer",
+          });
 
-            if (response.status === 200) {
-              const base64Image = btoa(
-                new Uint8Array(response.data).reduce(
-                  (data, byte) => data + String.fromCharCode(byte),
-                  ""
-                )
-              );
+          if (response.status === 200) {
+            const base64Image = btoa(
+              new Uint8Array(response.data).reduce(
+                (data, byte) => data + String.fromCharCode(byte),
+                ""
+              )
+            );
 
-              const imageSrc = `data:image/png;base64,${base64Image}`;
+            const imageSrc = `data:image/png;base64,${base64Image}`;
 
-              setImageData(imageSrc);
-            } else {
-              console.error("Wystąpił błąd podczas wyświetlania zdjęcia");
-              return "Wystąpił błąd podczas wyświetlania zdjęcia";
-            }
+            setImageData(imageSrc);
+          } else {
+            console.error("Wystąpił błąd podczas wyświetlania zdjęcia");
+            return "Wystąpił błąd podczas wyświetlania zdjęcia";
+          }
         }
       } catch (error) {
         window.location.replace("/500");

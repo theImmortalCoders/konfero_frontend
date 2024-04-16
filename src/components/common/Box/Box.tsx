@@ -1,8 +1,6 @@
+import APIImageComponent from "@/hooks/imageAPI";
 import { StaticImageData } from "next/image";
 import Image from "next/image";
-import { GoCalendar } from "react-icons/go";
-import { FaRegClock } from "react-icons/fa";
-import { IoMdPin } from "react-icons/io";
 
 export function Box({
   children,
@@ -28,7 +26,7 @@ export function BoxWithImage({
 }: {
   children: React.ReactNode;
   className?: string;
-  src: StaticImageData;
+  src: StaticImageData | string | number;
   alt: string;
 }) {
   return (
@@ -36,26 +34,19 @@ export function BoxWithImage({
       className={`bg-close2White items-start shadow-whiteShadow h-auto z-0 rounded-3xl ${className}`}
     >
       <div className="relative w-full">
-        <Image src={src} alt={alt} className="rounded-t-3xl w-full h-auto" />
-        <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center text-darkblue p-4">
-          <h1 className="text-4xl pt-[5%]">Tytuł konferencji</h1>
-          <div className="w-full h-auto flex justify-around text-3xl pt-[10%]">
-            <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White">
-              <GoCalendar className="text-4xl" />
-              <h1>Data konferencji</h1>
-            </div>
-            <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White">
-              <FaRegClock className="text-4xl" />
-              <h1>Godzina konferencji</h1>
-            </div>
+        {typeof src !== "number" ? (
+          <Image
+            src={src}
+            alt={alt}
+            className="rounded-t-3xl w-full h-auto filter brightness-50"
+          />
+        ) : (
+          <div className="rounded-t-3xl overflow-hidden w-full h-auto filter brightness-50">
+            <APIImageComponent imageId={src} type={"IMAGE"} />
           </div>
-          <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center text-close2White pt-[20%]">
-            <IoMdPin className="text-4xl" />
-            <h1 className="text-close2White text-3xl">Miejsce konferencji</h1>
-          </div>
-        </div>
+        )}
+        {children}
       </div>
-      <div className="px-4 py-2 sm:px-8 sm:py-4 w-full">{children}</div>
     </div>
   );
 }

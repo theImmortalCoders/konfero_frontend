@@ -1,82 +1,112 @@
+"use client";
 import Page from "@/components/common/Page/Page";
 import Logo from "@/assets/home/laptop.jpg";
 import { Box, BoxWithImage } from "@/components/common/Box/Box";
-import Image from "next/image";
+import { useQuery } from "react-query";
+import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
+import Error500 from "@/components/common/Error/Error500";
+import MyConferencePageImageBox from "@/components/myconferenceId/MyConferencePageImageBox";
+import People from "@/components/myconferenceId/PeopleBox";
+import AllImagesCarousel from "@/components/myconferenceId/Carousel/AllImagesCarousel";
+import TitleHeader from "@/components/common/Box/TitleHeader";
+import LectureBox from "@/components/myconferenceId/LectureList";
 
 export default function MyConferencePage({
   params,
 }: {
   params: { conferenceId: string };
 }) {
+  const {
+    data: conferenceIdData,
+    isLoading,
+    isError,
+  } = useQuery("conferenceId", () =>
+    getConferenceDetailsWithRoleFiltering(parseInt(params.conferenceId))
+  );
+
+  if (isError) return <Error500 />;
+
   return (
     <Page>
-      <BoxWithImage
-        className="text-darkblue w-[90%] lg:w-[60%] mt-20 mb-5"
-        src={Logo}
-        alt={"Logo"}
-      >
-        <h1 className="w-full flex justify-center text-3xl">
-          Tytuł {params.conferenceId} konferencji:
-        </h1>
-        <p className="text-1xl pt-4">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo
-          voluptatum excepturi aut quam consequuntur perspiciatis officia, omnis
-          unde in saepe facere et a dolorem dolores sequi blanditiis nam
-          molestiae vero!
-        </p>
-        <p className="text-1xl pt-4">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo
-          voluptatum excepturi aut quam consequuntur perspiciatis officia, omnis
-          unde in saepe facere et a dolorem dolores sequi blanditiis nam
-          molestiae vero!
-        </p>
-        <p className="text-1xl pt-4">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo
-          voluptatum excepturi aut quam consequuntur perspiciatis officia, omnis
-          unde in saepe facere et a dolorem dolores sequi blanditiis nam
-          molestiae vero!
-        </p>
-      </BoxWithImage>
-      <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-        <h1 className="w-full flex justify-center text-3xl">Host</h1>
-        <div className="w-full grid-cols-4 grid gap-8 pt-4">
-          <People />
-        </div>
-      </Box>
-      <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-        <h1 className="w-full flex justify-center text-3xl">Prowadzący</h1>
-        <div className="w-full grid-cols-4 grid gap-8 pt-4">
-          <People />
-        </div>
-      </Box>
-      <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-        <h1 className="w-full flex justify-center text-3xl">Uczestnicy</h1>
-        <div className="w-full grid-cols-4 grid gap-8 pt-4">
-          <People />
-          <People />
-          <People />
-          <People />
-          <People />
-          <People />
-        </div>
-      </Box>
-      <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-20">
-        <h1 className="w-full flex justify-center text-3xl">Partnerzy</h1>
-        <div className="w-full grid-cols-4 grid gap-8 pt-4">
-          <People />
-        </div>
-      </Box>
-    </Page>
-  );
-}
+      {!isLoading &&
+      conferenceIdData &&
+      typeof conferenceIdData !== "string" ? (
+        <>
+          <BoxWithImage
+            className="text-darkblue w-[90%] lg:w-[60%] mt-20 mb-5"
+            //src={conferenceIdData.logo.id}
+            src={Logo}
+            alt={"Logo"}
+          >
+            <MyConferencePageImageBox conferenceIdData={conferenceIdData} />
+            <div className="px-4 py-2 sm:px-8 sm:py-4 w-full">
+              <TitleHeader title={conferenceIdData.name} />
+              <p className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg pt-2 sm:pt-3 md:pt-4 lg:pt-3 xl:pt-4">
+                {conferenceIdData.description}
+              </p>
+            </div>
+          </BoxWithImage>
+          <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
+            <TitleHeader title={"Organizator"} />
+            <div className="w-full grid-cols-4 grid gap-8 pt-4">
+              <People
+                username={conferenceIdData.organizer.username}
+                photo={conferenceIdData.organizer.photo}
+                email={conferenceIdData.organizer.email}
+              />
+            </div>
+          </Box>
+          {conferenceIdData.lectures.length !== 0 ? (
+            <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
+              <TitleHeader title={"Wykłady"} />
+              <div className="w-full pt-4">
+                {conferenceIdData.lectures.map((lecture, index) => (
+                  <LectureBox key={index} lecture={lecture} />
+                ))}
+              </div>
+            </Box>
+          ) : null}
+          {conferenceIdData.participants !== null ? (
+            <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
+              <TitleHeader title={"Uczestnicy"} />
 
-function People() {
-  return (
-    <div className="w-full">
-      <Image src={Logo} alt={"Logo"} className="w-full h-auto" />
-      <span className="w-full flex justify-center pt-2 text-lg">
-        Jan Kowalski
-      </span>
-    </div>
+              {!conferenceIdData.participantsFull ? (
+                <>
+                  <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
+                    Pozostało{" "}
+                    {conferenceIdData.participantsLimit -
+                      conferenceIdData.participants.length}{" "}
+                    / {conferenceIdData.participantsLimit}
+                  </h1>
+                  <div className="w-full grid-cols-4 grid gap-8 pt-4">
+                    {conferenceIdData.participants.map(
+                      (participants, index) => (
+                        <People
+                          key={index}
+                          username={participants.username}
+                          photo={participants.photo}
+                        />
+                      )
+                    )}
+                  </div>
+                </>
+              ) : (
+                <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
+                  Niestety brak wolnych miejsc
+                </h1>
+              )}
+            </Box>
+          ) : null}
+          <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-20">
+            <TitleHeader title={"Zdjęcia"} />
+            <div className="w-full pt-4">
+              <AllImagesCarousel photos={conferenceIdData.photos} />
+            </div>
+          </Box>
+        </>
+      ) : (
+        <p className="text-2xl text-close2White">Trwa ładowanie danych...</p>
+      )}
+    </Page>
   );
 }
