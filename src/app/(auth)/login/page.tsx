@@ -65,7 +65,7 @@ export default function LoginPage() {
   if (isError) return <Error500 />;
 
   return (
-    <Page>
+    <Page className="justify-center">
       {isLoading || !showLogin ? (
         <h1>Trwa ładowanie danych...</h1>
       ) : (

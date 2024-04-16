@@ -14,10 +14,10 @@ export default function MyConferencePageImageBox({
 }) {
   return (
     <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center text-close2White p-4">
-      <h1 className="text-lg sm:text-2xl  md:text-3xl lg:text-2xl xl:text-3xl pt-[5%]">
+      <h1 className="text-lg sm:text-2xl  md:text-3xl lg:text-2xl xl:text-3xl">
         {conferenceIdData.name}
       </h1>
-      <div className="w-full h-auto flex justify-around pt-[10%]">
+      <div className="w-full h-auto flex justify-around pt-[8%]">
         <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
           <FaRegCalendarCheck className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
           <h1 className="text-xs sm:text-sm md:text-lg lg:text-md xl:text-lg">
@@ -41,7 +41,7 @@ export default function MyConferencePageImageBox({
           </h1>
         </div>
       </div>
-      <div className="flex-col flex gap-x-3 w-full h-auto items-center justify-center pt-[10%]">
+      <div className="flex-col flex gap-x-1 md:gap-x-3 w-full h-auto items-center justify-center pt-[5%]">
         <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
           <IoMdPin className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
           <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">
