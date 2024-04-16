@@ -2,36 +2,22 @@
 import {Box} from "@/components/common/Box/Box";
 import APIImageComponent from "@/hooks/imageAPI";
 import Link from "next/link";
-import {useState, useRef, useCallback} from "react";
-import {BsThreeDotsVertical, BsFillTrash3Fill} from "react-icons/bs";
-import {deleteConference} from "@/hooks/conference";
-import {Content} from "@/hooks/conference"
+import ListItemOptions from "@/components/MyconferenceList/ListItemOptions";
+import {Content, deleteConference} from "@/hooks/conference"
+import {useCallback, useState} from "react";
 export default function ListItem({conference} : {conference: Content}) {
 
-    const [open, setOpen] = useState<boolean>(false);
     const [deleted, setDeleted] = useState<boolean>(false);
-    const optionsRef = useRef<HTMLDivElement>(null);
+
+    const handleDelete =
+      useCallback(() => {
+        deleteConference(conference?.id);
+        setDeleted(true);
+        }, [])
 
     function formatDate(dateToFormat: string) {
-      const formattedDate = new Date(dateToFormat).toLocaleString();
-      return formattedDate;
+      return new Date(dateToFormat).toLocaleString();
     }
-    const handleClick = () => {
-
-      setOpen(!open);
-    }
-    const handleClickOutside = (e: any) => {
-      if(open && !optionsRef.current?.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    }
-
-    const handleDelete = useCallback(() => {
-      deleteConference(conference?.id);
-      setDeleted(true);
-    }, [])                                  // currently doesn't work
-
-    window.addEventListener('click', handleClickOutside);
 
     return deleted?(<></>):(
     <Box className="flex w-full text-black">
@@ -56,19 +42,7 @@ export default function ListItem({conference} : {conference: Content}) {
           </div>
         </div>
       </Link>
-      <div className="relative select-none" ref={optionsRef}>
-        <div className="flex justify-center items-center w-9 h-9 hover:bg-neutral-300 duration-75 rounded-full" onClick={handleClick}>
-          <BsThreeDotsVertical fontSize="1.5rem"/>
-        </div>
-        <div className={`${open ? 'absolute' : 'hidden'} top-[20px] right-1/2 min-w-60`} ref={optionsRef}>
-          <Box>
-            <div onClick={handleDelete} className="flex justify-center items-center cursor-pointer">
-              <BsFillTrash3Fill color='red'/>
-              <p>&nbsp;Delete conference</p>
-            </div>
-          </Box>
-        </div>
-      </div>
+      <ListItemOptions confId={conference?.id} handleDelete={handleDelete}/>
     </Box>
   );
 }
