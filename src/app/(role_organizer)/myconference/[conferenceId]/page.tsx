@@ -36,9 +36,7 @@ export default function MyConferencePage({
         <>
           <Title conferenceIdData={conferenceIdData} />
           <Organizers organizer={conferenceIdData.organizer} />
-          {conferenceIdData.lectures.length !== 0 ? (
-            <Lectures lectures={conferenceIdData.lectures} />
-          ) : null}
+          <Lectures lectures={conferenceIdData.lectures} />
           {conferenceIdData.participants !== null ? (
             <Participants conferenceIdData={conferenceIdData} />
           ) : null}

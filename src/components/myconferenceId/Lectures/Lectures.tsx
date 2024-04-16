@@ -9,11 +9,13 @@ export default function Lectures({ lectures }: { lectures: Lecture[] }) {
     <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
       <TitleHeader title={"Wykłady"} />
       <LectureSearch data={lectures} />
-      <div className="w-full">
-        {lectures.map((lecture, index) => (
-          <LectureList key={index} lecture={lecture} />
-        ))}
-      </div>
+      {lectures.length !== 0 ? (
+        <div className="w-full">
+          {lectures.map((lecture, index) => (
+            <LectureList key={index} lecture={lecture} />
+          ))}
+        </div>
+      ) : null}
     </Box>
   );
 }
