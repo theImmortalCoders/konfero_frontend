@@ -9,7 +9,7 @@ import MyConferencePageImageBox from "@/components/myconferenceId/MyConferencePa
 import People from "@/components/myconferenceId/PeopleBox";
 import AllImagesCarousel from "@/components/myconferenceId/Carousel/AllImagesCarousel";
 import TitleHeader from "@/components/common/Box/TitleHeader";
-import LectureBox from "@/components/myconferenceId/LectureBox";
+import LectureBox from "@/components/myconferenceId/LectureList";
 
 export default function MyConferencePage({
   params,

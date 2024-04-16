@@ -41,7 +41,7 @@ export function BoxWithImage({
             className="rounded-t-3xl w-full h-auto filter brightness-50"
           />
         ) : (
-          <div className="rounded-t-3xl w-full h-auto filter brightness-50">
+          <div className="rounded-t-3xl overflow-hidden w-full h-auto filter brightness-50">
             <APIImageComponent imageId={src} type={"IMAGE"} />
           </div>
         )}

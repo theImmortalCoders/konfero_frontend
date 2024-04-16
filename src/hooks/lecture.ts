@@ -1,5 +1,6 @@
 import { appAPI } from "@/utils/appENV";
 import { AxiosResponse } from "axios";
+import { ImageInterface, LogoInterface } from "./imageAPI";
 
 export async function deleteLecture(lectureId: number) {
   try {
@@ -37,15 +38,6 @@ export async function deleteLecture(lectureId: number) {
   }
 }
 
-interface Image {
-  id: number;
-  path: string;
-  description: string;
-  authorId: number;
-  fileType: string;
-  createdDate: string;
-}
-
 interface Lecturer {
   id: number;
   username: string;
@@ -68,10 +60,10 @@ export interface GetLectureDetailsData {
   description: string;
   startDateTime: string;
   durationMinutes: number;
-  image: Image;
+  image: ImageInterface;
   conferenceId: number;
   lecturers: Lecturer[];
-  materials: Image[];
+  materials: ImageInterface[];
   interested: Interested[];
   place: string;
 }

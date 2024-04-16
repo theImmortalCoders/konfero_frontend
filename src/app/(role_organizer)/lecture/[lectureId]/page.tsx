@@ -8,7 +8,7 @@ import People from "@/components/myconferenceId/PeopleBox";
 import { getLectureDetails } from "@/hooks/lecture";
 import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
-import MaterialTableWrapper from "@/components/MaterialTableWrapper";
+import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrapper";
 
 export default function MyConferencePage({
   params,
