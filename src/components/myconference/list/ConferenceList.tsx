@@ -3,6 +3,7 @@ import { Content, deleteConference } from "@/hooks/conference";
 import { useCallback, useState } from "react";
 import ListItemImage from "../../common/List/ListItemImage";
 import ListItemOptions from "./ListItemOptions";
+import { formatDateWithHour } from "@/utils/date";
 
 export default function ConferenceList({
   conference,
@@ -16,9 +17,6 @@ export default function ConferenceList({
     setDeleted(true);
   }, []);
 
-  function formatDate(dateToFormat: string) {
-    return new Date(dateToFormat).toLocaleString();
-  }
   return deleted ? (
     <></>
   ) : (
@@ -29,8 +27,8 @@ export default function ConferenceList({
       >
         <div className="flex flex-col pl-4">
           <p className="font-black text-xl">{conference?.name}</p>
-          <p>Rozpoczęcie: {formatDate(conference?.startDateTime)}</p>
-          <p>Zakończenie: {formatDate(conference?.endDateTime)}</p>
+          <p>Rozpoczęcie: {formatDateWithHour(conference?.startDateTime)}</p>
+          <p>Zakończenie: {formatDateWithHour(conference?.endDateTime)}</p>
           <p className="font-bold">{conference?.location.name}</p>
         </div>
       </ListItemImage>

@@ -1,4 +1,5 @@
 import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
+import { formatDateWithHour } from "@/utils/date";
 import Link from "next/link";
 import {
   FaChevronRight,
@@ -21,23 +22,13 @@ export default function MyConferencePageImageBox({
         <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
           <FaRegCalendarCheck className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
           <h1 className="text-xs sm:text-sm md:text-lg lg:text-md xl:text-lg">
-            {conferenceIdData.startDateTime.split("T")[0]}{" "}
-            {conferenceIdData.startDateTime
-              .split("T")[1]
-              .split(":")
-              .slice(0, 2)
-              .join(":")}
+            {formatDateWithHour(conferenceIdData.startDateTime)}
           </h1>
         </div>
         <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
           <FaRegCalendarXmark className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
           <h1 className="text-xs sm:text-sm md:text-lg lg:text-md xl:text-lg">
-            {conferenceIdData.endDateTime.split("T")[0]}{" "}
-            {conferenceIdData.endDateTime
-              .split("T")[1]
-              .split(":")
-              .slice(0, 2)
-              .join(":")}
+            {formatDateWithHour(conferenceIdData.endDateTime)}
           </h1>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { ImageInterface } from "@/hooks/conference";
 import SingleImageCarousel from "./SingleImageCarousel";
+import { ImageInterface } from "@/hooks/imageAPI";
 
 export default function AllImagesCarousel({
   photos,
