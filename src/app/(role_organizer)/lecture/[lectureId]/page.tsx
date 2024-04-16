@@ -1,13 +1,14 @@
 "use client";
 import Page from "@/components/common/Page/Page";
 import Logo from "@/assets/home/laptop.jpg";
-import { Box, BoxWithImage } from "@/components/common/Box/Box";
+import { BoxWithImage } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
 import Error500 from "@/components/common/Error/Error500";
 import People from "@/components/myconferenceId/PeopleBox";
 import { getLectureDetails } from "@/hooks/lecture";
 import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
+import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrapper";
 
 export default function MyConferencePage({
   params,
@@ -22,7 +23,6 @@ export default function MyConferencePage({
     getLectureDetails(parseInt(params.lectureId))
   );
 
-  console.log("lectureId", lectureIdData);
   if (isError) return <Error500 />;
 
   return (
@@ -31,8 +31,7 @@ export default function MyConferencePage({
         <>
           <BoxWithImage
             className="text-darkblue w-[90%] lg:w-[60%] mt-20 mb-5"
-            //src={conferenceIdData.logo.id}
-            src={Logo}
+            src={lectureIdData.image.id}
             alt={"Logo"}
           >
             <MyLecturePageImageBox lectureIdData={lectureIdData} />
@@ -58,6 +57,7 @@ export default function MyConferencePage({
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2" />
                 <TitleHeader title={"Materiały"} />
+                <MaterialTableWrapper lectureIdData={lectureIdData} />
               </>
             ) : null}
             {lectureIdData.interested.length !== 0 ? (

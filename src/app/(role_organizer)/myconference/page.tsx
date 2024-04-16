@@ -3,11 +3,11 @@
 import Page from "@/components/common/Page/Page";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa6";
-import ListItem from "@/components/MyconferenceList/ListItem";
 import { getAllConferences, GetAllConferencesData } from "@/hooks/conference";
 import { useRouter } from "next/navigation";
 import { useQuery } from "react-query";
 import { Box } from "@/components/common/Box/Box";
+import ConferenceList from "@/components/myconferenceList/ConferenceList";
 
 export default function MyConferenceListPage() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function MyConferenceListPage() {
         </Box>
         {status === "success" ? (
           (data as GetAllConferencesData)?.content?.map((conf) => {
-            return <ListItem key={`${conf.id}`} conference={conf} />;
+            return <ConferenceList key={`${conf.id}`} conference={conf} />;
           })
         ) : (
           <></>

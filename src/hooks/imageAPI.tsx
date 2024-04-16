@@ -2,6 +2,23 @@
 import { useEffect, useState } from "react";
 import { appAPI } from "@/utils/appENV";
 
+export interface LogoInterface {
+  id: number;
+  path: string;
+  description: string;
+  authorId: number;
+  fileType: string;
+}
+
+export interface ImageInterface {
+  id: number;
+  path: string;
+  description: string;
+  authorId: number;
+  fileType: string;
+  createdDate: string;
+}
+
 interface APIImageComponentProps {
   imageId: number;
   type: string;

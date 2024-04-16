@@ -1,6 +1,7 @@
 import { appAPI } from "@/utils/appENV";
 import { AxiosResponse } from "axios";
-import { Logo, Location, Organizer } from "@/hooks/user";
+import { Location, Organizer } from "@/hooks/user";
+import { ImageInterface, LogoInterface } from "./imageAPI";
 
 export async function deleteConference(conferenceId: number) {
   try {
@@ -50,7 +51,7 @@ export interface Content {
   endDateTime: string;
   organizer: Organizer;
   name: string;
-  logo: Logo;
+  logo: LogoInterface;
   location: Location;
   finished: boolean;
   canceled: boolean;
@@ -134,20 +135,12 @@ interface Participant {
   verified: boolean;
 }
 
-export interface ImageInterface {
-  id: number;
-  path: string;
-  description: string;
-  authorId: number;
-  fileType: string;
-}
-
 export interface Lecture {
   id: number;
   name: string;
   startDateTime: string;
   durationMinutes: number;
-  image: ImageInterface;
+  image: LogoInterface;
   place: string;
 }
 
@@ -165,7 +158,7 @@ export interface GetConferenceDetailsWithRoleFilteringData {
   organizer: Organizer;
   name: string;
   description: string;
-  logo: Logo;
+  image: LogoInterface;
   tags: Tag[];
   location: Location;
   participants: Participant[];

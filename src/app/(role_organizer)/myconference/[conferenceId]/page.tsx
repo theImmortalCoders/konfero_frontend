@@ -9,7 +9,7 @@ import MyConferencePageImageBox from "@/components/myconferenceId/MyConferencePa
 import People from "@/components/myconferenceId/PeopleBox";
 import AllImagesCarousel from "@/components/myconferenceId/Carousel/AllImagesCarousel";
 import TitleHeader from "@/components/common/Box/TitleHeader";
-import LectureBox from "@/components/myconferenceId/LectureBox";
+import LectureBox from "@/components/myconferenceId/LectureList";
 
 export default function MyConferencePage({
   params,
@@ -56,40 +56,47 @@ export default function MyConferencePage({
               />
             </div>
           </Box>
-          <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-            <TitleHeader title={"Wykłady"} />
-            <div className="w-full pt-4">
-              {conferenceIdData.lectures.map((lecture, index) => (
-                <LectureBox key={index} lecture={lecture} />
-              ))}
-            </div>
-          </Box>
-          <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
-            <TitleHeader title={"Uczestnicy"} />
-            {!conferenceIdData.participantsFull ? (
-              <>
+          {conferenceIdData.lectures.length !== 0 ? (
+            <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
+              <TitleHeader title={"Wykłady"} />
+              <div className="w-full pt-4">
+                {conferenceIdData.lectures.map((lecture, index) => (
+                  <LectureBox key={index} lecture={lecture} />
+                ))}
+              </div>
+            </Box>
+          ) : null}
+          {conferenceIdData.participants !== null ? (
+            <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
+              <TitleHeader title={"Uczestnicy"} />
+
+              {!conferenceIdData.participantsFull ? (
+                <>
+                  <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
+                    Pozostało{" "}
+                    {conferenceIdData.participantsLimit -
+                      conferenceIdData.participants.length}{" "}
+                    / {conferenceIdData.participantsLimit}
+                  </h1>
+                  <div className="w-full grid-cols-4 grid gap-8 pt-4">
+                    {conferenceIdData.participants.map(
+                      (participants, index) => (
+                        <People
+                          key={index}
+                          username={participants.username}
+                          photo={participants.photo}
+                        />
+                      )
+                    )}
+                  </div>
+                </>
+              ) : (
                 <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
-                  Pozostało{" "}
-                  {conferenceIdData.participantsLimit -
-                    conferenceIdData.participants.length}{" "}
-                  / {conferenceIdData.participantsLimit}
+                  Niestety brak wolnych miejsc
                 </h1>
-                <div className="w-full grid-cols-4 grid gap-8 pt-4">
-                  {conferenceIdData.participants.map((participants, index) => (
-                    <People
-                      key={index}
-                      username={participants.username}
-                      photo={participants.photo}
-                    />
-                  ))}
-                </div>
-              </>
-            ) : (
-              <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
-                Niestety brak wolnych miejsc
-              </h1>
-            )}
-          </Box>
+              )}
+            </Box>
+          ) : null}
           <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-20">
             <TitleHeader title={"Zdjęcia"} />
             <div className="w-full pt-4">
