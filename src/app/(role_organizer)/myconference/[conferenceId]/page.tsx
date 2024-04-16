@@ -1,6 +1,5 @@
 "use client";
 import Page from "@/components/common/Page/Page";
-import Logo from "@/assets/home/laptop.jpg";
 import { Box, BoxWithImage } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
 import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
@@ -34,8 +33,7 @@ export default function MyConferencePage({
         <>
           <BoxWithImage
             className="text-darkblue w-[90%] lg:w-[60%] mt-20 mb-5"
-            //src={conferenceIdData.logo.id}
-            src={Logo}
+            src={conferenceIdData.logo.id}
             alt={"Logo"}
           >
             <MyConferencePageImageBox conferenceIdData={conferenceIdData} />

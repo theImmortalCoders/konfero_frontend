@@ -158,7 +158,7 @@ export interface GetConferenceDetailsWithRoleFilteringData {
   organizer: Organizer;
   name: string;
   description: string;
-  image: LogoInterface;
+  logo: LogoInterface;
   tags: Tag[];
   location: Location;
   participants: Participant[];

@@ -23,16 +23,18 @@ export default function MyConferenceListPage() {
     <Page>
       {!isLoading ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start">
-          <Box className="top-0 left-0 sticky w-full justify-between text-black font-black my-8">
-            Znalezione konferencje:{" "}
-            {(data as GetAllConferencesData)?.numberOfElements}
-            <Link
-              href={"/"}
-              className="flex justify-center items-center gap-x-2 px-2 py-2 sm:py-0 w-min md:text-nowrap border-2 border-black rounded-xl"
-            >
-              <p className="sm:inline-block hidden">Dodaj Konferencje</p>
-              <FaPlus />
-            </Link>
+          <Box className="top-0 left-0 sticky z-20 w-full my-8">
+            <div className="flex justify-between items-center font-black text-darkblue w-full">
+              Znalezione konferencje:{" "}
+              {(data as GetAllConferencesData)?.numberOfElements}
+              <Link
+                href={"/"}
+                className="flex justify-center items-center gap-x-2 px-2 py-2 sm:py-0 w-min md:text-nowrap border-2 border-black rounded-xl"
+              >
+                <p className="sm:inline-block hidden">Dodaj Konferencje</p>
+                <FaPlus />
+              </Link>
+            </div>
           </Box>
           <div className="w-full flex flex-col gap-y-4">
             {(data as GetAllConferencesData)?.content?.map((conf) => {
