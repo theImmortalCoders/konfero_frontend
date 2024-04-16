@@ -1,8 +1,8 @@
 "use client";
-import ListItemOptions from "@/components/myconferenceList/ListItemOptions";
 import { Content, deleteConference } from "@/hooks/conference";
 import { useCallback, useState } from "react";
 import ListItemImage from "../common/List/ListItemImage";
+import ListItemOptions from "./ListItemOptions";
 
 export default function ConferenceList({
   conference,

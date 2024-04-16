@@ -22,7 +22,7 @@ function Joinus() {
 }
 export default function Home() {
   return (
-    <Page>
+    <Page className="justify-center">
       <Box className="w-[90%] lg:w-[60%] text-darkblue">
         <div className="grid grid-cols-1 xl:grid-cols-2 w-full h-full">
           <div className="pr-0 md:pr-8">
