@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import SingleFormInput from "../common/Input/SingleFormInput";
 
 interface SearchableItem {
   id: number;
@@ -17,7 +18,7 @@ interface SearchComponentProps {
   pt: number;
 }
 
-const SearchBar: React.FC<SearchComponentProps> = ({
+const SearchBarLecture: React.FC<SearchComponentProps> = ({
   items,
   renderItem,
   onItemSelected,
@@ -72,19 +73,25 @@ const SearchBar: React.FC<SearchComponentProps> = ({
   };
 
   return (
-    <div className="max-h-40 overflow-y-auto">
-      <input
-        type="text"
-        placeholder={`${placeholder}`}
-        value={search}
-        onChange={handleChange}
-        className={`w-full pt-${pt.toString()} outline-none focus:outline-none bg-close2White text-darkblue`}
-      />
+    <div className="max-h-40 pt-4 overflow-y-auto">
+      <div className="relative">
+        <SingleFormInput
+          type="text"
+          id="searchbar"
+          name="searchbar"
+          placeholder=" "
+          value={search}
+          onChange={handleChange}
+        />
+        <label htmlFor="searchbar" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
+          {placeholder}
+        </label>
+      </div>
       {results.map((item) => (
         <div
           key={item.id}
           onClick={() => handleSelect(item)}
-          className="w-full pt-0 outline-none focus:outline-none bg-close2White text-darkblue opacity-75"
+          className="w-full pb-4 outline-none focus:outline-none bg-close2White text-darkblue opacity-75 cursor-pointer"
         >
           {renderItem(item)}
         </div>
@@ -93,4 +100,4 @@ const SearchBar: React.FC<SearchComponentProps> = ({
   );
 };
 
-export default SearchBar;
+export default SearchBarLecture;

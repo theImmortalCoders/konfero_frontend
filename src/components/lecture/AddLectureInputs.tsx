@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { uploadFile } from "@/hooks/file";
 import { TiDeleteOutline } from "react-icons/ti";
+import { getAllUsers, GetAllUsersData } from "@/hooks/user";
+import SearchBarLecture from "./SearchBarLecture";
 
 export default function AddLectureInputs() {
 
@@ -15,6 +17,22 @@ export default function AddLectureInputs() {
     const [imageFile, setImageFile] = useState<File>(new File([], ""));
     const [lecturersIds, setLecturersIds] = useState<number[]>([]);
     const [place, setPlace] = useState<string>("");
+
+    const [users, setUsers] = useState<GetAllUsersData[]>([]);
+    const [lecturersUserames, setLecturersUserames] = useState<string[]>([]);
+    const [cleanSearchBar, setCleanSearchBar] = useState(false);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+          const result = await getAllUsers();
+          if (typeof result !== "string") {
+            setUsers(result);
+          }
+        };
+    
+        fetchUsers();
+    //   }, [statusError]);
+    }, []);
 
     useEffect(() => {
         const handleNewImage = async () => {
@@ -39,8 +57,22 @@ export default function AddLectureInputs() {
         }
     };
 
+    const handleLecturerSelected = (user: GetAllUsersData) => {
+        setLecturersIds((prevState) => [...prevState, user.id]);
+        setLecturersUserames((prevState) => [...prevState, user.username]);
+        setCleanSearchBar(true);
+    };
+
+    useEffect(() => {
+        if (lecturersIds.length !== 0) {
+          //setStatusError(undefined);
+          setCleanSearchBar(false);
+        }
+    }, [lecturersIds]);
+
     const handleDeleteLecturers = (indexToDelete: number) => {
         setLecturersIds(lecturersIds.filter((_, index) => index !== indexToDelete));
+        setLecturersUserames(lecturersUserames.filter((_, index) => index !== indexToDelete));
     };
 
     return (
@@ -136,7 +168,7 @@ export default function AddLectureInputs() {
                         }}
                     />
                 </form>
-                <div className="flex flex-row items-center justify-around py-2 bg-close2White ">
+                <div className="flex flex-row items-center justify-around pt-2 bg-close2White ">
                     <div className="w-[150px]">
                         <APIImageComponent imageId={imageId} type="lecture"/>
                     </div>
@@ -146,16 +178,24 @@ export default function AddLectureInputs() {
                     />
                 </div>
             </div>
-            <div>
-                <div className="grid grid-cols-2 gap-2 w-full text-blue pb-2">
-                    {lecturersIds.map((name, index) => (
+            <div className="flex flex-col">
+                <SearchBarLecture
+                    items={users}
+                    renderItem={(user) => `${user.username} ${user.email}`}
+                    onItemSelected={handleLecturerSelected}
+                    placeholder="Dodaj wykładowców"
+                    handleReset={cleanSearchBar}
+                    pt={-1}
+                />
+                <div className="grid grid-cols-2 gap-2 w-full text-blue pt-2">
+                    {lecturersUserames.map((name, index) => (
                     <span
                         key={index}
                         className="flex flex-row items-center justify-between p-1 border border-blue rounded-lg"
                     >
                         {name}
                         <TiDeleteOutline
-                        className="h-5 w-5"
+                        className="h-5 w-5 cursor-pointer"
                         onClick={() => handleDeleteLecturers(index)}
                         />
                     </span>
@@ -178,7 +218,7 @@ export default function AddLectureInputs() {
                       }
                   }}
               />
-              <label htmlFor="name" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
+              <label htmlFor="place" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
                   Miejsce odbycia wykładu
               </label>
             </div>
