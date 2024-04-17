@@ -3,10 +3,10 @@ import Page from "@/components/common/Page/Page";
 import NotFoundConferenceForAddLecture from "./not-found";
 import { useQuery } from "react-query";
 import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
-import SingleFormInput from "@/components/common/Input/SingleFormInput";
-import { useState } from "react";
+import { Box } from "@/components/common/Box/Box";
+import AddLectureInputs from "@/components/lecture/AddLectureInputs";
 
-export default function addlecture({ params }: { params: { conferenceId: number } }) {
+export default function AddLecture({ params }: { params: { conferenceId: number } }) {
 
   const getConferenceInfo = async () => {
     return await getConferenceDetailsWithRoleFiltering(params.conferenceId);
@@ -22,56 +22,17 @@ export default function addlecture({ params }: { params: { conferenceId: number 
     return <NotFoundConferenceForAddLecture />;
   }
 
-  const [name, setName] = useState<string>("");
-
   return (
-    <Page>
+    <Page className="justify-start pt-20">
       {!conferenceLoading && conferenceData && typeof conferenceData !== "string" ? (
-        <div className="mt-20">
-          {/* addlecture {params.conferenceId} */}
-          <div className="flex flex-col w-full h-fit space-y-6 bg-close2White">
-            <div className="relative">
-              <SingleFormInput
-                  type="text"
-                  id="name"
-                  name="companyName"
-                  placeholder=" "
-                  value={name}
-                  onChange={(e) => {
-                      const value = e.target.value;
-                      const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,100}$/i.test(value);
-            
-                      if (isValid) {
-                        setName(value);
-                      }
-                  }}
-              />
-              <label htmlFor="name" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
-                  Nazwa
-              </label>
-            </div> 
-            <div className="relative">
-              <SingleFormInput
-                  type="text"
-                  id="name"
-                  name="companyName"
-                  placeholder=" "
-                  value={name}
-                  onChange={(e) => {
-                      const value = e.target.value;
-                      const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,100}$/i.test(value);
-            
-                      if (isValid) {
-                        setName(value);
-                      }
-                  }}
-              />
-              <label htmlFor="name" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
-                  Nazwa
-              </label>
-            </div> 
-          </div>   
-        </div>
+        <>
+          <h1 className="w-full flex justify-center pb-8 text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">
+            Dodawanie wykładu do konferencji
+          </h1>
+          <Box>
+            <AddLectureInputs />
+          </Box>
+        </>
       ) : (
         <p className="w-full mt-20 text-xl h-max flex justify-center items-center text-close2White">
           Trwa ładowanie danych...
