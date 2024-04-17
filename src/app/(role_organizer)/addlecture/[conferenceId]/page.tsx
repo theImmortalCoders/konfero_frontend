@@ -23,7 +23,7 @@ export default function AddLecture({ params }: { params: { conferenceId: number 
   }
 
   return (
-    <Page className="justify-start pt-20">
+    <Page className="justify-start py-20">
       {!conferenceLoading && conferenceData && typeof conferenceData !== "string" ? (
         <>
           <h1 className="w-full flex justify-center pb-8 text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">

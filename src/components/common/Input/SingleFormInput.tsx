@@ -4,6 +4,7 @@ export default function SingleFormInput ({
     name,
     placeholder,
     value,
+    accept,
     onChange
 }: {
     type: string;
@@ -11,6 +12,7 @@ export default function SingleFormInput ({
     name: string;
     placeholder: string,
     value?: string,
+    accept?: string,
     onChange?: React.ChangeEventHandler<HTMLInputElement>; 
 }) {
     return (
@@ -20,6 +22,7 @@ export default function SingleFormInput ({
             name={name}
             placeholder={placeholder}
             value={value}
+            accept={accept}
             onChange={onChange}
             className="w-full border-b border-blue py-1 focus:outline-none focus:border-darkblue focus:border-b-2 bg-close2White transition-colors peer placeholder-transparent"
             autoComplete="off"
