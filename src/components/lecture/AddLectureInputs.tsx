@@ -6,8 +6,9 @@ import { uploadFile } from "@/hooks/file";
 import { TiDeleteOutline } from "react-icons/ti";
 import { getAllUsers, GetAllUsersData } from "@/hooks/user";
 import SearchBarLecture from "./SearchBarLecture";
+import { addLectureToConference, AddLectureToConferenceData } from "@/hooks/lecture";
 
-export default function AddLectureInputs() {
+export default function AddLectureInputs({conferenceId} : {conferenceId: number}) {
 
     const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -38,7 +39,7 @@ export default function AddLectureInputs() {
         const handleNewImage = async () => {
           try {
             if (!imageFile.name) return;
-            const result = await uploadFile(imageFile, "aa");
+            const result = await uploadFile(imageFile, "lectureImage");
             if (typeof result !== "string" && result) setImageId(result.id);
           } catch (error) {
             console.error("Image adding failed:", error);
@@ -74,6 +75,50 @@ export default function AddLectureInputs() {
         setLecturersIds(lecturersIds.filter((_, index) => index !== indexToDelete));
         setLecturersUserames(lecturersUserames.filter((_, index) => index !== indexToDelete));
     };
+
+    const handleAddLecture = async () => {
+
+        if (!name || !description || !startDateTime || !durationMinutes.trim() || lecturersIds.length === 0 || !place) {
+            console.error("Wszystkie pola muszą być wypełnione");
+            // setStatusError(true);
+            return;
+          }
+
+        const newLecture : AddLectureToConferenceData = {
+            name: name,
+            description: description,
+            startDateTime: startDateTime,
+            durationMinutes: parseInt(durationMinutes, 10),
+            imageId: imageId,
+            lecturersIds: lecturersIds,
+            place: place,
+        }
+
+        try {
+          const result = await addLectureToConference(conferenceId, newLecture);
+          if(result !== "Brak autoryzacji użytkownika" && result !== "Nie jesteś właścicielem konferencji lub nie masz roli" && result !== "Wystąpił błąd podczas dodawania prelekcji do konferencji"){
+            setName("");
+            setDescription("");
+            setStartDateTime("");
+            setDurationMinutes("");
+            setImageFile(new File([], ""));
+            setImageId(0);
+            const form = document.getElementById("imageInput") as HTMLFormElement;
+            if (form) {
+                form.reset();
+            }
+            setLecturersIds([]);
+            setLecturersUserames([]);
+            setPlace("");
+            setCleanSearchBar(true);
+            // setStatusError(false);
+          }
+        } catch (error) {
+        //   setStatusError(true);
+          console.error("Adding lecture to conference failed:", error);
+        }
+    };
+    
 
     return (
         <div className="flex flex-col space-y-6 text-darkblue">
@@ -169,7 +214,7 @@ export default function AddLectureInputs() {
                     />
                 </form>
                 <div className="flex flex-row items-center justify-around pt-2 bg-close2White ">
-                    <div className="w-[150px]">
+                    <div className="w-[120px]">
                         <APIImageComponent imageId={imageId} type="lecture"/>
                     </div>
                     <MdOutlineDeleteForever
@@ -221,6 +266,11 @@ export default function AddLectureInputs() {
               <label htmlFor="place" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
                   Miejsce odbycia wykładu
               </label>
+            </div>
+            <div className="flex items-center justify-center w-full">
+                <button onClick={handleAddLecture} className="text-nowrap w-fit bg-blue text-close2White text-lg font-medium py-2 px-6 rounded-3xl ">
+                    Zatwierdź
+                </button>
             </div>
         </div>
     );

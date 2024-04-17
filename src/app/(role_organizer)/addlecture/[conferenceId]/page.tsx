@@ -30,7 +30,7 @@ export default function AddLecture({ params }: { params: { conferenceId: number 
             Dodawanie wykładu do konferencji
           </h1>
           <Box>
-            <AddLectureInputs />
+            <AddLectureInputs conferenceId={params.conferenceId}/>
           </Box>
         </>
       ) : (
