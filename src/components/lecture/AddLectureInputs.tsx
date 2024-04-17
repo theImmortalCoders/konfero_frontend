@@ -23,6 +23,8 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
     const [lecturersUserames, setLecturersUserames] = useState<string[]>([]);
     const [cleanSearchBar, setCleanSearchBar] = useState(false);
 
+    const [statusError, setStatusError] = useState<boolean | undefined>(undefined);
+
     useEffect(() => {
         const fetchUsers = async () => {
           const result = await getAllUsers();
@@ -32,8 +34,7 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
         };
     
         fetchUsers();
-    //   }, [statusError]);
-    }, []);
+    }, [statusError]);
 
     useEffect(() => {
         const handleNewImage = async () => {
@@ -66,7 +67,7 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
 
     useEffect(() => {
         if (lecturersIds.length !== 0) {
-          //setStatusError(undefined);
+          setStatusError(undefined);
           setCleanSearchBar(false);
         }
     }, [lecturersIds]);
@@ -80,7 +81,7 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
 
         if (!name || !description || !startDateTime || !durationMinutes.trim() || lecturersIds.length === 0 || !place) {
             console.error("Wszystkie pola muszą być wypełnione");
-            // setStatusError(true);
+            setStatusError(true);
             return;
           }
 
@@ -111,10 +112,10 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
             setLecturersUserames([]);
             setPlace("");
             setCleanSearchBar(true);
-            // setStatusError(false);
+            setStatusError(false);
           }
         } catch (error) {
-        //   setStatusError(true);
+          setStatusError(true);
           console.error("Adding lecture to conference failed:", error);
         }
     };
@@ -267,10 +268,21 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
                   Miejsce odbycia wykładu
               </label>
             </div>
-            <div className="flex items-center justify-center w-full">
+            <div className="flex flex-col items-center justify-center w-full">
                 <button onClick={handleAddLecture} className="text-nowrap w-fit bg-blue text-close2White text-lg font-medium py-2 px-6 rounded-3xl ">
                     Zatwierdź
                 </button>
+                {statusError !== undefined && (
+                    <p
+                    className={` ${
+                        statusError ? "text-red-800" : "text-green-800"
+                    } bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center`}
+                    >
+                    {statusError
+                        ? "Wystąpił błąd podczas dodawania wykładu."
+                        : "Wykład został dodany poprawnie."}
+                    </p>
+                )}
             </div>
         </div>
     );
