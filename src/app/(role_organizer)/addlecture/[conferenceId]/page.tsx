@@ -29,8 +29,8 @@ export default function AddLecture({ params }: { params: { conferenceId: number 
           <h1 className="w-full flex justify-center pb-8 text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">
             Dodawanie wykładu do konferencji
           </h1>
-          <Box>
-            <AddLectureInputs conferenceId={params.conferenceId}/>
+          <Box className="w-4/5 2xs:w-2/3 xs:w-1/2">
+            <AddLectureInputs conferenceData={conferenceData}/>
           </Box>
         </>
       ) : (

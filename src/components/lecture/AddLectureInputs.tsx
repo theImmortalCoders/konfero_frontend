@@ -7,8 +7,9 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { getAllUsers, GetAllUsersData } from "@/hooks/user";
 import SearchBarLecture from "./SearchBarLecture";
 import { addLectureToConference, AddLectureToConferenceData } from "@/hooks/lecture";
+import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
 
-export default function AddLectureInputs({conferenceId} : {conferenceId: number}) {
+export default function AddLectureInputs({conferenceData} : {conferenceData: GetConferenceDetailsWithRoleFilteringData}) {
 
     const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -24,6 +25,7 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
     const [cleanSearchBar, setCleanSearchBar] = useState(false);
 
     const [statusError, setStatusError] = useState<boolean | undefined>(undefined);
+    const [message, setMessage] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -79,11 +81,17 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
 
     const handleAddLecture = async () => {
 
-        if (!name || !description || !startDateTime || !durationMinutes.trim() || lecturersIds.length === 0 || !place) {
+        if (!name || !description || !startDateTime || !durationMinutes.trim() || imageId !== 0 || lecturersIds.length === 0 || !place) {
             console.error("Wszystkie pola muszą być wypełnione");
             setStatusError(true);
             return;
-          }
+        }
+
+        if(startDateTime < conferenceData.startDateTime){
+            setStatusError(false);
+            setMessage("Wykład musi odbyć się w czasie konferencji!")
+            return;
+        }
 
         const newLecture : AddLectureToConferenceData = {
             name: name,
@@ -96,7 +104,7 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
         }
 
         try {
-          const result = await addLectureToConference(conferenceId, newLecture);
+          const result = await addLectureToConference(conferenceData.id, newLecture);
           if(result !== "Brak autoryzacji użytkownika" && result !== "Nie jesteś właścicielem konferencji lub nie masz roli" && result !== "Wystąpił błąd podczas dodawania prelekcji do konferencji"){
             setName("");
             setDescription("");
@@ -113,6 +121,7 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
             setPlace("");
             setCleanSearchBar(true);
             setStatusError(false);
+            setMessage(undefined);
           }
         } catch (error) {
           setStatusError(true);
@@ -160,7 +169,7 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
                   }}
               />
               <label htmlFor="description" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
-                  Opis
+                  Opis [10-200 znaków]
               </label>
             </div>
             <div className="relative">
@@ -214,7 +223,7 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
                         }}
                     />
                 </form>
-                <div className="flex flex-row items-center justify-around pt-2 bg-close2White ">
+                <div className="flex flex-row items-center justify-center space-x-12 pt-2 bg-close2White ">
                     <div className="w-[120px]">
                         <APIImageComponent imageId={imageId} type="lecture"/>
                     </div>
@@ -272,15 +281,17 @@ export default function AddLectureInputs({conferenceId} : {conferenceId: number}
                 <button onClick={handleAddLecture} className="text-nowrap w-fit bg-blue text-close2White text-lg font-medium py-2 px-6 rounded-3xl ">
                     Zatwierdź
                 </button>
-                {statusError !== undefined && (
+                {(statusError !== undefined || message !== undefined) && (
                     <p
                     className={` ${
-                        statusError ? "text-red-800" : "text-green-800"
+                        statusError || message !== undefined ? "text-red-800" : "text-green-800"
                     } bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center`}
                     >
                     {statusError
                         ? "Wystąpił błąd podczas dodawania wykładu."
-                        : "Wykład został dodany poprawnie."}
+                        : message === undefined 
+                            ? "Wykład został dodany poprawnie."
+                            : message}
                     </p>
                 )}
             </div>

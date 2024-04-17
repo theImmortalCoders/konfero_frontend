@@ -91,7 +91,7 @@ const SearchBarLecture: React.FC<SearchComponentProps> = ({
         <div
           key={item.id}
           onClick={() => handleSelect(item)}
-          className="w-full pb-4 outline-none focus:outline-none bg-close2White text-darkblue opacity-75 cursor-pointer"
+          className="w-full text-sm outline-none focus:outline-none bg-close2White text-darkblue opacity-75 cursor-pointer"
         >
           {renderItem(item)}
         </div>
