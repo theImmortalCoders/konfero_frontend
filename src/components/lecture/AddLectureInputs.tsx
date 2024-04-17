@@ -3,6 +3,7 @@ import APIImageComponent from "@/hooks/imageAPI";
 import { useEffect, useState } from "react";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { uploadFile } from "@/hooks/file";
+import { TiDeleteOutline } from "react-icons/ti";
 
 export default function AddLectureInputs() {
 
@@ -36,7 +37,11 @@ export default function AddLectureInputs() {
         if (form) {
           form.reset();
         }
-      };
+    };
+
+    const handleDeleteLecturers = (indexToDelete: number) => {
+        setLecturersIds(lecturersIds.filter((_, index) => index !== indexToDelete));
+    };
 
     return (
         <div className="flex flex-col space-y-6 text-darkblue">
@@ -140,6 +145,40 @@ export default function AddLectureInputs() {
                         onClick={handleDeleteImage}
                     />
                 </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2 w-full text-blue pt-2">
+                {lecturersIds.map((name, index) => (
+                <span
+                    key={index}
+                    className="flex flex-row items-center justify-between p-1 border border-blue rounded-lg"
+                >
+                    {name}
+                    <TiDeleteOutline
+                    className="h-5 w-5"
+                    onClick={() => handleDeleteLecturers(index)}
+                    />
+                </span>
+                ))}
+            </div>
+            <div className="relative">
+              <SingleFormInput
+                  type="text"
+                  id="place"
+                  name="place"
+                  placeholder=" "
+                  value={place}
+                  onChange={(e) => {
+                      const value = e.target.value;
+                      const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,20}$/i.test(value);
+            
+                      if (isValid) {
+                        setPlace(value);
+                      }
+                  }}
+              />
+              <label htmlFor="name" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
+                  Miejsce odbycia wykładu
+              </label>
             </div>
         </div>
     );
