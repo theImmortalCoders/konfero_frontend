@@ -146,19 +146,21 @@ export default function AddLectureInputs() {
                     />
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-2 w-full text-blue pt-2">
-                {lecturersIds.map((name, index) => (
-                <span
-                    key={index}
-                    className="flex flex-row items-center justify-between p-1 border border-blue rounded-lg"
-                >
-                    {name}
-                    <TiDeleteOutline
-                    className="h-5 w-5"
-                    onClick={() => handleDeleteLecturers(index)}
-                    />
-                </span>
-                ))}
+            <div>
+                <div className="grid grid-cols-2 gap-2 w-full text-blue pb-2">
+                    {lecturersIds.map((name, index) => (
+                    <span
+                        key={index}
+                        className="flex flex-row items-center justify-between p-1 border border-blue rounded-lg"
+                    >
+                        {name}
+                        <TiDeleteOutline
+                        className="h-5 w-5"
+                        onClick={() => handleDeleteLecturers(index)}
+                        />
+                    </span>
+                    ))}
+                </div>
             </div>
             <div className="relative">
               <SingleFormInput
