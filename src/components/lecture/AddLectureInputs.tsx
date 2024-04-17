@@ -36,7 +36,7 @@ export default function AddLectureInputs({conferenceData} : {conferenceData: Get
         };
     
         fetchUsers();
-    }, [statusError]);
+    }, []);
 
     useEffect(() => {
         const handleNewImage = async () => {
@@ -79,30 +79,32 @@ export default function AddLectureInputs({conferenceData} : {conferenceData: Get
         setLecturersUserames(lecturersUserames.filter((_, index) => index !== indexToDelete));
     };
 
-    const handleAddLecture = async () => {
+    const newLecture : AddLectureToConferenceData = {
+        name: name,
+        description: description,
+        startDateTime: startDateTime,
+        durationMinutes: parseInt(durationMinutes, 10),
+        imageId: imageId,
+        lecturersIds: lecturersIds,
+        place: place,
+    }
 
-        if (!name || !description || !startDateTime || !durationMinutes.trim() || imageId !== 0 || lecturersIds.length === 0 || !place) {
+    const handleAddLecture = async () => {
+        
+        console.log(newLecture);
+
+        if (!name || !description || !startDateTime || !durationMinutes.trim() || imageId === 0 || !place) {
             console.error("Wszystkie pola muszą być wypełnione");
             setStatusError(true);
             return;
         }
-
+        
         if(startDateTime < conferenceData.startDateTime){
             setStatusError(false);
             setMessage("Wykład musi odbyć się w czasie konferencji!")
             return;
         }
-
-        const newLecture : AddLectureToConferenceData = {
-            name: name,
-            description: description,
-            startDateTime: startDateTime,
-            durationMinutes: parseInt(durationMinutes, 10),
-            imageId: imageId,
-            lecturersIds: lecturersIds,
-            place: place,
-        }
-
+        
         try {
           const result = await addLectureToConference(conferenceData.id, newLecture);
           if(result !== "Brak autoryzacji użytkownika" && result !== "Nie jesteś właścicielem konferencji lub nie masz roli" && result !== "Wystąpił błąd podczas dodawania prelekcji do konferencji"){
@@ -122,6 +124,7 @@ export default function AddLectureInputs({conferenceData} : {conferenceData: Get
             setCleanSearchBar(true);
             setStatusError(false);
             setMessage(undefined);
+            window.location.replace(`/myconference/${conferenceData.id}`);
           }
         } catch (error) {
           setStatusError(true);
@@ -149,7 +152,7 @@ export default function AddLectureInputs({conferenceData} : {conferenceData: Get
                   }}
               />
               <label htmlFor="name" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
-                  Nazwa
+                  Nazwa [3-40 znaków]
               </label>
             </div>
             <div className="relative">
@@ -274,7 +277,7 @@ export default function AddLectureInputs({conferenceData} : {conferenceData: Get
                   }}
               />
               <label htmlFor="place" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
-                  Miejsce odbycia wykładu
+                  Miejsce odbycia wykładu [3-20 znaków]
               </label>
             </div>
             <div className="flex flex-col items-center justify-center w-full">
