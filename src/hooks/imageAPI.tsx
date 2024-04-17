@@ -65,7 +65,7 @@ const APIImageComponent: React.FC<APIImageComponentProps> = ({
           }
         }
       } catch (error) {
-        window.location.replace("/500");
+        console.error("Error:", error);
       }
     };
 

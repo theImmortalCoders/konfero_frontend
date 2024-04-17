@@ -121,6 +121,55 @@ export async function getCurrentUser(): Promise<UserData | null> {
   }
 }
 
+export interface GetAllUsersData {
+    id: number;
+    username: string;
+    email: string;
+    photo: string;
+    verified: boolean;
+}
+
+export async function getAllUsers(): Promise<
+  GetAllUsersData[] | string
+> {
+  try {
+    const response: AxiosResponse<
+    GetAllUsersData[] | string
+    > = await appAPI.get(`/api/user/all`, {
+      withCredentials: true,
+    });
+    if (response.status === 200) {
+      console.log("Pobrano dane wszystkich użytkowników");
+      return response.data;
+    }
+    if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie jesteś administratorem!");
+      return "Nie jesteś administratorem!";
+    } else {
+      throw new Error(
+        "Wystąpił błąd podczas pobierania danych wszystkich użytkowników"
+      );
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie jesteś administratorem!");
+      return "Nie jesteś administratorem!";
+    } else {
+      throw new Error(
+        "Wystąpił błąd podczas pobierania danych wszystkich użytkowników"
+      );
+    }
+  }
+}
+
 export async function changeUserRole(userId: number, newRole: string) {
   try {
     const response: AxiosResponse<void> = await appAPI.patch(
