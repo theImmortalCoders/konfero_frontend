@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { appAPI } from "@/utils/appENV";
+import { GetAllUsersData } from "./user";
 
 export interface LogoInterface {
   id: number;
@@ -14,7 +15,7 @@ export interface ImageInterface {
   id: number;
   path: string;
   description: string;
-  authorId: number;
+  author: GetAllUsersData;
   fileType: string;
   createdDate: string;
 }

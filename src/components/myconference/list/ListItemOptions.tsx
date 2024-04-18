@@ -42,7 +42,7 @@ export default function ListItemOptions({
             className="flex justify-center items-center cursor-pointer"
           >
             <BsFillTrash3Fill color="red" />
-            <p>&nbsp;Delete conference</p>
+            <p>&nbsp;Usuń konferencję</p>
           </div>
         </Box>
       </div>

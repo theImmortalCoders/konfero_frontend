@@ -4,7 +4,13 @@ import LectureList from "./LectureList";
 import { Lecture } from "@/hooks/conference";
 import LectureSearch from "./LectureSearch";
 
-export default function Lectures({ lectures, conferenceId }: { lectures: Lecture[]; conferenceId: number }) {
+export default function Lectures({
+  lectures,
+  conferenceId,
+}: {
+  lectures: Lecture[];
+  conferenceId: number;
+}) {
   return (
     <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
       <TitleHeader title={"Wykłady"} />
@@ -12,7 +18,9 @@ export default function Lectures({ lectures, conferenceId }: { lectures: Lecture
       {lectures.length !== 0 ? (
         <div className="w-full">
           {lectures.map((lecture, index) => (
-            <LectureList key={index} lecture={lecture} />
+            <div className="py-3">
+              <LectureList key={index} lecture={lecture} />
+            </div>
           ))}
         </div>
       ) : null}
