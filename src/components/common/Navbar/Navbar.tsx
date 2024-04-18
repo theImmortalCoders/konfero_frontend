@@ -10,7 +10,7 @@ import {
 } from "react-icons/io5";
 import Link from "next/link";
 import { updateLastVisitedPage } from "@/utils/cookie";
-import { GetCurrentUserData, getCurrentUser } from "@/hooks/user";
+import { UserData, getCurrentUser } from "@/hooks/user";
 import { useQuery } from "react-query";
 
 function Navbox() {
@@ -43,7 +43,7 @@ export default function Navbar() {
     isLoading,
     isError,
   }: {
-    data?: GetCurrentUserData | string;
+    data?: UserData | string;
     isLoading: boolean;
     isError: any;
   } = useQuery("currentUser", getCurrentUser, {
@@ -91,8 +91,8 @@ export default function Navbar() {
       </div>
 
       {isMenuOpen && (
-        <div className="md:hidden absolute top-navbar left-0 w-full bg-close2White shadow-md py-4">
-          <div className="flex flex-col items-center gap-4">
+        <div className="md:hidden absolute top-navbar left-0 w-full bg-close2White shadow-md py-4 z-50">
+          <div className="flex flex-col items-center gap-4 z-50">
             <Navbox />
           </div>
         </div>

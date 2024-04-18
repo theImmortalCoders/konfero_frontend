@@ -4,12 +4,13 @@
 
 @font-face {
   font-family: "Segoe UI";
-  /* src: local('Segoe UI'), url('/fonts/Segoe_UI.ttf.ttf') format('ttf'); */
-  src: local("Segoe UI Bold"), url("/fonts/Segoe_UI_Bold.ttf.ttf") format("ttf");
+  src: local('Segoe UI'), url('/fonts/Segoe_UI.ttf') format('ttf');
+  /* src: local("Segoe UI Bold"), url("/fonts/Segoe_UI_Bold.ttf") format("ttf"); */
 }
 
 * {
   font-family: "Segoe UI", sans-serif;
+  letter-spacing: 0.15px;
 }
 
 html,

@@ -8,6 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        xxs: "0.65rem",
+        xs: "0.75rem",
+        tiny: "0.875rem",
+      },
+      lineHeight: {
+        xxs: "0.875rem",
+        xs: "1rem",
+        tiny: "1.15rem",
+      },
       screens: {
         xs: "475px",
         mds: "799px",
