@@ -42,18 +42,22 @@ export default function LecturePage({
                 {lectureIdData.description}
               </p>
             </div>
-            <div className="h-[2px] w-full bg-darkblue mt-2" />
-            <TitleHeader title={"Prowadzący"} />
-            <div className="w-full grid grid-cols-4 gap-8 pt-4">
-              {lectureIdData.lecturers.map((lecturer, index) => (
-                <People
-                  key={index}
-                  username={lecturer.username}
-                  photo={lecturer.photo}
-                  email={lecturer.email}
-                />
-              ))}
-            </div>
+            {lectureIdData.lecturers.length !== 0 ? (
+              <>
+                <div className="h-[2px] w-full bg-darkblue mt-2" />
+                <TitleHeader title={"Prowadzący"} />
+                <div className="w-full grid grid-cols-4 gap-8 pt-4">
+                  {lectureIdData.lecturers.map((lecturer, index) => (
+                    <People
+                      key={index}
+                      username={lecturer.username}
+                      photo={lecturer.photo}
+                      email={lecturer.email}
+                    />
+                  ))}
+                </div>
+              </>
+            ) : null}
             {lectureIdData.materials.length !== 0 ? (
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2" />

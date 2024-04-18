@@ -8,7 +8,7 @@ export default function MyLecturePageImageBox({
   lectureIdData: GetLectureDetailsData;
 }) {
   return (
-    <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center text-close2White p-4">
+    <div className="absolute top-0 left-0 w-full h-fit flex flex-col items-center text-close2White p-4">
       <h1 className="text-lg sm:text-2xl  md:text-3xl lg:text-2xl xl:text-3xl pt-[5%]">
         {lectureIdData.name}
       </h1>

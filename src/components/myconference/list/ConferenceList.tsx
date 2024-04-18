@@ -24,6 +24,7 @@ export default function ConferenceList({
       <ListItemImage
         href={`/myconference/${conference.id}`}
         logo={conference.logo}
+        className="rounded-l-3xl"
       >
         <div className="flex flex-col pl-4">
           <p className="font-black text-xl">{conference?.name}</p>

@@ -8,7 +8,7 @@ export default function ConferenceSearch({
   data: GetAllConferencesData;
 }) {
   return (
-    <Box className="top-0 left-0 sticky z-20 w-full my-8">
+    <Box className="w-full my-8">
       <div className="flex justify-between items-center font-black text-darkblue w-full">
         Znalezione konferencje:{" "}
         {(data as GetAllConferencesData)?.numberOfElements}
