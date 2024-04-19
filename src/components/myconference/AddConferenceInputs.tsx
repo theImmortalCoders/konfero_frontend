@@ -2,7 +2,6 @@
 import {useEffect, useState} from "react";
 import SingleFormInput from "@/components/common/Input/SingleFormInput";
 import {addNewConference, AddNewConferenceData} from "@/hooks/conference";
-import {Location} from "@/hooks/user";
 import {uploadFile} from "@/hooks/file";
 import APIImageComponent from "@/hooks/imageAPI";
 import {MdOutlineDeleteForever} from "react-icons/md";
