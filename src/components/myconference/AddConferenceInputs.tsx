@@ -1,8 +1,8 @@
 'use client'
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import SingleFormInput from "@/components/common/Input/SingleFormInput";
 import {addNewConference, AddNewConferenceData} from "@/hooks/conference";
-import {uploadFile} from "@/hooks/file";
+import {uploadFile, FileResponseData} from "@/hooks/file";
 import APIImageComponent from "@/hooks/imageAPI";
 import {MdOutlineDeleteForever} from "react-icons/md";
 
@@ -13,8 +13,11 @@ export default function AddConferenceInputs() {
   const [startDateTime, setStartDateTime] = useState<string>("");
   const [place, setPlace] = useState<string>("");
   const [participantsLimit, setParticipantsLimit] = useState<string>("");
+  const [format, setFormat] = useState<string>("STATIONARY");
   const [imageId, setImageId] = useState<number>(0);
   const [imageFile, setImageFile] = useState<File>(new File([], ""));
+  const [galleryPhotosIds, setGalleryPhotosIds] = useState<number[]>([]);
+  const [imageGalleryFiles, setImageGalleryFiles] = useState<File[]>([]);
 
   const [statusError, setStatusError] = useState<boolean | undefined>(undefined);
   const [message, setMessage] = useState<string | undefined>(undefined);
@@ -23,7 +26,7 @@ export default function AddConferenceInputs() {
     const handleNewImage = async () => {
       try {
         if (!imageFile.name) return;
-        const result = await uploadFile(imageFile, "conferenceImage");
+        const result = await uploadFile(imageFile, "conferenceLogo");
         if (typeof result !== "string" && result) setImageId(result.id);
       } catch (error) {
         console.error("Image adding failed:", error);
@@ -32,6 +35,27 @@ export default function AddConferenceInputs() {
 
     handleNewImage();
   }, [imageFile]);
+
+  useEffect(() => {
+    const handleNewImages = async () => {
+      try {
+        if (!imageGalleryFiles.length) return;
+        const results = await Promise.all(imageGalleryFiles.map(file => {
+          return uploadFile(file, description);
+        }));
+        const validResults = results.filter(result => result !== undefined) as FileResponseData[];
+        setGalleryPhotosIds(validResults.map((img) => {
+          return img.id;
+        }));
+        console.log(galleryPhotosIds);
+      } catch (error) {
+        console.error("Images adding failed:", error);
+      }
+    };
+
+    handleNewImages();
+  }, [imageGalleryFiles]);
+
 
   const handleDeleteImage = () => {
     setImageFile(new File([], ""));
@@ -54,15 +78,15 @@ export default function AddConferenceInputs() {
       name: place,
     },
     participantsLimit: parseInt(participantsLimit, 10),
-    format: 'STATIONARY',
-    photosIds: [],
+    format: format,
+    photosIds: galleryPhotosIds,
   }
 
   const handleAddConference = async () => {
 
     console.log(newConference);
 
-    if (!name || !description || !startDateTime || !participantsLimit.trim() /*|| logoId === 0*/ || !place) {
+    if (!name || !description || !startDateTime || !participantsLimit.trim() || imageId === 0 || !place) {
       console.error("Wszystkie pola muszą być wypełnione");
       setStatusError(true);
       return;
@@ -82,6 +106,7 @@ export default function AddConferenceInputs() {
         setDescription("");
         setStartDateTime("");
         setParticipantsLimit("");
+        setFormat("STATIONARY");
         setImageFile(new File([], ""));
         setImageId(0);
         const form = document.getElementById("imageInput") as HTMLFormElement;
@@ -99,7 +124,10 @@ export default function AddConferenceInputs() {
     }
   };
 
-
+  const handleFormat = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedFormat = e.target.value;
+    setFormat(selectedFormat);
+  };
 
   return (
     <div className="text-darkblue w-full flex flex-col space-y-6">
@@ -123,6 +151,7 @@ export default function AddConferenceInputs() {
           Tytuł konferencji [3-40 znaków]
         </label>
       </div>
+
       <div className="relative">
         <SingleFormInput
           type="text"
@@ -143,6 +172,7 @@ export default function AddConferenceInputs() {
           Opis [10-300 znaków]
         </label>
       </div>
+
       <div className="relative">
         <SingleFormInput
           type="datetime-local"
@@ -158,46 +188,19 @@ export default function AddConferenceInputs() {
           Termin rozpoczęcia
         </label>
       </div>
-      <div className="relative">
-        <SingleFormInput
-          type="text"
-          id="place"
-          name="place"
-          placeholder=" "
-          value={place}
-          onChange={(e) => {
-            const value = e.target.value;
-            const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]*$/i.test(value);
-
-            if (isValid) {
-              setPlace(value);
-            }
-          }}
-        />
-        <label htmlFor="place" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
-          Miejsce konferencji
-        </label>
+      <div className="flex flex-col w-min text-nowrap">
+        <label className="text-blue cursor-text">Forma odbycia konferencji</label>
+        <select
+          id="format"
+          name="format"
+          value={format}
+          onChange={handleFormat}
+        >
+          <option value="STATIONARY">Stacjonarnie</option>
+          <option value="ONLINE">Online</option>
+        </select>
       </div>
-      <div className="relative">
-        <SingleFormInput
-          type="text"
-          id="participantsLimit"
-          name="participantsLimit"
-          placeholder=" "
-          value={participantsLimit}
-          onChange={(e) => {
-            const value = e.target.value;
-            const isValidNumber = /^\d*$/.test(value);
 
-            if (isValidNumber) {
-              setParticipantsLimit(value);
-            }
-          }}
-        />
-        <label htmlFor="participantsLimit" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
-          Maksymalna liczba uczestników
-        </label>
-      </div>
       <div className="flex flex-col">
         <p className="w-full outline-none focus:outline-none bg-close2White text-darkblue font-bold">
           Logo konferencji
@@ -223,6 +226,82 @@ export default function AddConferenceInputs() {
             onClick={handleDeleteImage}
           />
         </div>
+      </div>
+
+      <div className="relative">
+        <SingleFormInput
+          type="text"
+          id="place"
+          name="place"
+          placeholder=" "
+          value={place}
+          onChange={(e) => {
+            const value = e.target.value;
+            const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]*$/i.test(value);
+
+            if (isValid) {
+              setPlace(value);
+            }
+          }}
+        />
+        <label htmlFor="place" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
+          Miejsce konferencji
+        </label>
+      </div>
+
+      <div className="relative">
+        <SingleFormInput
+          type="text"
+          id="participantsLimit"
+          name="participantsLimit"
+          placeholder=" "
+          value={participantsLimit}
+          onChange={(e) => {
+            const value = e.target.value;
+            const isValidNumber = /^\d*$/.test(value);
+
+            if (isValidNumber) {
+              setParticipantsLimit(value);
+            }
+          }}
+        />
+        <label htmlFor="participantsLimit" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
+          Maksymalna liczba uczestników
+        </label>
+      </div>
+
+      <input
+        type="file"
+        accept=".png, .jpg, .jpeg"
+        id="fileAlbumInput"
+        multiple
+        className="w-full pt-2 outline-none focus:outline-none bg-close2White text-darkGrey hidden"
+        onChange={(e) => {
+          if (e.target.files) {
+            const filesArray = Array.from(e.target.files);
+            setImageGalleryFiles(filesArray);
+          }
+        }}
+      />
+      <div className="flex flex-row space-x-2 items-center">
+        <label htmlFor="fileAlbumInput" className="cursor-pointer text-darkGrey">
+          Kliknij, aby wybrać pliki ({galleryPhotosIds.length} wybrano)
+        </label>
+      </div>
+      <div className="flex flex-row flex-wrap items-center justify-around py-2 bg-close2White ">
+        {galleryPhotosIds.map((imgId, index) => (
+          <div key={index} className="flex flex-row space-x-2 items-center justify-evenly mb-2 pb-2 border-b border-darkBlue">
+            <div className="w-[150px]"><APIImageComponent imageId={imgId} type="conference" /></div>
+            <MdOutlineDeleteForever
+              className="h-10 w-10 text-close2Black"
+              onClick={() => {
+                const newGalleryPhotosIds = [...galleryPhotosIds];
+                newGalleryPhotosIds.splice(index, 1);
+                setGalleryPhotosIds(newGalleryPhotosIds);
+              }}
+            />
+          </div>
+        ))}
       </div>
 
 
