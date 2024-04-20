@@ -4,11 +4,15 @@ import { useCallback, useState } from "react";
 import ListItemImage from "../../common/List/ListItemImage";
 import ListItemOptions from "./ListItemOptions";
 import { formatDateWithHour } from "@/utils/date";
+import { CiCirclePlus } from "react-icons/ci";
+import { useRouter } from "next/navigation";
 
 export default function ConferenceList({
   conference,
+  role,
 }: {
   conference: Content;
+  role: string;
 }) {
   const [deleted, setDeleted] = useState<boolean>(false);
 
@@ -17,10 +21,19 @@ export default function ConferenceList({
     setDeleted(true);
   }, []);
 
+  const router = useRouter();
+  const handleCirclePlusClick = () => {
+    if (role === "USER") {
+      router.push("/attend");
+    } else if (role === "ALL") {
+      router.push("/login");
+    }
+  };
+
   return deleted ? (
     <></>
   ) : (
-    <div className="flex w-full text-black bg-close2White items-start shadow-whiteShadow h-auto z-0 rounded-3xl">
+    <div className="flex w-full text-black bg-close2White items-start shadow-whiteShadow h-full z-0 rounded-3xl">
       <ListItemImage
         href={`/myconference/${conference.id}`}
         logo={conference.logo}
@@ -33,7 +46,17 @@ export default function ConferenceList({
           <p className="font-bold">{conference?.location?.name}</p>
         </div>
       </ListItemImage>
-      <ListItemOptions confId={conference.id} handleDelete={handleDelete} />
+      {role === "ORGANIZER" && (
+        <ListItemOptions confId={conference.id} handleDelete={handleDelete} />
+      )}
+      {(role === "USER" || role === "ALL") && (
+        <div className="w-auto h-full flex justify-center items-center">
+          <CiCirclePlus
+            onClick={handleCirclePlusClick}
+            className="text-4xl text-darkblue"
+          />
+        </div>
+      )}
     </div>
   );
 }

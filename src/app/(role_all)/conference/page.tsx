@@ -7,6 +7,7 @@ import ConferenceList from "@/components/myconference/list/ConferenceList";
 import Error500 from "@/components/common/Error/Error500";
 import ConferenceSearch from "@/components/myconference/ConferenceSearch";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
+import { getCurrentUser } from "@/hooks/user";
 
 export default function ConferencePage() {
   const { data, isLoading, isError } = useQuery({
@@ -16,16 +17,46 @@ export default function ConferencePage() {
     refetchOnMount: "always",
   });
 
-  if (isError) return <Error500 />;
+  const {
+    data: currentUserData,
+    isLoading: currentUserLoading,
+    isError: currentUserError,
+  } = useQuery("currentUser", getCurrentUser, {
+    staleTime: Infinity,
+  });
+
+  if (isError || currentUserError) return <Error500 />;
+
+  let userRole: string = "ALL";
+  if (currentUserData !== undefined) {
+    if (currentUserData === null) {
+      userRole = "ALL";
+    } else {
+      if (currentUserData.role === "ORGANIZER") {
+        userRole = "USER";
+      } else {
+        userRole = currentUserData.role;
+      }
+    }
+  }
 
   return (
     <Page>
-      {!isLoading ? (
+      {!isLoading && !currentUserLoading && currentUserData ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start">
-          <ConferenceSearch data={data as GetAllConferencesData} />
+          <ConferenceSearch
+            data={data as GetAllConferencesData}
+            role={userRole}
+          />
           <div className="w-full flex flex-col gap-y-4">
             {(data as GetAllConferencesData)?.content?.map((conf) => {
-              return <ConferenceList key={`${conf.id}`} conference={conf} />;
+              return (
+                <ConferenceList
+                  key={`${conf.id}`}
+                  conference={conf}
+                  role={userRole}
+                />
+              );
             })}
           </div>
         </div>

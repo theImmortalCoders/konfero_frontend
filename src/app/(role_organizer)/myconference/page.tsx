@@ -22,10 +22,19 @@ export default function MyConferenceListPage() {
     <Page>
       {!isLoading ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start">
-          <ConferenceSearch data={data as GetAllConferencesData} />
+          <ConferenceSearch
+            data={data as GetAllConferencesData}
+            role={"ORGANIZER"}
+          />
           <div className="w-full flex flex-col gap-y-4">
             {(data as GetAllConferencesData)?.content?.map((conf) => {
-              return <ConferenceList key={`${conf.id}`} conference={conf} />;
+              return (
+                <ConferenceList
+                  key={`${conf.id}`}
+                  conference={conf}
+                  role={"ORGANIZER"}
+                />
+              );
             })}
           </div>
         </div>
