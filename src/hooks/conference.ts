@@ -90,12 +90,12 @@ export interface GetAllConferencesData {
   empty: boolean;
 }
 
-export async function getAllConferences(): Promise<
+export async function getAllConferences(organizerId?: number): Promise<
   GetAllConferencesData | string
 > {
   try {
     const response: AxiosResponse<GetAllConferencesData | string> =
-      await appAPI.get(`/api/conference`, {
+      await appAPI.get(organizerId ? `/api/conference?organizerId=${organizerId}` : `/api/conference`, {
         withCredentials: true,
       });
     if (response.status === 200) {
