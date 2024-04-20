@@ -1,12 +1,13 @@
 import { BsFillTrash3Fill, BsThreeDotsVertical } from "react-icons/bs";
 import { Box } from "@/components/common/Box/Box";
 import { useRef, useState } from "react";
+import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
 
 export default function ListItemOptions({
-  confId,
+  conferenceIdData,
   handleDelete,
 }: {
-  confId: number;
+  conferenceIdData: GetConferenceDetailsWithRoleFilteringData;
   handleDelete: Function;
 }) {
   const [open, setOpen] = useState<boolean>(false);
@@ -22,6 +23,7 @@ export default function ListItemOptions({
 
   window.addEventListener("click", handleClickOutside);
 
+  console.log("conferenceIdData", conferenceIdData);
   return (
     <div className="relative select-none" ref={optionsRef}>
       <div
@@ -36,13 +38,20 @@ export default function ListItemOptions({
         } top-[20px] right-1/2 min-w-60`}
         ref={optionsRef}
       >
-        <Box>
+        <Box className="flex flex-col gapy-3 justify-center">
           <div
-            onClick={() => handleDelete(confId)}
+            onClick={() => handleDelete(conferenceIdData.id)}
             className="flex justify-center items-center cursor-pointer"
           >
             <BsFillTrash3Fill color="red" />
             <p>&nbsp;Usuń konferencję</p>
+          </div>
+          <div
+            onClick={() => handleDelete(conferenceIdData.id)}
+            className="flex justify-center items-center cursor-pointer"
+          >
+            <BsFillTrash3Fill color="red" />
+            <p>&nbsp;Odwołaj konferencję</p>
           </div>
         </Box>
       </div>
