@@ -28,7 +28,7 @@ export default function MyConferenceListPage() {
             data={data as GetAllConferencesData}
             role={"ORGANIZER"}
           />
-          <div className="w-full flex flex-col gap-y-4">
+          <div className="w-full flex flex-col gap-y-8">
             {(data as GetAllConferencesData)?.content?.map((conf) => {
               return (
                 <ConferenceList

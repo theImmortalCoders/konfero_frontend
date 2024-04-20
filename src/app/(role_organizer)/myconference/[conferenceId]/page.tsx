@@ -36,7 +36,10 @@ export default function MyConferencePage({
         <>
           <Title conferenceIdData={conferenceIdData} />
           <Organizers organizer={conferenceIdData.organizer} />
-          <Lectures lectures={conferenceIdData.lectures} conferenceId={conferenceIdData.id}/>
+          <Lectures
+            lectures={conferenceIdData.lectures}
+            conferenceId={conferenceIdData.id}
+          />
           {conferenceIdData.participants !== null ? (
             <Participants conferenceIdData={conferenceIdData} />
           ) : null}
@@ -55,7 +58,7 @@ function Organizers({ organizer }: { organizer: Organizer }) {
   return (
     <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
       <TitleHeader title={"Organizator"} />
-      <div className="w-full grid-cols-4 grid gap-8 pt-4">
+      <div className="w-full h-full flex justify-center items-center pt-4">
         <People
           username={organizer.username}
           photo={organizer.photo}

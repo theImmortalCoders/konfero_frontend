@@ -10,6 +10,7 @@ import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
 import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrapper";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
+import { getCurrentUser } from "@/hooks/user";
 
 export default function LecturePage({
   params,
@@ -44,9 +45,9 @@ export default function LecturePage({
             </div>
             {lectureIdData.lecturers.length !== 0 ? (
               <>
-                <div className="h-[2px] w-full bg-darkblue mt-2" />
+                <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
                 <TitleHeader title={"Prowadzący"} />
-                <div className="w-full grid grid-cols-4 gap-8 pt-4">
+                <div className="w-full h-auto flex justify-center items-center pt-4">
                   {lectureIdData.lecturers.map((lecturer, index) => (
                     <People
                       key={index}
@@ -60,14 +61,14 @@ export default function LecturePage({
             ) : null}
             {lectureIdData.materials.length !== 0 ? (
               <>
-                <div className="h-[2px] w-full bg-darkblue mt-2" />
+                <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
                 <TitleHeader title={"Materiały"} />
                 <MaterialTableWrapper lectureIdData={lectureIdData} />
               </>
             ) : null}
             {lectureIdData.interested.length !== 0 ? (
               <>
-                <div className="h-[2px] w-full bg-darkblue mt-2" />
+                <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
                 <TitleHeader title={"Zainteresowani"} />
                 <div className="w-full grid grid-cols-4 gap-8 pt-4">
                   {lectureIdData.interested.map((interested, index) => (
