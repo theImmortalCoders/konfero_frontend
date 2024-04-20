@@ -81,13 +81,13 @@ export async function downloadFileById(fileId: string) {
 
 export async function uploadFile(
   uploadedFile: File,
-  desrciption: string,
+  description: string,
 ) {
   try {
     const formData = new FormData();
     formData.append("uploadedFile", uploadedFile);
     const response: AxiosResponse<FileResponseData> = await appAPI.post(
-      `/api/file?description=${desrciption}`,
+      `/api/file?description=${description}`,
       formData,
       {
         withCredentials: true,

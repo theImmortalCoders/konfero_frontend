@@ -30,7 +30,7 @@ export default function ConferenceList({
           <p className="font-black text-xl">{conference?.name}</p>
           <p>Rozpoczęcie: {formatDateWithHour(conference?.startDateTime)}</p>
           <p>Zakończenie: {formatDateWithHour(conference?.endDateTime)}</p>
-          <p className="font-bold">{conference?.location.name}</p>
+          <p className="font-bold">{conference?.location?.name}</p>
         </div>
       </ListItemImage>
       <ListItemOptions confId={conference.id} handleDelete={handleDelete} />
