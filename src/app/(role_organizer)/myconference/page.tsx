@@ -9,12 +9,14 @@ import ConferenceSearch from "@/components/myconference/ConferenceSearch";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 
 export default function MyConferenceListPage() {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: "konferencje",
-    queryFn: getAllConferences,
-    staleTime: Infinity,
-    refetchOnMount: "always",
-  });
+  const { data, isLoading, isError } = useQuery(
+    "konferencje",
+    () => getAllConferences(),
+    {
+      staleTime: Infinity,
+      refetchOnMount: "always",
+    }
+  );
 
   if (isError) return <Error500 />;
 

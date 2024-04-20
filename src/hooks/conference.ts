@@ -90,14 +90,20 @@ export interface GetAllConferencesData {
   empty: boolean;
 }
 
-export async function getAllConferences(organizerId?: number): Promise<
-  GetAllConferencesData | string
-> {
+export async function getAllConferences(
+  organizerId?: number
+): Promise<GetAllConferencesData | string> {
   try {
+    console.log("organizerId", organizerId);
     const response: AxiosResponse<GetAllConferencesData | string> =
-      await appAPI.get(organizerId ? `/api/conference?organizerId=${organizerId}` : `/api/conference`, {
-        withCredentials: true,
-      });
+      await appAPI.get(
+        organizerId
+          ? `/api/conference?organizerId=${organizerId.toString()}`
+          : `/api/conference`,
+        {
+          withCredentials: true,
+        }
+      );
     if (response.status === 200) {
       console.log("Wszystkie konferencje pobrano poprawnie!");
       return response.data;
