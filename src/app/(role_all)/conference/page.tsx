@@ -10,12 +10,14 @@ import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 import { getCurrentUser } from "@/hooks/user";
 
 export default function ConferencePage() {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: "konferencje",
-    queryFn: getAllConferences,
-    staleTime: Infinity,
-    refetchOnMount: "always",
-  });
+  const { data, isLoading, isError } = useQuery(
+    "konferencje",
+    () => getAllConferences(),
+    {
+      staleTime: Infinity,
+      refetchOnMount: "always",
+    }
+  );
 
   const {
     data: currentUserData,
