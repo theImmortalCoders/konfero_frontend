@@ -2,7 +2,10 @@
 import Page from "@/components/common/Page/Page";
 import { Box } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
-import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
+import {
+  deleteConference,
+  getConferenceDetailsWithRoleFiltering,
+} from "@/hooks/conference";
 import Error500 from "@/components/common/Error/Error500";
 import People from "@/components/myconferenceId/Participants/People";
 import TitleHeader from "@/components/common/Box/TitleHeader";
@@ -12,6 +15,7 @@ import Participants from "@/components/myconferenceId/Participants/Participants"
 import Photos from "@/components/myconferenceId/Photos/Photos";
 import Lectures from "@/components/myconferenceId/Lectures/Lectures";
 import Title from "@/components/myconferenceId/Title/Title";
+import Panel from "@/components/myconferenceId/OrganizerAndAdminPanel/Panel";
 
 export default function MyConferencePage({
   params,
@@ -34,6 +38,7 @@ export default function MyConferencePage({
       conferenceIdData &&
       typeof conferenceIdData !== "string" ? (
         <>
+          <Panel conferenceIdData={conferenceIdData} />
           <Title conferenceIdData={conferenceIdData} />
           <Organizers organizer={conferenceIdData.organizer} />
           <Lectures
