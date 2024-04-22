@@ -1,5 +1,6 @@
 import { appAPI } from "@/utils/appENV";
 import { AxiosResponse } from "axios";
+import { Tag } from "./conference";
 
 export async function deleteTag(tagId: number) {
   try {
@@ -37,14 +38,9 @@ export async function deleteTag(tagId: number) {
   }
 }
 
-export interface SingleTagData{
-    id: number;
-    tagName: string;
-}
-
-export async function getAllTags(): Promise<SingleTagData[] | string> {
+export async function getAllTags(): Promise<Tag[] | string> {
     try {
-      const response: AxiosResponse<SingleTagData[] | string> =
+      const response: AxiosResponse<Tag[] | string> =
         await appAPI.get(`/api/tag`, {
           withCredentials: true,
         });
