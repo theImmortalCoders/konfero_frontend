@@ -66,4 +66,43 @@ export async function getAllTags(): Promise<SingleTagData[] | string> {
         throw new Error("Wystąpił błąd podczas pobierania wszystkich tagów");
       }
     }
-  }
+}
+
+export async function addNewTag(value: string) {
+    try {
+      const response: AxiosResponse<void> = await appAPI.post(
+        `/api/tag`,
+        {
+            value,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        console.log("Tag został dodany!");
+        return response.status;
+      } else if (response.status === 401) {
+        window.location.replace("/login");
+        console.error("Brak autoryzacji użytkownika");
+        return "Brak autoryzacji użytkownika";
+      } else if (response.status === 403) {
+        console.error("Nie masz odpowiedniej roli");
+        return "Nie masz odpowiedniej roli";
+      } else {
+        console.error("Wystąpił błąd podczas dodawania taga");
+        return "Wystąpił błąd podczas dodawania taga";
+      }
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        window.location.replace("/login");
+        console.error("Brak autoryzacji użytkownika");
+        return "Brak autoryzacji użytkownika";
+      } else if (error.response.status === 403) {
+        console.error("Nie masz odpowiedniej roli");
+        return "Nie masz odpowiedniej roli";
+      } else {
+        throw new Error("Error500");
+      }
+    }
+}
