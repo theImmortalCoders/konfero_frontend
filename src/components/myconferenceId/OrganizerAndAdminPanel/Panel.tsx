@@ -19,6 +19,10 @@ export default function Panel({
 }) {
   const router = useRouter();
 
+  const handleEdit = useCallback((id: number) => {
+    router.push(`{/updateconference/${id.toString()}}`);
+  }, []);
+
   const handleDelete = useCallback((id: number) => {
     deleteConference(id);
     router.push("/myconference");
@@ -33,7 +37,10 @@ export default function Panel({
     <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5">
       <TitleHeader title={"Panel Edycji"} />
       <div className="grid grid-cols-1 gap-y-4 sm:flex sm:justify-evenly mt-4">
-        <button className="border-2 border-blue bg-inherit hover:bg-blue hover:text-close2White text-sm sm:text-md lg:text-lg font-medium py-1 px-2 rounded-2xl flex items-center justify-center">
+        <button
+          className="border-2 border-blue bg-inherit hover:bg-blue hover:text-close2White text-sm sm:text-md lg:text-lg font-medium py-1 px-2 rounded-2xl flex items-center justify-center"
+          onClick={() => handleEdit(conferenceIdData.id)}
+        >
           <GoPencil />
           <p>&nbsp;Edytuj konferencje</p>
         </button>
