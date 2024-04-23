@@ -14,8 +14,10 @@ import { useQuery } from "react-query";
 
 export default function AddConferenceInputs({
   isUpdate,
+  conferenceid,
 }: {
   isUpdate: boolean;
+  conferenceid?: string;
 }) {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -40,7 +42,7 @@ export default function AddConferenceInputs({
       isError: conferenceDetailsError,
       refetch: refetchClub,
     } = useQuery("conferenceDetails", () =>
-      getConferenceDetailsWithRoleFiltering(153)
+      getConferenceDetailsWithRoleFiltering(Number(conferenceid))
     );
 
     useEffect(() => {
@@ -193,7 +195,7 @@ export default function AddConferenceInputs({
           window.location.replace(`/myconference`);
         }
       } else {
-        const conferenceId = 153;
+        const conferenceId = Number(conferenceid);
         const result = await updateInfoAboutConference(
           conferenceId,
           newConference

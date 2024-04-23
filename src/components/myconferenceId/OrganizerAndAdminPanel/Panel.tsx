@@ -19,9 +19,12 @@ export default function Panel({
 }) {
   const router = useRouter();
 
-  const handleEdit = useCallback((id: number) => {
-    router.push(`{/updateconference/${id.toString()}}`);
-  }, []);
+  const handleEdit = useCallback(
+    (id: number) => {
+      router.replace(`/updateconference/${id.toString()}`);
+    },
+    [router]
+  );
 
   const handleDelete = useCallback((id: number) => {
     deleteConference(id);
