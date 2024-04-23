@@ -170,6 +170,42 @@ export async function getAllUsers(): Promise<
   }
 }
 
+export async function verifyUser(userId: number) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.patch(
+      `/api/user/${userId}/verify`,
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.status === 200) {
+      console.log("Użytkownik został zweryfikowany poprawnie!");
+      return response.status;
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie jesteś administratorem!");
+      return "Nie jesteś administratorem!";
+    } else {
+      console.error("Wystąpił błąd podczas weryfikacji użytkownika");
+      return "Wystąpił błąd podczas weryfikacji użytkownika";
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie jesteś administratorem!");
+      return "Nie jesteś administratorem!";
+    } else {
+      throw new Error("Error500");
+    }
+  }
+}
+
 export async function changeUserRole(userId: number, newRole: string) {
   try {
     const response: AxiosResponse<void> = await appAPI.patch(
