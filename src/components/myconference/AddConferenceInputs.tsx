@@ -5,12 +5,14 @@ import {addNewConference, AddNewConferenceData} from "@/hooks/conference";
 import {uploadFile, FileResponseData} from "@/hooks/file";
 import APIImageComponent from "@/hooks/imageAPI";
 import {MdOutlineDeleteForever} from "react-icons/md";
-
+import { LocationMap } from "../common/Input/LocationMap";
 
 export default function AddConferenceInputs() {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [startDateTime, setStartDateTime] = useState<string>("");
+  const [locX, setLocX] = useState<number>(0);
+  const [locY, setLocY] = useState<number>(0);
   const [place, setPlace] = useState<string>("");
   const [participantsLimit, setParticipantsLimit] = useState<string>("");
   const [format, setFormat] = useState<string>("STATIONARY");
@@ -73,8 +75,8 @@ export default function AddConferenceInputs() {
     logoId: imageId,
     tagsIds: [],
     location: {
-      locX: 0,
-      locY: 0,
+      locX: locX,
+      locY: locY,
       name: place,
     },
     participantsLimit: parseInt(participantsLimit, 10),
@@ -84,7 +86,7 @@ export default function AddConferenceInputs() {
 
   const handleAddConference = async () => {
 
-    console.log(newConference);
+    // console.log(newConference);
 
     if (!name || !description || !startDateTime || !participantsLimit.trim() || imageId === 0 || !place) {
       console.error("Wszystkie pola muszą być wypełnione");
@@ -100,6 +102,7 @@ export default function AddConferenceInputs() {
     }
 
     try {
+      console.log(newConference);
       const result = await addNewConference(newConference);
       if(result !== "Brak autoryzacji użytkownika" && result !== "Nie jesteś organizatorem" && result !== "Wystąpił błąd podczas dodawania konferencji"){
         setName("");
@@ -228,25 +231,9 @@ export default function AddConferenceInputs() {
         </div>
       </div>
 
-      <div className="relative">
-        <SingleFormInput
-          type="text"
-          id="place"
-          name="place"
-          placeholder=" "
-          value={place}
-          onChange={(e) => {
-            const value = e.target.value;
-            const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]*$/i.test(value);
-
-            if (isValid) {
-              setPlace(value);
-            }
-          }}
-        />
-        <label htmlFor="place" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
-          Miejsce konferencji
-        </label>
+      <div>
+        <h1 className="text-xs text-darkblue font-bold font-sans">Miejsce konferencji:</h1>
+        <LocationMap locX={locX} setLocX={setLocX} locY={locY} setLocY={setLocY} locName={place} setLocName={setPlace}/>
       </div>
 
       <div className="relative">
