@@ -18,7 +18,7 @@ export default function Lectures({
       {lectures.length !== 0 ? (
         <div className="w-full">
           {lectures.map((lecture, index) => (
-            <div className="py-3">
+            <div className="py-3" key={index}>
               <LectureList key={index} lecture={lecture} />
             </div>
           ))}
