@@ -128,7 +128,7 @@ export async function getAllConferences(
   }
 }
 
-interface Tag {
+export interface Tag {
   id: number;
   tagName: string;
 }
