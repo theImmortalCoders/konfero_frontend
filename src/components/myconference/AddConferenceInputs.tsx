@@ -125,6 +125,12 @@ export default function AddConferenceInputs({
     handleNewImages();
   }, [imageGalleryFiles]);
 
+  useEffect(() => {
+    setLocX(0);
+    setLocY(0);
+    setPlace("");
+  }, [format])
+
   const handleDeleteImage = () => {
     setImageFile(new File([], ""));
     setImageId(0);
@@ -159,7 +165,7 @@ export default function AddConferenceInputs({
       !startDateTime ||
       !participantsLimit.trim() ||
       imageId === 0 ||
-      !place
+      (format === "STATIONARY" && !place)
     ) {
       console.error("Wszystkie pola muszą być wypełnione");
       setStatusError(true);
@@ -332,21 +338,21 @@ export default function AddConferenceInputs({
           />
         </div>
       </div>
-
-      <div>
-        <h1 className="text-xs text-darkblue font-bold font-sans">
-          Miejsce konferencji:
-        </h1>
-        <LocationMap
-          locX={locX}
-          setLocX={setLocX}
-          locY={locY}
-          setLocY={setLocY}
-          locName={place}
-          setLocName={setPlace}
-        />
-      </div>
-
+      { format === "STATIONARY" && (
+        <div>
+          <h1 className="text-xs text-darkblue font-bold font-sans">
+            Miejsce konferencji:
+          </h1>
+          <LocationMap
+            locX={locX}
+            setLocX={setLocX}
+            locY={locY}
+            setLocY={setLocY}
+            locName={place}
+            setLocName={setPlace}
+          />
+        </div>
+        ) }
       <div className="relative">
         <SingleFormInput
           type="text"
