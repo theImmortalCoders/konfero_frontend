@@ -107,8 +107,6 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
 
   const handleEditLectureOrganizer = async () => {
 
-    console.log(modifyLecture);
-
     if (!name || !description || !startDateTime || !durationMinutes.trim() || imageId === 0 || !place) {
       console.error("Wszystkie pola muszą być wypełnione");
       setSubmitStatusError(true);
