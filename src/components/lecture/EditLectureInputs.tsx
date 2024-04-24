@@ -36,8 +36,10 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
   const [lecturersUsernames, setLecturersUsernames] = useState<string[]>(lectureData.lecturers.map(lecturer => lecturer.username));
   const [cleanSearchBar, setCleanSearchBar] = useState<boolean>(false);
 
-  const [statusError, setStatusError] = useState<boolean | undefined>(undefined);
-  const [message, setMessage] = useState<string | undefined>(undefined);
+  const [submitStatusError, setSubmitStatusError] = useState<boolean | undefined>(undefined);
+  const [submitMessage, setSubmitMessage] = useState<string | undefined>(undefined);
+  const [deleteStatusError, setDeleteStatusError] = useState<boolean | undefined>(undefined);
+  const [deleteMessage, setDeleteMessage] = useState<string | undefined>(undefined);
 
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
 
   useEffect(() => {
     if (lecturersIds.length !== 0) {
-      setStatusError(undefined);
+      setSubmitStatusError(undefined);
       setCleanSearchBar(false);
     }
   }, [lecturersIds]);
@@ -109,13 +111,13 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
 
     if (!name || !description || !startDateTime || !durationMinutes.trim() || imageId === 0 || !place) {
       console.error("Wszystkie pola muszą być wypełnione");
-      setStatusError(true);
+      setSubmitStatusError(true);
       return;
     }
 
     if(startDateTime < conferenceData.startDateTime){
-      setStatusError(false);
-      setMessage("Wykład musi odbyć się w czasie konferencji!")
+      setSubmitStatusError(false);
+      setSubmitMessage("Wykład musi odbyć się w czasie konferencji!")
       return;
     }
 
@@ -136,12 +138,12 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
         setLecturersUsernames([]);
         setPlace("");
         setCleanSearchBar(true);
-        setStatusError(false);
-        setMessage(undefined);
+        setSubmitStatusError(false);
+        setSubmitMessage(undefined);
         window.location.replace(`/lecture/${lectureData.id}`);
       }
     } catch (error) {
-      setStatusError(true);
+      setSubmitStatusError(true);
       console.error("Modifying lecture failed:", error);
     }
   };
@@ -150,7 +152,7 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
 
     if (!name || !description) {
       console.error("Wszystkie pola muszą być wypełnione");
-      setStatusError(true);
+      setSubmitStatusError(true);
       return;
     }
 
@@ -163,10 +165,12 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
         if (form) {
           form.reset();
         }
+        setSubmitStatusError(false);
+        setSubmitMessage(undefined);
         window.location.replace(`/lecture/${lectureData.id}`);
       }
     } catch (error) {
-      setStatusError(true);
+      setSubmitStatusError(true);
       console.error("Modifying lecture failed:", error);
     }
 
@@ -177,9 +181,11 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
       const result = await deleteLecture(lectureData.id);
       if(result !== "Brak autoryzacji użytkownika" && result !== "Nie jesteś właścicielem konferencji lub nie masz roli" && result !== "Wystąpił błąd podczas usuwania prelekcji"){
         window.location.replace(`/myconference/${conferenceData.id}`);
+        setDeleteMessage(undefined);
+        setDeleteStatusError(false);
       }
     } catch (error) {
-      setStatusError(true);
+      setDeleteStatusError(true);
       console.error("Deleting lecture failed:", error);
     }
   }
@@ -345,17 +351,17 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
         <button onClick={currentUserData.role !== 'USER' ? handleEditLectureOrganizer : handleEditLectureLecturer} className="text-nowrap w-fit bg-blue text-close2White text-lg font-medium py-2 px-6 rounded-3xl ">
           Zatwierdź
         </button>
-        {(statusError !== undefined || message !== undefined) && (
+        {(submitStatusError !== undefined || submitMessage !== undefined) && (
           <p
             className={` ${
-              statusError || message !== undefined ? "text-red-800" : "text-green-800"
+              submitStatusError || submitMessage !== undefined ? "text-red-800" : "text-green-800"
             } bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center`}
           >
-            {statusError
+            {submitStatusError
               ? "Wystąpił błąd podczas modyfikowania wykładu."
-              : message === undefined
+              : submitMessage === undefined
                 ? "Wykład został zmodyfikowany poprawnie."
-                : message}
+                : submitMessage}
           </p>
         )}
       </div>
@@ -364,17 +370,17 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
           <button onClick={handleDeleteLecture} className="text-nowrap w-fit bg-red-700 text-close2White text-lg font-medium py-2 px-6 rounded-3xl">
             Usuń wykład
           </button>
-          {(statusError !== undefined || message !== undefined) && (
+          {(deleteStatusError !== undefined || deleteMessage !== undefined) && (
             <p
               className={` ${
-                statusError || message !== undefined ? "text-red-800" : "text-green-800"
+                deleteStatusError || deleteMessage !== undefined ? "text-red-800" : "text-green-800"
               } bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center`}
             >
-              {statusError
+              {deleteStatusError
                 ? "Wystąpił błąd podczas usuwania wykładu."
-                : message === undefined
+                : deleteMessage === undefined
                   ? "Wykład został usunięty poprawnie."
-                  : message}
+                  : deleteMessage}
             </p>
           )}
         </div>
