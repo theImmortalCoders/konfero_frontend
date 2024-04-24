@@ -59,6 +59,8 @@ export default function AddConferenceInputs({
             setName(conferenceDetailsData.name);
             setDescription(conferenceDetailsData.description);
             setStartDateTime(conferenceDetailsData.startDateTime);
+            setLocX(conferenceDetailsData.location.locX);
+            setLocY(conferenceDetailsData.location.locY);
             setPlace(conferenceDetailsData.location.name);
             setParticipantsLimit(
               conferenceDetailsData.participantsLimit.toString()
