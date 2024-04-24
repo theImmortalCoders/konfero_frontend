@@ -62,10 +62,21 @@ export default function AddLectureInputs({conferenceData} : {conferenceData: Get
     };
 
     const handleLecturerSelected = (user: GetAllUsersData) => {
-        setLecturersIds((prevState) => [...prevState, user.id]);
-        setLecturersUserames((prevState) => [...prevState, user.username]);
+        setLecturersIds((prevState) => {
+            if (!prevState.includes(user.id)) {
+                return [...prevState, user.id];
+            }
+            return prevState;
+        });
+        setLecturersUserames((prevState) => {
+            if (!prevState.includes(user.username)) {
+                return [...prevState, user.username];
+            }
+            return prevState;
+        });
         setCleanSearchBar(true);
     };
+    
 
     useEffect(() => {
         if (lecturersIds.length !== 0) {

@@ -54,10 +54,21 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
 
     fetchUsers();
   }, []);
+
   const handleLecturerSelected = (user: GetAllUsersData) => {
-    setLecturersIds((prevState) => [...prevState, user.id]);
-    setLecturersUsernames((prevState) => [...prevState, user.username]);
-    setCleanSearchBar(true);
+        setLecturersIds((prevState) => {
+            if (!prevState.includes(user.id)) {
+                return [...prevState, user.id];
+            }
+            return prevState;
+        });
+        setLecturersUsernames((prevState) => {
+            if (!prevState.includes(user.username)) {
+                return [...prevState, user.username];
+            }
+            return prevState;
+        });
+        setCleanSearchBar(true);
   };
 
   useEffect(() => {
@@ -122,19 +133,6 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
     try {
       const result = await modifyLectureInfoByOrganizer(lectureData.id, modifyLecture);
       if(result !== "Brak autoryzacji użytkownika" && result !== "Nie jesteś właścicielem konferencji lub nie masz roli" && result !== "Wystąpił błąd podczas modyfikacji danych prelekcji"){
-        setName("");
-        setDescription("");
-        setStartDateTime("");
-        setDurationMinutes("");
-        setImageFile(new File([], ""));
-        setImageId(0);
-        const form = document.getElementById("imageInput") as HTMLFormElement;
-        if (form) {
-          form.reset();
-        }
-        setLecturersIds([]);
-        setLecturersUsernames([]);
-        setPlace("");
         setCleanSearchBar(true);
         setSubmitStatusError(false);
         setSubmitMessage(undefined);
