@@ -34,6 +34,12 @@ function Navbox() {
   );
 }
 
+function handleUserMenuClick() {
+
+
+
+}
+
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -69,13 +75,19 @@ export default function Navbar() {
           isError ? (
             <IoPersonCircleOutline className="w-8 h-8 text-darkblue" />
           ) : (
-            <Image
-              src={currentUserData.photo}
-              className="w-8 h-8 rounded-full"
-              width={32}
-              height={32}
-              alt="Avatar"
-            />
+            <div className="flex justify-end relative">
+              <Image
+                src={currentUserData.photo}
+                className="w-8 h-8 rounded-full z-50"
+                width={32}
+                height={32}
+                alt="Avatar"
+                onClick={(e) => {handleUserMenuClick}}
+              />
+              <div className="absolute right-0 top-0 w-36 h-20 bg-red-300 px-2">
+                a
+              </div>
+            </div>
           )}
         </Link>
         <button
