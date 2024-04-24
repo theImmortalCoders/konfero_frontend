@@ -94,12 +94,48 @@ export async function getAllConferences(
   organizerId?: number
 ): Promise<GetAllConferencesData | string> {
   try {
-    console.log("organizerId", organizerId);
     const response: AxiosResponse<GetAllConferencesData | string> =
       await appAPI.get(
         organizerId
           ? `/api/conference?organizerId=${organizerId.toString()}`
           : `/api/conference`,
+        {
+          withCredentials: true,
+        }
+      );
+    if (response.status === 200) {
+      console.log("Wszystkie konferencje pobrano poprawnie!");
+      return response.data;
+    }
+    if (response.status === 401) {
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      throw new Error(
+        "Wystąpił błąd podczas pobierania wszystkich konferencji"
+      );
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      throw new Error(
+        "Wystąpił błąd podczas pobierania wszystkich konferencji"
+      );
+    }
+  }
+}
+
+export async function getNotCanceledConferences(
+  organizerId?: number
+): Promise<GetAllConferencesData | string> {
+  try {
+    const response: AxiosResponse<GetAllConferencesData | string> =
+      await appAPI.get(
+        organizerId
+          ? `/api/conference?sort=startDateTime&sortDirection=ASC&organizerId=${organizerId.toString()}`
+          : `/api/conference?sort=startDateTime&sortDirection=ASC`,
         {
           withCredentials: true,
         }
@@ -214,8 +250,8 @@ export async function getConferenceDetailsWithRoleFiltering(
 
 export async function cancelConference(conferenceId: number) {
   try {
-    const response: AxiosResponse<void> = await appAPI.patch(
-      `/api/lecture/${conferenceId}/cancel`,
+    const response: AxiosResponse<void> = await appAPI.delete(
+      `/api/conference/${conferenceId}/cancel`,
       {
         withCredentials: true,
       }

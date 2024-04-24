@@ -47,7 +47,8 @@ export default function Panel({
           <GoPencil />
           <p>&nbsp;Edytuj konferencje</p>
         </button>
-        {conferenceIdData.participants === null ? (
+        {conferenceIdData.participants === null ||
+        conferenceIdData.participants.length === 0 ? (
           <button
             onClick={() => handleDelete(conferenceIdData.id)}
             className="border-2 border-red-600 bg-close2White hover:bg-red-600 text-inherit hover:text-close2White text-sm sm:text-md lg:text-lg font-medium py-1 px-2 rounded-2xl flex items-center justify-center"

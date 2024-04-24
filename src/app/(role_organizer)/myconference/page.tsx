@@ -1,7 +1,10 @@
 "use client";
 
 import Page from "@/components/common/Page/Page";
-import { getAllConferences, GetAllConferencesData } from "@/hooks/conference";
+import {
+  GetAllConferencesData,
+  getNotCanceledConferences,
+} from "@/hooks/conference";
 import { useQuery } from "react-query";
 import ConferenceList from "@/components/myconference/list/ConferenceList";
 import Error500 from "@/components/common/Error/Error500";
@@ -11,7 +14,7 @@ import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 export default function MyConferenceListPage() {
   const { data, isLoading, isError } = useQuery(
     "konferencje",
-    () => getAllConferences(),
+    () => getNotCanceledConferences(),
     {
       staleTime: Infinity,
       refetchOnMount: "always",
