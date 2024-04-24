@@ -1,6 +1,6 @@
 "use client";
 import { AxiosResponse } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import {
@@ -12,6 +12,7 @@ import Link from "next/link";
 import { updateLastVisitedPage } from "@/utils/cookie";
 import { UserData, getCurrentUser } from "@/hooks/user";
 import { useQuery } from "react-query";
+import { NEXT_PUBLIC_FRONT_BASE_URL, appAPI } from "@/utils/appENV";
 
 function Navbox() {
   return (
@@ -38,6 +39,9 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  const [showUserMenu, setShowUserMenu] = useState<boolean>(false);
+  const toggleUserMenu = () => setShowUserMenu(!showUserMenu);
+
   const {
     data: currentUserData,
     isLoading,
@@ -61,23 +65,29 @@ export default function Navbar() {
       </div>
 
       <div className="flex flex-row gap-4 md:gap-8 items-center">
-        <Link href="/login">
+        <>
           {isLoading ||
           typeof currentUserData === "string" ||
           !currentUserData ||
           currentUserData === null ||
           isError ? (
-            <IoPersonCircleOutline className="w-8 h-8 text-darkblue" />
+            <Link href="/login"><IoPersonCircleOutline className="w-8 h-8 text-darkblue" /></Link>
           ) : (
-            <Image
-              src={currentUserData.photo}
-              className="w-8 h-8 rounded-full"
-              width={32}
-              height={32}
-              alt="Avatar"
-            />
+            <div className="flex justify-end relative">
+              <Image
+                src={currentUserData.photo}
+                className="w-8 h-8 rounded-full z-50 cursor-pointer"
+                width={32}
+                height={32}
+                alt="Avatar"
+                onClick={toggleUserMenu}
+              />
+              <div className={`absolute -right-5 top-0 w-32 mt-[40px] bg-close2White rounded-b-lg px-3 py-2 ${showUserMenu ? 'flex' : 'hidden'} items-center justify-start text-sm`}>
+                <Link href={`${appAPI.defaults.baseURL}/api/oauth2/logout`}>Wyloguj</Link>
+              </div>
+            </div>
           )}
-        </Link>
+        </>
         <button
           onClick={toggleMenu}
           className="text-darkblue mr-2 flex items-center md:hidden"
