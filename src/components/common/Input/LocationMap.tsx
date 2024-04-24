@@ -46,6 +46,11 @@ const MapContainer = dynamic(
     setLocName: Dispatch<SetStateAction<string>>;
   }) {
     const [position, setPosition] = useState<L.LatLng | null>(null);
+
+    const markerIcon = new L.Icon({
+      iconUrl: '/marker-icon-2x.png',
+      iconSize: [25, 41]
+    });
   
     useEffect(() => {
       import("leaflet").then((L) => {
@@ -96,7 +101,7 @@ const MapContainer = dynamic(
       });
   
       return position ? (
-        <Marker position={position}>
+        <Marker position={position} icon={markerIcon}>
           <Popup>Wybrana lokalizacja: {locName}</Popup>
         </Marker>
       ) : null;
