@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useMapEvents, useMap } from "react-leaflet";
 import L from "leaflet";
+import { icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
 import axios from "axios";
@@ -49,6 +50,7 @@ const MapContainer = dynamic(
 
     const markerIcon = new L.Icon({
       iconUrl: '/marker-icon-2x.png',
+      shadowUrl: '/marker-shadow.png',
       iconSize: [25, 41],
       iconAnchor: [12.5, 41],
       popupAnchor: [0, -38]
