@@ -81,7 +81,7 @@ export default function AddConferenceInputs({
             setGalleryPhotosIds([]);
           }
         } else {
-          console.log("Loading data error");
+          console.error("Loading data error");
         }
       }
     }, [conferenceDetailsData]);
@@ -118,7 +118,6 @@ export default function AddConferenceInputs({
             return img.id;
           })
         );
-        console.log(galleryPhotosIds);
       } catch (error) {
         console.error("Images adding failed:", error);
       }
@@ -159,8 +158,6 @@ export default function AddConferenceInputs({
   };
 
   const handleAddConference = async () => {
-    // console.log(newConference);
-
     if (
       !name ||
       !description ||
@@ -212,10 +209,10 @@ export default function AddConferenceInputs({
           newConference
         );
         if (result === 200) {
-          setMessage("Zaktualizowano konferencje");
+          setStatusError(false);
         } else {
           console.error("Błąd aktualizowania konferencji");
-          setMessage("Błąd aktualizowania konferencji");
+          setStatusError(true);
         }
       }
     } catch (error) {
@@ -300,7 +297,7 @@ export default function AddConferenceInputs({
         </label>
       </div>
       <div className="flex flex-col w-min text-nowrap">
-        <label className="text-blue cursor-text">
+        <label className="text-darkblue cursor-text font-bold">
           Forma odbycia konferencji
         </label>
         <select
@@ -308,6 +305,7 @@ export default function AddConferenceInputs({
           name="format"
           value={format}
           onChange={handleFormat}
+          className="bg-close2White border-b-[1px] border-darkblue focus:outline-none"
         >
           <option value="STATIONARY">Stacjonarnie</option>
           <option value="ONLINE">Online</option>
@@ -400,7 +398,7 @@ export default function AddConferenceInputs({
           Kliknij, aby wybrać pliki ({galleryPhotosIds.length} wybrano)
         </label>
       </div>
-      <div className="flex flex-row md:flex-wrap items-center justify-around py-2 bg-close2White overflow-x-scroll md:overflow-x-hidden">
+      <div className="flex flex-row md:flex-wrap space-x-8 md:space-x-0 items-center justify-around py-2 bg-close2White overflow-x-auto md:overflow-x-hidden">
         {galleryPhotosIds.map((imgId, index) => (
           <div
             key={index}
@@ -410,7 +408,7 @@ export default function AddConferenceInputs({
               <APIImageComponent imageId={imgId} type="conference" />
             </div>
             <MdOutlineDeleteForever
-              className="h-10 w-10 text-close2Black"
+              className="h-10 w-10 text-close2Black cursor-pointer"
               onClick={() => {
                 const newGalleryPhotosIds = [...galleryPhotosIds];
                 newGalleryPhotosIds.splice(index, 1);
@@ -439,7 +437,7 @@ export default function AddConferenceInputs({
             {statusError
               ? "Wystąpił błąd podczas dodawania konferencji."
               : message === undefined
-              ? "Konferencja została dodana poprawnie."
+              ? `Konferencja została ${isUpdate ? 'zaktualizowana' : 'dodana'} poprawnie.`
               : message}
           </p>
         )}
