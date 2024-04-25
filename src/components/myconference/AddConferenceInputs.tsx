@@ -177,7 +177,7 @@ export default function AddConferenceInputs({
     const date = new Date();
     if (startDateTime < date.toISOString().slice(0, 16)) {
       setStatusError(false);
-      setMessage("Konferencja nie może się zaczynć przed dodaniem jej.");
+      setMessage("Data konferencji nie może być wcześniejsza niż aktualna");
       return;
     }
 
