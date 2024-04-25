@@ -400,7 +400,7 @@ export default function AddConferenceInputs({
           Kliknij, aby wybrać pliki ({galleryPhotosIds.length} wybrano)
         </label>
       </div>
-      <div className="flex flex-row flex-wrap items-center justify-around py-2 bg-close2White ">
+      <div className="flex flex-row md:flex-wrap items-center justify-around py-2 bg-close2White overflow-x-scroll md:overflow-x-hidden">
         {galleryPhotosIds.map((imgId, index) => (
           <div
             key={index}
