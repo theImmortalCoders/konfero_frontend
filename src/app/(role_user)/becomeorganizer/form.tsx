@@ -1,18 +1,18 @@
 "use client";
-import { Box } from "@/components/common/Box/Box"
-import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
+import {Box} from "@/components/common/Box/Box"
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import Image from "next/image";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
-import { BecomeOrganizerData, becomeOrganizerWithUpdateData } from "@/hooks/user";
+import {BecomeOrganizerData, becomeOrganizerWithUpdateData} from "@/hooks/user";
 import SingleFormInput from "@/components/common/Input/SingleFormInput";
 
-function CompanyNameInput ({
-    companyName,
-    setCompanyName
-    }: {
+function CompanyNameInput({
+                              companyName,
+                              setCompanyName
+                          }: {
     companyName: string;
     setCompanyName: Dispatch<SetStateAction<string>>;
-    }) {
+}) {
     return (
         <div className="relative">
             <SingleFormInput
@@ -24,28 +24,29 @@ function CompanyNameInput ({
                 onChange={(e) => {
                     const value = e.target.value;
                     const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,100}$/i.test(value);
-          
+
                     if (isValid) {
                         setCompanyName(value);
                     }
                 }}
             />
-            <label htmlFor="name" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
+            <label htmlFor="name"
+                   className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
                 Nazwa firmy
             </label>
-        </div>    
+        </div>
     )
 }
 
-function AddressInput ({
-    address,
-    setAddress
-    }: {
+function AddressInput({
+                          address,
+                          setAddress
+                      }: {
     address: string;
     setAddress: Dispatch<SetStateAction<string>>;
-    }) {
+}) {
     return (
-        <div  className="relative">
+        <div className="relative">
             <SingleFormInput
                 type="text"
                 id="address"
@@ -55,28 +56,29 @@ function AddressInput ({
                 onChange={(e) => {
                     const value = e.target.value;
                     const isValid = /^[a-zA-Z\s\/\dąęłńóśźżĄĘŁŃÓŚŹŻ]{0,100}$/.test(value);
-          
+
                     if (isValid) {
                         setAddress(value);
                     }
                 }}
             />
-            <label htmlFor="address" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
+            <label htmlFor="address"
+                   className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
                 Adres
             </label>
         </div>
     )
 }
 
-function CityInput ({
-    city,
-    setCity
-    }: {
+function CityInput({
+                       city,
+                       setCity
+                   }: {
     city: string;
-    setCity: Dispatch<SetStateAction<string>>; 
-    }) {
+    setCity: Dispatch<SetStateAction<string>>;
+}) {
     return (
-        <div  className="relative">
+        <div className="relative">
             <SingleFormInput
                 type="text"
                 id="city"
@@ -86,28 +88,29 @@ function CityInput ({
                 onChange={(e) => {
                     const value = e.target.value;
                     const isValid = /^[a-zA-Z\sąęłńóśźżĄĘŁŃÓŚŹŻ]{0,30}$/.test(value);
-          
+
                     if (isValid) {
                         setCity(value);
                     }
                 }}
             />
-            <label htmlFor="city" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
+            <label htmlFor="city"
+                   className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
                 Miasto
             </label>
         </div>
     )
 }
 
-function PhoneNumberInput ({
-    phoneNumber,
-    setPhoneNumber
-    }: {
+function PhoneNumberInput({
+                              phoneNumber,
+                              setPhoneNumber
+                          }: {
     phoneNumber: string;
-    setPhoneNumber: Dispatch<SetStateAction<string>>; 
-    }) {
+    setPhoneNumber: Dispatch<SetStateAction<string>>;
+}) {
     return (
-        <div  className="relative">
+        <div className="relative">
             <SingleFormInput
                 type="text"
                 id="phone"
@@ -117,22 +120,23 @@ function PhoneNumberInput ({
                 onChange={(e) => {
                     const value = e.target.value;
                     const isValid = /^\d{0,9}$/.test(value);
-          
+
                     if (isValid) {
                         setPhoneNumber(value);
                     }
                 }}
             />
-            <label htmlFor="phone" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
+            <label htmlFor="phone"
+                   className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
                 Numer telefonu
             </label>
         </div>
     )
 }
 
-export default function BecomeOrganiserForm ({
-    setIsOpen
-}: {
+export default function BecomeOrganiserForm({
+                                                setIsOpen
+                                            }: {
     setIsOpen: Dispatch<SetStateAction<boolean>>
 }) {
 
@@ -145,49 +149,47 @@ export default function BecomeOrganiserForm ({
 
     useEffect(() => {
         if (
-          companyName !== "" ||
-          address !== "" ||
-          city !== "" ||
-          phone !== "" 
+            companyName !== "" ||
+            address !== "" ||
+            city !== "" ||
+            phone !== ""
         )
-          setMessage("");
-      }, [companyName, address, city, phone]);
+            setMessage("");
+    }, [companyName, address, city, phone]);
 
-    const submitForm  = async () => {
-        if(!companyName || !address || !city || !phone) {
+    const submitForm = async () => {
+        if (!companyName || !address || !city || !phone) {
             console.error("Wszystkie pola muszą być wypełnione");
             setMessage("Wszystkie pola muszą być wypełnione");
             return;
         }
 
-        if(phone.length !== 9) {
+        if (phone.length !== 9) {
             console.error("Numer telefonu musi mieć dokładnie 9 cyfr!");
             setMessage("Numer telefonu musi mieć dokładnie 9 cyfr!");
             return;
         }
 
-        const organiserData: BecomeOrganizerData = { 
-            companyName: companyName, 
-            address: address, 
-            city: city, 
-            phone: phone 
+        const organiserData: BecomeOrganizerData = {
+            companyName: companyName,
+            address: address,
+            city: city,
+            phone: phone
         };
 
         try {
             const result = await becomeOrganizerWithUpdateData(organiserData);
-            if(result !== "Brak autoryzacji użytkownika" && result !== "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora"){
+            if (result !== "Brak autoryzacji użytkownika" && result !== "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora") {
                 setCompanyName("");
                 setAddress("");
                 setCity("");
                 setPhone("");
                 setMessage("Zgłoszenie zostało wysłane pomyślnie!");
-            }
-            else {
+            } else {
                 console.error("Błąd wysyłania zgłoszenia");
                 setMessage("Błąd wysyłania zgłoszenia");
             }
-        }   
-        catch (error) {
+        } catch (error) {
             console.error("Błąd wysyłania zgłoszenia", error);
             setMessage("Błąd wysyłania zgłoszenia");
         }
@@ -206,8 +208,10 @@ export default function BecomeOrganiserForm ({
                     <PhoneNumberInput phoneNumber={phone} setPhoneNumber={setPhone}/>
                     <div className="flex flex-col items-center space-y-3">
                         <p className="text-center font-bold">Zatwierdź dane i poczekaj na rozpatrzenie prośby</p>
-                        <button onClick={submitForm} className="text-nowrap w-fit bg-blue text-close2White text-lg font-medium py-2 px-6 rounded-3xl ">Zatwierdź</button>
-                        <p className="text-xs text-center">{ message }</p>
+                        <button onClick={submitForm}
+                                className="text-nowrap w-fit bg-blue text-close2White text-lg font-medium py-2 px-6 rounded-3xl ">Zatwierdź
+                        </button>
+                        <p className="text-xs text-center">{message}</p>
                     </div>
                 </div>
             </Box>

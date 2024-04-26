@@ -1,3 +1,3 @@
 export function updateLastVisitedPage(url: string) {
-  document.cookie = `lastVisitedPage=${url}; path=/`;
+    document.cookie = `lastVisitedPage=${url}; path=/`;
 }
