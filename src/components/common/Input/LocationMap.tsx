@@ -84,7 +84,6 @@ const MapContainer = dynamic(
           setPosition(e.latlng);
           setLocX(lat);
           setLocY(lng);
-          console.log(`Wybrane współrzędne: ${lat}, ${lng}`);
           axios
             .get(
               `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
@@ -99,7 +98,6 @@ const MapContainer = dynamic(
                 : `${streetName}, ${city}`;
   
               setLocName(name);
-              console.log(`Nazwa miejsca: ${locName}`);
             })
             .catch((error) => {
               console.error("Błąd pobierania nazwy miejsca:", error);
