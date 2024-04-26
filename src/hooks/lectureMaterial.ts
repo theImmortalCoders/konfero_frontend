@@ -52,7 +52,7 @@ export async function addMaterialToLecture(lectureId: number, materialId: number
         console.error("Nie jesteś właścicielem materiału");
         return "Nie jesteś właścicielem materiału";
       } else if (response.status === 401) {
-        window.location.replace("/login");
+        // window.location.replace("/login");
         console.error("Brak autoryzacji użytkownika");
         return "Brak autoryzacji użytkownika";
       } else if (response.status === 403) {
@@ -69,7 +69,7 @@ export async function addMaterialToLecture(lectureId: number, materialId: number
         console.error("Nie jesteś właścicielem materiału");
         return "Nie jesteś właścicielem materiału";
       } else if (error.response.status === 401) {
-        window.location.replace("/login");
+        // window.location.replace("/login");
         console.error("Brak autoryzacji użytkownika");
         return "Brak autoryzacji użytkownika";
       } else if (error.response.status === 403) {

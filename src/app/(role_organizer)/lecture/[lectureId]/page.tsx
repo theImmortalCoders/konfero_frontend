@@ -1,6 +1,5 @@
 "use client";
 import Page from "@/components/common/Page/Page";
-import Logo from "@/assets/home/laptop.jpg";
 import { BoxWithImage } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
 import Error500 from "@/components/common/Error/Error500";
@@ -10,7 +9,7 @@ import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
 import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrapper";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
-import { getCurrentUser } from "@/hooks/user";
+import AddLectureMaterials from "@/components/lecture/AddLectureMaterials"
 
 export default function LecturePage({
   params,
@@ -66,6 +65,7 @@ export default function LecturePage({
                 <MaterialTableWrapper lectureIdData={lectureIdData} />
               </>
             ) : null}
+            <AddLectureMaterials lectureId={params.lectureId} />
             {lectureIdData.interested.length !== 0 ? (
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
