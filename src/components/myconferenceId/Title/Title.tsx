@@ -10,7 +10,7 @@ export default function Title({
 }) {
   return (
     <BoxWithImage
-      className="text-darkblue w-[90%] lg:w-[60%] mt-20 mb-5"
+      className="text-darkblue w-[90%] lg:w-[60%] mt-10 mb-5"
       src={conferenceIdData.logo.id}
       alt={"Logo"}
     >

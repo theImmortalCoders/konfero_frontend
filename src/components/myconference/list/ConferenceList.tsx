@@ -20,8 +20,6 @@ export default function ConferenceList({
       router.push("/login");
     }
   };
-
-  console.log("conference", conference);
   return (
     <div className="flex w-full text-black bg-close2White items-start shadow-whiteShadow h-full z-0 rounded-3xl">
       <ListItemImage

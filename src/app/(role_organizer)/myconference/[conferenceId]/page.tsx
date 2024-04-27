@@ -33,7 +33,7 @@ export default function MyConferencePage({
   if (isError) return <Error500 />;
 
   return (
-    <Page>
+    <Page className="py-10">
       {!isLoading &&
       conferenceIdData &&
       typeof conferenceIdData !== "string" ? (

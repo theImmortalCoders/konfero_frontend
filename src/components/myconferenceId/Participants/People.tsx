@@ -12,7 +12,7 @@ export default function People({
   return (
     <div className="w-full">
       <div className="flex justify-center items-center w-auto h-auto">
-        <div className="relative w-[20px] h-[20px] sm:w-[40px] sm:h-[40px] md:w-[60px] md:h-[60px] lg:w-[40px] lg:h-[40px] xl:w-[60px] xl:h-[60px] ">
+        <div className="relative w-[40px] h-[40px] md:w-[60px] md:h-[60px] lg:w-[40px] lg:h-[40px] xl:w-[60px] xl:h-[60px] ">
           <Image
             src={photo}
             alt="User photo"

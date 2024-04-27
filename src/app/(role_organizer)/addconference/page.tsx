@@ -6,8 +6,8 @@ import Image from "next/image";
 
 export default function AddConference() {
   return (
-    <Page className="py-20">
-      <Box className="w-4/5 2xs:w-2/3 xs:w-1/2 flex flex-col items-center space-y-6">
+    <Page className="py-10">
+      <Box className="flex flex-col items-center space-y-6 w-11/12 sm:w-5/6 lg:w-3/5">
         <Image src={Logo} alt="Logo" width={180} height={180} />
         <h1 className="text-darkblue font-black">
           Podaj dane potrzebne do utworzenia konferencji

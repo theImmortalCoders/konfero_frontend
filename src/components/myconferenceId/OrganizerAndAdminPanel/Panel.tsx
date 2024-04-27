@@ -37,7 +37,7 @@ export default function Panel({
   }, []);
 
   return (
-    <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5">
+    <Box className="text-darkblue w-[90%] lg:w-[60%]">
       <TitleHeader title={"Panel Edycji"} />
       <div className="grid grid-cols-1 gap-y-4 sm:flex sm:justify-evenly mt-4">
         <button
