@@ -1,35 +1,35 @@
 import {FaPlus} from "react-icons/fa6";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {FileResponseData, uploadFile} from "@/hooks/file";
 import {addMaterialToLecture} from "@/hooks/lectureMaterial";
 import {useQuery} from "react-query";
 import {getLectureDetails} from "@/hooks/lecture";
 
-const AddLectureMaterials = ({lectureId}: {lectureId: string}) => {
+const AddLectureMaterials = ({lectureId, handleRefetch}: {lectureId: string, handleRefetch: ()=>void}) => {
 
-  const [description, setDescription] = useState<string>("");
-  const [filesIds, setFilesIds] = useState<number[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-
-
+  const hasPageBeenRendered = useRef<boolean>(false)
 
   useEffect(() => {
-    const handleNewImages = async () => {
-      try {
-        if (!files.length) return;
-        const results = await Promise.all(files.map(file => {
-          return uploadFile(file, description);
-        }));
-        const validResults = results.filter(result => result !== undefined) as FileResponseData[];
-        validResults.map((file) => {
-          return addMaterialToLecture(parseInt(lectureId), file.id);
-        });
-        console.log(filesIds);
-      } catch (error) {
-        console.error("Images adding failed:", error);
-      }
-    };
-    handleNewImages();
+    if(hasPageBeenRendered.current) {
+      const handleNewImages = async () => {
+        try {
+          if (!files.length) return;
+          const results = await Promise.all(files.map((file, index) => {
+            return uploadFile(file, file.name);
+          }));
+          const validResults = results.filter(result => result !== undefined) as FileResponseData[];
+          const addingMaterials = await Promise.all(validResults.map((file) => {
+            return addMaterialToLecture(parseInt(lectureId), file.id);
+          }))
+          handleRefetch()
+        } catch (error) {
+          console.error("Images adding failed:", error);
+        }
+      };
+      handleNewImages();
+    }
+    hasPageBeenRendered.current = true;
   }, [files]);
 
   return(
@@ -41,7 +41,7 @@ const AddLectureMaterials = ({lectureId}: {lectureId: string}) => {
         className="hidden"
         id="filesInput"
         multiple
-        onChange={(e) => {
+        onChange={async (e) => {
           if (e.target.files) {
             const filesArray = Array.from(e.target.files);
             setFiles(filesArray);
