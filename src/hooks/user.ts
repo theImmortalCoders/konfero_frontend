@@ -357,7 +357,7 @@ export async function becomeOrganizerWithUpdateData(
   }
 }
 
-export async function rewievOrganizerRequest(
+export async function reviewOrganizerRequest(
   requestId: number,
   approve: boolean
 ) {
