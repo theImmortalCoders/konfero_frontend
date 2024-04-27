@@ -3,27 +3,27 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "Segoe UI";
-    src: local('Segoe UI'), url('/fonts/Segoe_UI.ttf') format('ttf');
-    /* src: local("Segoe UI Bold"), url("/fonts/Segoe_UI_Bold.ttf") format("ttf"); */
+  font-family: "Segoe UI";
+  src: local('Segoe UI'), url('/fonts/Segoe_UI.ttf') format('ttf');
+  /* src: local("Segoe UI Bold"), url("/fonts/Segoe_UI_Bold.ttf") format("ttf"); */
 }
 
 * {
-    font-family: "Segoe UI", sans-serif;
-    letter-spacing: 0.15px;
+  font-family: "Segoe UI", sans-serif;
+  letter-spacing: 0.15px;
 }
 
 html,
 body,
 :root {
-    min-height: 100%;
-    font-size: inherit;
+  min-height: 100%;
+  font-size: inherit;
 }
 
 :root {
-    --color-close2White: 242 242 242;
-    --color-blue: 1 79 134;
-    --color-darkblue: 1 42 74;
-    --color-black: 0 8 20;
-    --navbar: 50px;
+  --color-close2White: 242 242 242;
+  --color-blue: 1 79 134;
+  --color-darkblue: 1 42 74;
+  --color-black: 0 8 20;
+  --navbar: 50px;
 }
