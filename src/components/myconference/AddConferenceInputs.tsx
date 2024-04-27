@@ -234,8 +234,8 @@ export default function AddConferenceInputs({
       }
     } catch (error) {
       setStatusError(true);
-      console.error("Adding/Updating conference failed:", error);
-      setMessage("Błąd dodawania/aktualizowania konferencji")
+      console.error(isUpdate ? "Updating conference failed:" : "Adding conference failed:", error);
+      setMessage(isUpdate ? "Błąd aktualizowania konferencji" : "Błąd dodawania konferencji");
     }
   };
 
