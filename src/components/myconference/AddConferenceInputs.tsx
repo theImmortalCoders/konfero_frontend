@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 import SingleFormInput from "@/components/common/Input/SingleFormInput";
 import {
   addNewConference,
@@ -16,9 +16,13 @@ import { useQuery } from "react-query";
 export default function AddConferenceInputs({
   isUpdate,
   conferenceid,
+  tempId,
+  setTempId
 }: {
   isUpdate: boolean;
   conferenceid?: string;
+  tempId?: number;
+  setTempId?: Dispatch<SetStateAction<number>>;
 }) {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -50,7 +54,8 @@ export default function AddConferenceInputs({
 
     useEffect(() => {
       refetchClub();
-      if (isUpdate && !conferenceDetailsLoading) {
+      if (isUpdate && setTempId && !conferenceDetailsLoading) {
+        setTempId(Number(conferenceid));
         if (
           typeof conferenceDetailsData !== "string" &&
           !conferenceDetailsError
@@ -74,6 +79,8 @@ export default function AddConferenceInputs({
             setName("");
             setDescription("");
             setStartDateTime("");
+            setLocX(0);
+            setLocY(0);
             setPlace("");
             setParticipantsLimit("");
             setFormat("STATIONARY");
@@ -84,7 +91,7 @@ export default function AddConferenceInputs({
           console.error("Loading data error");
         }
       }
-    }, [conferenceDetailsData]);
+    }, [conferenceDetailsData, tempId]);
   }
 
   useEffect(() => {
