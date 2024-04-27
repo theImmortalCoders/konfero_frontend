@@ -3,7 +3,7 @@ import Image, { StaticImageData } from "next/image";
 export default function People({
   username,
   photo,
-  email,
+  email
 }: {
   username: string;
   photo: string | StaticImageData;
