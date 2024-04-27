@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 import SingleFormInput from "@/components/common/Input/SingleFormInput";
 import {
   addNewConference,
@@ -10,18 +10,25 @@ import {
 import { uploadFile, FileResponseData } from "@/hooks/file";
 import APIImageComponent from "@/hooks/imageAPI";
 import { MdOutlineDeleteForever } from "react-icons/md";
+import { LocationMap } from "../common/Input/LocationMap";
 import { useQuery } from "react-query";
 
 export default function AddConferenceInputs({
   isUpdate,
   conferenceid,
+  tempId,
+  setTempId
 }: {
   isUpdate: boolean;
   conferenceid?: string;
+  tempId?: number;
+  setTempId?: Dispatch<SetStateAction<number>>;
 }) {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [startDateTime, setStartDateTime] = useState<string>("");
+  const [locX, setLocX] = useState<number>(0);
+  const [locY, setLocY] = useState<number>(0);
   const [place, setPlace] = useState<string>("");
   const [participantsLimit, setParticipantsLimit] = useState<string>("");
   const [format, setFormat] = useState<string>("STATIONARY");
@@ -47,7 +54,8 @@ export default function AddConferenceInputs({
 
     useEffect(() => {
       refetchClub();
-      if (isUpdate && !conferenceDetailsLoading) {
+      if (isUpdate && setTempId && !conferenceDetailsLoading) {
+        setTempId(Number(conferenceid));
         if (
           typeof conferenceDetailsData !== "string" &&
           !conferenceDetailsError
@@ -56,6 +64,8 @@ export default function AddConferenceInputs({
             setName(conferenceDetailsData.name);
             setDescription(conferenceDetailsData.description);
             setStartDateTime(conferenceDetailsData.startDateTime);
+            setLocX(conferenceDetailsData.location.locX);
+            setLocY(conferenceDetailsData.location.locY);
             setPlace(conferenceDetailsData.location.name);
             setParticipantsLimit(
               conferenceDetailsData.participantsLimit.toString()
@@ -69,6 +79,8 @@ export default function AddConferenceInputs({
             setName("");
             setDescription("");
             setStartDateTime("");
+            setLocX(0);
+            setLocY(0);
             setPlace("");
             setParticipantsLimit("");
             setFormat("STATIONARY");
@@ -76,10 +88,10 @@ export default function AddConferenceInputs({
             setGalleryPhotosIds([]);
           }
         } else {
-          console.log("Loading data error");
+          console.error("Loading data error");
         }
       }
-    }, [conferenceDetailsData]);
+    }, [conferenceDetailsData, tempId]);
   }
 
   useEffect(() => {
@@ -113,7 +125,6 @@ export default function AddConferenceInputs({
             return img.id;
           })
         );
-        console.log(galleryPhotosIds);
       } catch (error) {
         console.error("Images adding failed:", error);
       }
@@ -121,6 +132,12 @@ export default function AddConferenceInputs({
 
     handleNewImages();
   }, [imageGalleryFiles]);
+
+  useEffect(() => {
+    setLocX(0);
+    setLocY(0);
+    setPlace("");
+  }, [format])
 
   const handleDeleteImage = () => {
     setImageFile(new File([], ""));
@@ -138,8 +155,8 @@ export default function AddConferenceInputs({
     logoId: imageId,
     tagsIds: [],
     location: {
-      locX: 0,
-      locY: 0,
+      locX: locX,
+      locY: locY,
       name: place,
     },
     participantsLimit: parseInt(participantsLimit, 10),
@@ -148,25 +165,24 @@ export default function AddConferenceInputs({
   };
 
   const handleAddConference = async () => {
-    console.log(newConference);
-
     if (
       !name ||
       !description ||
       !startDateTime ||
       !participantsLimit.trim() ||
       imageId === 0 ||
-      !place
+      (format === "STATIONARY" && !place)
     ) {
       console.error("Wszystkie pola muszą być wypełnione");
       setStatusError(true);
+      setMessage("Wszystkie pola muszą być wypełnione");
       return;
     }
 
     const date = new Date();
     if (startDateTime < date.toISOString().slice(0, 16)) {
       setStatusError(false);
-      setMessage("Konferencja nie może się zaczynć przed dodaniem jej.");
+      setMessage("Data konferencji nie może być wcześniejsza niż aktualna");
       return;
     }
 
@@ -191,25 +207,35 @@ export default function AddConferenceInputs({
           }
           setPlace("");
           setStatusError(false);
-          setMessage(undefined);
+          setMessage("Dodano konferencję");
           window.location.replace(`/myconference`);
         }
-      } else {
+        else {
+          console.error("Błąd dodawania konferencji");
+          setStatusError(true);
+          setMessage("Wystąpił błąd podczas dodawania konferencji");
+        }
+      } 
+      else {
         const conferenceId = Number(conferenceid);
         const result = await updateInfoAboutConference(
           conferenceId,
           newConference
         );
         if (result === 200) {
-          setMessage("Zaktualizowano konferencje");
+          setStatusError(false);
+          setMessage("Zaktualizowano konferencję");
+          window.location.replace(`/myconference`);
         } else {
           console.error("Błąd aktualizowania konferencji");
-          setMessage("Błąd aktualizowania konferencji");
+          setStatusError(true);
+          setMessage("Wystąpił błąd podczas aktualizowania konferencji")
         }
       }
     } catch (error) {
       setStatusError(true);
-      console.error("Adding conference failed:", error);
+      console.error(isUpdate ? "Updating conference failed:" : "Adding conference failed:", error);
+      setMessage(isUpdate ? "Błąd aktualizowania konferencji" : "Błąd dodawania konferencji");
     }
   };
 
@@ -289,7 +315,7 @@ export default function AddConferenceInputs({
         </label>
       </div>
       <div className="flex flex-col w-min text-nowrap">
-        <label className="text-blue cursor-text">
+        <label className="text-darkblue cursor-text font-bold">
           Forma odbycia konferencji
         </label>
         <select
@@ -297,6 +323,7 @@ export default function AddConferenceInputs({
           name="format"
           value={format}
           onChange={handleFormat}
+          className="bg-close2White border-b-[1px] border-darkblue focus:outline-none"
         >
           <option value="STATIONARY">Stacjonarnie</option>
           <option value="ONLINE">Online</option>
@@ -329,31 +356,21 @@ export default function AddConferenceInputs({
           />
         </div>
       </div>
-
-      <div className="relative">
-        <SingleFormInput
-          type="text"
-          id="place"
-          name="place"
-          placeholder=" "
-          value={place}
-          onChange={(e) => {
-            const value = e.target.value;
-            const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]*$/i.test(value);
-
-            if (isValid) {
-              setPlace(value);
-            }
-          }}
-        />
-        <label
-          htmlFor="place"
-          className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all"
-        >
-          Miejsce konferencji
-        </label>
-      </div>
-
+      { format === "STATIONARY" && (
+        <div>
+          <h1 className="text-xs text-darkblue font-bold font-sans">
+            Miejsce konferencji:
+          </h1>
+          <LocationMap
+            locX={locX}
+            setLocX={setLocX}
+            locY={locY}
+            setLocY={setLocY}
+            locName={place}
+            setLocName={setPlace}
+          />
+        </div>
+        ) }
       <div className="relative">
         <SingleFormInput
           type="text"
@@ -399,7 +416,7 @@ export default function AddConferenceInputs({
           Kliknij, aby wybrać pliki ({galleryPhotosIds.length} wybrano)
         </label>
       </div>
-      <div className="flex flex-row flex-wrap items-center justify-around py-2 bg-close2White ">
+      <div className="flex flex-row md:flex-wrap space-x-8 md:space-x-0 items-center justify-around py-2 bg-close2White overflow-x-auto md:overflow-x-hidden">
         {galleryPhotosIds.map((imgId, index) => (
           <div
             key={index}
@@ -409,7 +426,7 @@ export default function AddConferenceInputs({
               <APIImageComponent imageId={imgId} type="conference" />
             </div>
             <MdOutlineDeleteForever
-              className="h-10 w-10 text-close2Black"
+              className="h-10 w-10 text-close2Black cursor-pointer"
               onClick={() => {
                 const newGalleryPhotosIds = [...galleryPhotosIds];
                 newGalleryPhotosIds.splice(index, 1);
@@ -429,17 +446,10 @@ export default function AddConferenceInputs({
         </button>
         {(statusError !== undefined || message !== undefined) && (
           <p
-            className={` ${
-              statusError || message !== undefined
-                ? "text-red-800"
-                : "text-green-800"
-            } bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center`}
+            className={` ${ statusError ? "text-red-800" : "text-green-800"} 
+            bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center` }
           >
-            {statusError
-              ? "Wystąpił błąd podczas dodawania konferencji."
-              : message === undefined
-              ? "Konferencja została dodana poprawnie."
-              : message}
+            { message }
           </p>
         )}
       </div>
