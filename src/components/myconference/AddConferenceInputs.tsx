@@ -175,6 +175,7 @@ export default function AddConferenceInputs({
     ) {
       console.error("Wszystkie pola muszą być wypełnione");
       setStatusError(true);
+      setMessage("Wszystkie pola muszą być wypełnione");
       return;
     }
 
@@ -206,10 +207,16 @@ export default function AddConferenceInputs({
           }
           setPlace("");
           setStatusError(false);
-          setMessage(undefined);
+          setMessage("Dodano konferencję");
           window.location.replace(`/myconference`);
         }
-      } else {
+        else {
+          console.error("Błąd dodawania konferencji");
+          setStatusError(true);
+          setMessage("Wystąpił błąd podczas dodawania konferencji");
+        }
+      } 
+      else {
         const conferenceId = Number(conferenceid);
         const result = await updateInfoAboutConference(
           conferenceId,
@@ -217,14 +224,18 @@ export default function AddConferenceInputs({
         );
         if (result === 200) {
           setStatusError(false);
+          setMessage("Zaktualizowano konferencję");
+          window.location.replace(`/myconference`);
         } else {
           console.error("Błąd aktualizowania konferencji");
           setStatusError(true);
+          setMessage("Wystąpił błąd podczas aktualizowania konferencji")
         }
       }
     } catch (error) {
       setStatusError(true);
-      console.error("Adding conference failed:", error);
+      console.error("Adding/Updating conference failed:", error);
+      setMessage("Błąd dodawania/aktualizowania konferencji")
     }
   };
 
@@ -435,17 +446,10 @@ export default function AddConferenceInputs({
         </button>
         {(statusError !== undefined || message !== undefined) && (
           <p
-            className={` ${
-              statusError || message !== undefined
-                ? "text-red-800"
-                : "text-green-800"
-            } bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center`}
+            className={` ${ statusError ? "text-red-800" : "text-green-800"} 
+            bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center` }
           >
-            {statusError
-              ? "Wystąpił błąd podczas dodawania konferencji."
-              : message === undefined
-              ? `Konferencja została ${isUpdate ? 'zaktualizowana' : 'dodana'} poprawnie.`
-              : message}
+            { message }
           </p>
         )}
       </div>
