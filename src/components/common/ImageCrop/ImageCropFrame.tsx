@@ -113,7 +113,7 @@ export function ImageCropFrame(
     }
     
     return (
-        <>
+        <div>
             <p className="w-full outline-none focus:outline-none bg-close2White text-darkblue font-bold">
                 {inputDescription}
             </p>
@@ -145,6 +145,6 @@ export function ImageCropFrame(
                 )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }

@@ -331,7 +331,7 @@ export default function AddConferenceInputs({
         </select>
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-row">
         <ImageCropFrame 
           formName="imageInput" 
           inputDescription="Logo konferencji" 
