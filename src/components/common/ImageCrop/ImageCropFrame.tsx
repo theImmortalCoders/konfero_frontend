@@ -3,7 +3,17 @@ import { useCallback, useState } from "react";
 import { CropperProps, Area } from "react-easy-crop";
 import Cropper from 'react-easy-crop';
 
-export function ImageCropFrame() {
+export function ImageCropFrame(
+    {
+    inputDescription,
+    formName
+    } 
+    : 
+    {
+    inputDescription : string, 
+    formName : string
+    }) {
+
     const [imageFile, setImageFile] = useState<File>(new File([], ""));
     const [crop, setCrop] = useState<CropperProps['crop']>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState<number>(1);
@@ -101,24 +111,24 @@ export function ImageCropFrame() {
     return (
         <>
             <p className="w-full pt-2 outline-none focus:outline-none bg-close2White text-darkBlue">
-                aaaaaaaaaaaaaaaaaaaa
+                {inputDescription}
             </p>
             <div className="flex flex-row items-center justify-center py-2 bg-close2White ">
                 <div className='z-50 w-full h-64 flex flex-col items-start'>
-                <form id="">
+                <form id={`${formName}`}>
                     <input type="file" accept=".png, .jpg, .jpeg" onChange={onSelectFile} className='pt-2 outline-none focus:outline-none bg-close2White text-darkGrey'/>
                 </form>
                 {image && (
                     <>
                     <div className='mt-4 w-52 h-52 relative'>
                         <Cropper
-                        image={image.toString()}
-                        crop={crop}
-                        zoom={zoom}
-                        aspect={16/11}
-                        onCropChange={onCropChange}
-                        onZoomChange={onZoomChange}
-                        onCropComplete={handleCropComplete}
+                            image={image.toString()}
+                            crop={crop}
+                            zoom={zoom}
+                            aspect={16/11}
+                            onCropChange={onCropChange}
+                            onZoomChange={onZoomChange}
+                            onCropComplete={handleCropComplete}
                         />
                     </div>
                     <button
