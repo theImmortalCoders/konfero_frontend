@@ -1,20 +1,24 @@
 "use client";
-import { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { CropperProps, Area } from "react-easy-crop";
 import Cropper from 'react-easy-crop';
 
 export function ImageCropFrame(
     {
     inputDescription,
-    formName
+    formName,
+    imageFile,
+    setImageFile,
     } 
     : 
     {
     inputDescription : string, 
-    formName : string
+    formName : string,
+    imageFile: File;
+    setImageFile: Dispatch<SetStateAction<File>>;
     }) {
 
-    const [imageFile, setImageFile] = useState<File>(new File([], ""));
+    // const [imageFile, setImageFile] = useState<File>(new File([], ""));
     const [crop, setCrop] = useState<CropperProps['crop']>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState<number>(1);
     const [image, setImage] = useState<string | ArrayBuffer | null>(null);
@@ -97,26 +101,25 @@ export function ImageCropFrame(
     
     function changePhoto() {
         if(croppedAreaPixels){
-          cropImage(fileCropped, croppedAreaPixels)
-              .then((croppedImageFile) => {
+            cropImage(fileCropped, croppedAreaPixels)
+                .then((croppedImageFile) => {
                   setImageFile(croppedImageFile);
-              })
-              .catch((error) => {
+                })
+                .catch((error) => {
                   console.error(error);
-              });
-        
+                });
         }
     }
     
     return (
         <>
-            <p className="w-full pt-2 outline-none focus:outline-none bg-close2White text-darkBlue">
+            <p className="w-full outline-none focus:outline-none bg-close2White text-darkblue font-bold">
                 {inputDescription}
             </p>
             <div className="flex flex-row items-center justify-center py-2 bg-close2White ">
                 <div className='z-50 w-full h-64 flex flex-col items-start'>
                 <form id={`${formName}`}>
-                    <input type="file" accept=".png, .jpg, .jpeg" onChange={onSelectFile} className='pt-2 outline-none focus:outline-none bg-close2White text-darkGrey'/>
+                    <input type="file" accept=".png, .jpg, .jpeg" onChange={onSelectFile} className="w-full outline-none focus:outline-none bg-close2White text-blue"/>
                 </form>
                 {image && (
                     <>
@@ -132,7 +135,7 @@ export function ImageCropFrame(
                         />
                     </div>
                     <button
-                        className="bg-darkBlue text-close2White rounded mt-2 px-2 py-1 w-52"
+                        className="bg-blue text-close2White rounded-3xl mt-2 px-2 py-1 w-52"
                         onClick={changePhoto}
                     >
                         WYBIERZ

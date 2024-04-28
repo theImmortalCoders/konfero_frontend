@@ -12,6 +12,7 @@ import APIImageComponent from "@/hooks/imageAPI";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { LocationMap } from "../common/Input/LocationMap";
 import { useQuery } from "react-query";
+import { ImageCropFrame } from "../common/ImageCrop/ImageCropFrame";
 
 export default function AddConferenceInputs({
   isUpdate,
@@ -331,21 +332,7 @@ export default function AddConferenceInputs({
       </div>
 
       <div className="flex flex-col">
-        <p className="w-full outline-none focus:outline-none bg-close2White text-darkblue font-bold">
-          Logo konferencji
-        </p>
-        <form id="imageInput" className="py-3">
-          <input
-            type="file"
-            accept=".png, .jpg, .jpeg"
-            className="w-full outline-none focus:outline-none bg-close2White text-blue"
-            onChange={(e) => {
-              if (e.target.files) {
-                setImageFile(e.target.files[0]);
-              }
-            }}
-          />
-        </form>
+        <ImageCropFrame formName="imageInput" inputDescription="Logo konferencji" imageFile={imageFile} setImageFile={setImageFile}/>
         <div className="flex flex-row items-center justify-center space-x-12 pt-2 bg-close2White ">
           <div className="w-[120px]">
             <APIImageComponent imageId={imageId} type="conference" />
