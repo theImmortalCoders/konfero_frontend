@@ -7,6 +7,7 @@ export function ImageCropFrame(
     {
     inputDescription,
     formName,
+    croppingRatio,
     imageFile,
     setImageFile,
     } 
@@ -14,11 +15,11 @@ export function ImageCropFrame(
     {
     inputDescription : string, 
     formName : string,
+    croppingRatio : number,
     imageFile: File;
     setImageFile: Dispatch<SetStateAction<File>>;
     }) {
 
-    // const [imageFile, setImageFile] = useState<File>(new File([], ""));
     const [crop, setCrop] = useState<CropperProps['crop']>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState<number>(1);
     const [image, setImage] = useState<string | ArrayBuffer | null>(null);
@@ -128,7 +129,7 @@ export function ImageCropFrame(
                             image={image.toString()}
                             crop={crop}
                             zoom={zoom}
-                            aspect={16/11}
+                            aspect={croppingRatio}
                             onCropChange={onCropChange}
                             onZoomChange={onZoomChange}
                             onCropComplete={handleCropComplete}
