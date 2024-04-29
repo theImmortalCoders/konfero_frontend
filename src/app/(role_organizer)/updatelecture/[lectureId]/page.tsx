@@ -50,7 +50,7 @@ const EditLecture = () => {
           <h1 className="w-full flex justify-center pb-8 text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">
             Edycja wykładu
           </h1>
-          <Box className="w-4/5 2xs:w-2/3 xs:w-1/2">
+          <Box className="w-11/12 sm:w-5/6 lg:w-3/5">
             <EditLectureInputs lectureData={lectureData} conferenceData={conferenceData} currentUserData={currentUserData}/>
           </Box>
         </>
