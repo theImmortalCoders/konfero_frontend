@@ -331,7 +331,7 @@ export default function AddConferenceInputs({
         </select>
       </div>
 
-      <div className="flex flex-row">
+      <div className="flex flex-col sm:flex-row">
         <ImageCropFrame 
           formName="imageInput" 
           inputDescription="Logo konferencji" 
@@ -339,7 +339,7 @@ export default function AddConferenceInputs({
           imageFile={imageFile} 
           setImageFile={setImageFile}
         />
-        <div className="flex flex-row items-center justify-center space-x-12 pt-2 bg-close2White">
+        <div className="flex flex-row items-center mt-10 justify-center space-x-12 pt-2 bg-close2White">
           <div className="w-[120px]">
             <APIImageComponent imageId={imageId} type="conference" />
           </div>
@@ -350,7 +350,7 @@ export default function AddConferenceInputs({
         </div>
       </div>
       { format === "STATIONARY" && (
-        <div>
+        <div className="pt-4">
           <h1 className="text-xs text-darkblue font-bold font-sans">
             Miejsce konferencji:
           </h1>

@@ -123,25 +123,25 @@ export function ImageCropFrame(
                     <input type="file" accept=".png, .jpg, .jpeg" onChange={onSelectFile} className="w-full outline-none focus:outline-none bg-close2White text-blue"/>
                 </form>
                 {image && (
-                    <>
-                    <div className='mt-4 w-52 h-52 relative'>
-                        <Cropper
-                            image={image.toString()}
-                            crop={crop}
-                            zoom={zoom}
-                            aspect={croppingRatio}
-                            onCropChange={onCropChange}
-                            onZoomChange={onZoomChange}
-                            onCropComplete={handleCropComplete}
-                        />
+                    <div className="flex flex-col items-center justify-center w-full">
+                        <div className='mt-4 w-52 h-52 relative'>
+                            <Cropper
+                                image={image.toString()}
+                                crop={crop}
+                                zoom={zoom}
+                                aspect={croppingRatio}
+                                onCropChange={onCropChange}
+                                onZoomChange={onZoomChange}
+                                onCropComplete={handleCropComplete}
+                            />
+                        </div>
+                        <button
+                            className="bg-blue text-close2White rounded-b-3xl mt-2 px-2 py-1 w-52"
+                            onClick={changePhoto}
+                        >
+                            WYBIERZ
+                        </button>
                     </div>
-                    <button
-                        className="bg-blue text-close2White rounded-3xl mt-2 px-2 py-1 w-52"
-                        onClick={changePhoto}
-                    >
-                        WYBIERZ
-                    </button>
-                    </>
                 )}
                 </div>
             </div>
