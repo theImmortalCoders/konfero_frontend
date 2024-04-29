@@ -2,14 +2,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const path = request.nextUrl.pathname;
-
-  console.log("path", path);
+  const nextpath = request.nextUrl.pathname;
 
   const isRestrictedPath =
-    path === "/myconference" || path.startsWith("/myconference/");
+    nextpath === "/myconference" || nextpath.startsWith("/myconference/");
 
-  const isLoginPath = path === "/login";
+  const isLoginPath = nextpath === "/login";
 
   const token = request.cookies.get("JSESSIONID")?.value;
 
@@ -23,5 +21,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/aboutus", "/conference/:path*", "/myconference/:path*", "/login"],
+  matcher: "/:path*",
 };
