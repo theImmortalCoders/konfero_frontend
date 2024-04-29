@@ -113,17 +113,17 @@ export function ImageCropFrame(
     }
     
     return (
-        <div>
+        <div className="w-full">
             <p className="w-full outline-none focus:outline-none bg-close2White text-darkblue font-bold">
                 {inputDescription}
             </p>
-            <div className="flex flex-row items-center justify-center py-2 bg-close2White ">
+            <div className="flex flex-row items-center justify-center py-2 bg-close2White min-w-[50%]">
                 <div className='z-50 w-full h-64 flex flex-col items-start'>
-                <form id={`${formName}`}>
-                    <input type="file" accept=".png, .jpg, .jpeg" onChange={onSelectFile} className="w-full outline-none focus:outline-none bg-close2White text-blue"/>
+                <form id={`${formName}`} className="flex items-center w-full">
+                    <input type="file" accept=".png, .jpg, .jpeg" onChange={onSelectFile} className="max-w-60 outline-none focus:outline-none bg-close2White text-blue"/>
                 </form>
                 {image && (
-                    <div className="flex flex-col items-center justify-center w-full">
+                    <div className="flex flex-col items-center justify-start w-full">
                         <div className='mt-4 w-52 h-52 relative'>
                             <Cropper
                                 image={image.toString()}
