@@ -45,21 +45,6 @@ export default function LoginPage() {
   const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && !isError && currentUserData) {
-      if (currentUserData !== null) {
-        const lastVisitedPage = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("lastVisitedPage="))
-          ?.split("=")[1];
-
-        if (lastVisitedPage && lastVisitedPage !== "/login") {
-          router.push(lastVisitedPage);
-        } else {
-          router.push("/");
-        }
-      }
-    }
-    document.cookie = `redirectUrl=${NEXT_PUBLIC_FRONT_BASE_URL}`;
     setTimeout(() => setShowLogin(true), 100);
   }, [isLoading, isError, currentUserData, router]);
 
