@@ -41,6 +41,7 @@ export async function addMaterialToLecture(lectureId: number, materialId: number
     try {
       const response: AxiosResponse<void> = await appAPI.post(
         `/api/lecture-material/${lectureId}?materialId=${materialId}`,
+        {},
         {
           withCredentials: true,
         }
