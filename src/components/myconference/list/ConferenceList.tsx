@@ -1,7 +1,7 @@
 "use client";
 import { Content } from "@/hooks/conference";
 import ListItemImage from "../../common/List/ListItemImage";
-import { formatDateWithHour } from "@/utils/date";
+import { formatDate, formatDateWithHour } from "@/utils/date";
 import { CiCirclePlus } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 
@@ -27,11 +27,11 @@ export default function ConferenceList({
         logo={conference.logo}
         className="rounded-l-3xl"
       >
-        <div className="flex flex-col pl-4">
-          <p className="font-black text-xl">{conference?.name}</p>
-          <p>Rozpoczęcie: {formatDateWithHour(conference?.startDateTime)}</p>
-          <p>Zakończenie: {formatDateWithHour(conference?.endDateTime)}</p>
-          <p className="font-bold">{conference?.location?.name}</p>
+        <div className="flex flex-col pl-4 space-y-0 xs:space-y-1 py-2">
+          <p className="font-black text-lg xs:text-xl">{conference?.name}</p>
+          <p className="text-sm xs:text-base">{formatDate(conference?.startDateTime)}
+          &nbsp;- {formatDate(conference?.endDateTime)}</p>
+          <p className="font-semibold xs:font-bold text-sm xs:text-base">{conference?.location?.name}</p>
         </div>
       </ListItemImage>
       {(role === "USER" || role === "ALL") && (

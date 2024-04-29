@@ -337,8 +337,9 @@ export default function AddConferenceInputs({
           inputDescription="Logo konferencji" 
           croppingRatio={16/16}
           imageFile={imageFile} 
-          setImageFile={setImageFile}/>
-        <div className="flex flex-row items-center justify-center space-x-12 pt-2 bg-close2White ">
+          setImageFile={setImageFile}
+        />
+        <div className="flex flex-row items-center justify-center space-x-12 pt-2 bg-close2White">
           <div className="w-[120px]">
             <APIImageComponent imageId={imageId} type="conference" />
           </div>
