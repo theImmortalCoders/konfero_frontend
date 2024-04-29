@@ -24,7 +24,7 @@ export default function MyConferenceListPage() {
   if (isError) return <Error500 />;
 
   return (
-    <Page>
+    <Page className="pb-10">
       {!isLoading ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start">
           <ConferenceSearch
