@@ -339,7 +339,7 @@ export default function AddConferenceInputs({
           imageFile={imageFile} 
           setImageFile={setImageFile}
         />
-        <div className="flex flex-row items-center mt-10 justify-center space-x-12 pt-2 bg-close2White">
+        <div className="flex flex-row items-center mt-10 justify-center space-x-12 pt-2 bg-close2White pr-0 sm:pr-10 lg:pr-20">
           <div className="w-[120px]">
             <APIImageComponent imageId={imageId} type="conference" />
           </div>
