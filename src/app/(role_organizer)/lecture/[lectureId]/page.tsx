@@ -1,29 +1,47 @@
 "use client";
 import Page from "@/components/common/Page/Page";
-import Logo from "@/assets/home/laptop.jpg";
 import { BoxWithImage } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
 import Error500 from "@/components/common/Error/Error500";
 import People from "@/components/myconferenceId/Participants/People";
-import { getLectureDetails } from "@/hooks/lecture";
+import { getLectureDetails, GetLectureDetailsData } from "@/hooks/lecture";
 import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
 import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrapper";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
-import { getCurrentUser } from "@/hooks/user";
+import AddLectureMaterials from "@/components/lecture/AddLectureMaterials";
+import { useEffect, useState } from "react";
 
 export default function LecturePage({
   params,
 }: {
   params: { lectureId: string };
 }) {
-  const {
-    data: lectureIdData,
-    isLoading,
-    isError,
-  } = useQuery(`lectureId_${parseInt(params.lectureId)}`, () =>
-    getLectureDetails(parseInt(params.lectureId))
-  );
+  const [lectureIdData, setLectureIdData] = useState<
+    string | GetLectureDetailsData
+  >();
+  const [isLoading, setLoading] = useState(true);
+  const [isError, setError] = useState(false);
+  const [refetchState, setRefetchState] = useState<number>(0);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const data = await getLectureDetails(parseInt(params.lectureId));
+        setLectureIdData(data);
+        setLoading(false);
+      } catch (error: any) {
+        setError(error.message);
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [refetchState]);
+
+  const handleLectureDataRefetch = () => {
+    setRefetchState((prev) => prev + 1);
+  };
 
   if (isError) return <Error500 />;
 
@@ -59,13 +77,23 @@ export default function LecturePage({
                 </div>
               </>
             ) : null}
+            <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
+            <TitleHeader title={"Materiały"} />
+            <div className="w-full flex justify-center md:justify-end items-center mb-4">
+              <AddLectureMaterials
+                lectureId={params.lectureId}
+                handleRefetch={handleLectureDataRefetch}
+              />
+            </div>
             {lectureIdData.materials.length !== 0 ? (
               <>
-                <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
-                <TitleHeader title={"Materiały"} />
-                <MaterialTableWrapper lectureIdData={lectureIdData} />
+                <MaterialTableWrapper
+                  lectureIdData={lectureIdData}
+                  handleRefetch={handleLectureDataRefetch}
+                />
               </>
             ) : null}
+
             {lectureIdData.interested.length !== 0 ? (
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />

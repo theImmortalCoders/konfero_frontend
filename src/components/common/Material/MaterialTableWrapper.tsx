@@ -3,11 +3,13 @@ import { GetLectureDetailsData } from "@/hooks/lecture";
 
 export default function MaterialTableWrapper({
   lectureIdData,
+  handleRefetch,
 }: {
   lectureIdData: GetLectureDetailsData;
+  handleRefetch: ()=>void
 }) {
   return (
-    <div className="w-full flex justify-center items-center flex-col mb-4">
+    <div className="w-full flex-col mb-4 overflow-x-auto">
       <table className={"table-auto min-w-[40rem] w-full text-gray-400"}>
         <thead>
           <tr>
@@ -20,7 +22,7 @@ export default function MaterialTableWrapper({
         </thead>
         <tbody>
           {lectureIdData.materials.map((material, index) => (
-            <MaterialBlock key={index} material={material} />
+            <MaterialBlock key={index} material={material} lectureId={lectureIdData.id} handleRefetch={handleRefetch}/>
           ))}
         </tbody>
       </table>
