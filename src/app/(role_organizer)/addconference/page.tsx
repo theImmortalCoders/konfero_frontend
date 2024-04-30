@@ -1,3 +1,4 @@
+"use client";
 import Page from "@/components/common/Page/Page";
 import { Box } from "@/components/common/Box/Box";
 import AddConferenceInputs from "@/components/myconference/AddConferenceInputs";
