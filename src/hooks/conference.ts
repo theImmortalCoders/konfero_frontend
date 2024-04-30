@@ -296,11 +296,11 @@ export interface AddNewConferenceData {
   photosIds: number[];
 }
 
-export async function addNewConference(conferendeData: AddNewConferenceData) {
+export async function addNewConference(conferenceData: AddNewConferenceData) {
   try {
     const response: AxiosResponse<void> = await appAPI.post(
       `/api/conference`,
-      conferendeData,
+      conferenceData,
       {
         withCredentials: true,
       }
@@ -335,12 +335,12 @@ export async function addNewConference(conferendeData: AddNewConferenceData) {
 
 export async function updateInfoAboutConference(
   conferenceId: number,
-  conferendeData: AddNewConferenceData
+  conferenceData: AddNewConferenceData
 ) {
   try {
     const response: AxiosResponse<void> = await appAPI.put(
       `/api/conference/${conferenceId}`,
-      conferendeData,
+      conferenceData,
       {
         withCredentials: true,
       }
