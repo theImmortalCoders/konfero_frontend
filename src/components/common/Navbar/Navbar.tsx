@@ -54,6 +54,17 @@ export default function Navbar() {
     staleTime: Infinity,
   });
 
+  function AdminNavbox() {
+    if (currentUserData && (currentUserData as UserData).role === "ADMIN")
+    return (
+      <Link href="/admindashboard">
+        <button onClick={() => updateLastVisitedPage("/admindashboard")}>
+          Panel administratora
+        </button>
+      </Link>
+    );
+  }
+
   return (
     <nav className="max-w-screen h-navbar bg-close2White flex items-center justify-between px-4 md:px-8 shadow-navbarShadow sticky z-20">
       <Link href="/" onClick={() => updateLastVisitedPage("/")}>
@@ -62,6 +73,7 @@ export default function Navbar() {
 
       <div className="text-darkblue font-sans text-md lg:text-lg md:flex md:flex-row md:gap-10 hidden">
         <Navbox />
+        <AdminNavbox />
       </div>
 
       <div className="flex flex-row gap-4 md:gap-8 items-center">
@@ -104,6 +116,7 @@ export default function Navbar() {
         <div className="md:hidden absolute top-navbar left-0 w-full bg-close2White shadow-md py-4 z-50">
           <div className="flex flex-col items-center gap-4 z-50">
             <Navbox />
+            <AdminNavbox />
           </div>
         </div>
       )}
