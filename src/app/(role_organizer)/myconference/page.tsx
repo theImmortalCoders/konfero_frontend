@@ -32,7 +32,7 @@ export default function MyConferenceListPage() {
   if (isAuthorise === false) return <NotFound />;
 
   return (
-    <Page>
+    <Page className="pb-10">
       {!isLoading && !isAuthLoading ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start">
           <ConferenceSearch
