@@ -27,7 +27,7 @@ const AcceptOrganizer = () => {
               key={index}
             />
           );
-        }) : <p>Loading...</p>
+        }) : <p>Ładowanie...</p>
       }
     </div>
   );

@@ -33,7 +33,7 @@ const AdminSidebar = () => {
           Tagi
         </button>
       </div>
-      <div className="w-full">
+      <div className="flex flex-col gap-y-6 w-full">
         {
           panel === "TAGS" && <AdminTags /> ||
           panel === "USERS" && <AdminVerifyUser /> ||
