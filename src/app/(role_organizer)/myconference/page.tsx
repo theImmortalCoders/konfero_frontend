@@ -1,5 +1,4 @@
 "use client";
-
 import Page from "@/components/common/Page/Page";
 import {
   GetAllConferencesData,
@@ -10,10 +9,18 @@ import ConferenceList from "@/components/myconference/list/ConferenceList";
 import Error500 from "@/components/common/Error/Error500";
 import ConferenceSearch from "@/components/myconference/ConferenceSearch";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
+import useAuth from "@/hooks/useAuth";
+import NotFound from "@/app/not-found";
 
 export default function MyConferenceListPage() {
+  const {
+    isAuthorise,
+    isLoading: isAuthLoading,
+    userRole,
+  } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+
   const { data, isLoading, isError } = useQuery(
-    "konferencje",
+    "NotCanceledConferences",
     () => getNotCanceledConferences(),
     {
       staleTime: Infinity,
@@ -23,15 +30,18 @@ export default function MyConferenceListPage() {
 
   if (isError) return <Error500 />;
 
+  if (isAuthorise === false) return <NotFound />;
+
   return (
-    <Page>
-      {!isLoading ? (
-        <div className="w-[90%] lg:w-[60%] h-full justify-start">
+    <Page className="pb-10">
+      {!isLoading && !isAuthLoading && userRole ? (
+        <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
           <ConferenceSearch
             data={data as GetAllConferencesData}
-            role={"ORGANIZER"}
+            disablerole={false}
+            role={userRole}
           />
-          <div className="w-full flex flex-col gap-y-8">
+          <div className="w-full flex flex-col gap-y-10">
             {(data as GetAllConferencesData)?.content?.map((conf) => {
               return (
                 <ConferenceList

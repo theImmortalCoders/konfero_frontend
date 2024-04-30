@@ -65,7 +65,7 @@ const config: Config = {
       },
       boxShadow: {
         navbarShadow: "0px 3px 20px 3px rgba(186, 182, 182, 1)",
-        whiteShadow: "0px 0px 20px 3px rgba(186, 182, 182, 1)",
+        whiteShadow: "0px 5px 20px 1px rgba(186, 182, 182, 1)",
       },
     },
   },

@@ -174,6 +174,7 @@ export async function verifyUser(userId: number) {
   try {
     const response: AxiosResponse<void> = await appAPI.patch(
       `/api/user/${userId}/verify`,
+      {},
       {
         withCredentials: true,
       }
@@ -210,6 +211,7 @@ export async function changeUserRole(userId: number, newRole: string) {
   try {
     const response: AxiosResponse<void> = await appAPI.patch(
       `/api/user/${userId}/role?newRole=${newRole}`,
+      {},
       {
         withCredentials: true,
       }
@@ -246,6 +248,7 @@ export async function banUser(userId: number) {
   try {
     const response: AxiosResponse<void> = await appAPI.patch(
       `/api/user/${userId}/ban`,
+      {},
       {
         withCredentials: true,
       }
@@ -364,6 +367,7 @@ export async function reviewOrganizerRequest(
   try {
     const response: AxiosResponse<void> = await appAPI.put(
       `/api/user/${requestId}?approve=${approve}`,
+      {},
       {
         withCredentials: true,
       }

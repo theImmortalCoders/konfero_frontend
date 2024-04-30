@@ -164,7 +164,7 @@ export async function getNotCanceledConferences(
   }
 }
 
-interface Tag {
+export interface Tag {
   id: number;
   tagName: string;
 }

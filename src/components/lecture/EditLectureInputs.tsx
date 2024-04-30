@@ -14,6 +14,7 @@ import {GetConferenceDetailsWithRoleFilteringData} from "@/hooks/conference";
 import SearchBarLecture from "@/components/lecture/SearchBarLecture";
 import {TiDeleteOutline} from "react-icons/ti";
 import {uploadFile} from "@/hooks/file";
+import { ImageCropFrame } from "../common/ImageCrop/ImageCropFrame";
 
 type params = {
   lectureData: GetLectureDetailsData
@@ -269,23 +270,15 @@ export default function EditLectureInputs({lectureData, conferenceData, currentU
           </div>
         </>
       }
-      <div className="flex flex-col">
-        <p className="w-full outline-none focus:outline-none bg-close2White text-darkblue font-bold">
-          Zdjęcie wykładu
-        </p>
-        <form id="imageInput" className="py-3">
-          <input
-            type="file"
-            accept=".png, .jpg, .jpeg"
-            className="w-full outline-none focus:outline-none bg-close2White text-blue"
-            onChange={(e) => {
-              if (e.target.files) {
-                setImageFile(e.target.files[0]);
-              }
-            }}
-          />
-        </form>
-        <div className="flex flex-row items-center justify-center space-x-12 pt-2 bg-close2White ">
+       <div className="flex flex-col sm:flex-row">
+        <ImageCropFrame 
+          formName="imageInput" 
+          inputDescription="Zdjęcie wykładu" 
+          croppingRatio={16/16}
+          imageFile={imageFile} 
+          setImageFile={setImageFile}
+        />
+        <div className="flex flex-row items-center mt-10 justify-center space-x-12 pt-2 bg-close2White pr-0 sm:pr-10 lg:pr-20">
           <div className="w-[120px]">
             <APIImageComponent imageId={imageId} type="lecture"/>
           </div>
