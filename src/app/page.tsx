@@ -1,4 +1,4 @@
-import Box from "@/components/common/Box/Box";
+import { Box } from "@/components/common/Box/Box";
 import Image from "next/image";
 import Laptop from "@/assets/home/laptop.jpg";
 import { FaArrowRight } from "react-icons/fa6";
@@ -22,8 +22,8 @@ function Joinus() {
 }
 export default function Home() {
   return (
-    <Page>
-      <Box className="w-[90%] lg:w-[70%] text-darkblue">
+    <Page className="justify-center">
+      <Box className="w-[90%] lg:w-[60%] text-darkblue">
         <div className="grid grid-cols-1 xl:grid-cols-2 w-full h-full">
           <div className="pr-0 md:pr-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">

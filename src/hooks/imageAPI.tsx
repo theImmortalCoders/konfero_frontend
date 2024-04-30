@@ -1,17 +1,34 @@
+"use client";
 import { useEffect, useState } from "react";
 import { appAPI } from "@/utils/appENV";
+import { GetAllUsersData } from "./user";
+
+export interface LogoInterface {
+  id: number;
+  path: string;
+  description: string;
+  authorId: number;
+  fileType: string;
+}
+
+export interface ImageInterface {
+  id: number;
+  path: string;
+  description: string;
+  author: GetAllUsersData;
+  fileType: string;
+  createdDate: string;
+}
 
 interface APIImageComponentProps {
   imageId: number;
   type: string;
-  thumbnail?: boolean;
   full?: boolean;
 }
 
 const APIImageComponent: React.FC<APIImageComponentProps> = ({
   imageId,
   type,
-  thumbnail,
   full,
 }) => {
   const [imageData, setImageData] = useState<string>("");
@@ -28,74 +45,28 @@ const APIImageComponent: React.FC<APIImageComponentProps> = ({
             setDefaultImage("question.jpg");
           }
         } else {
-          if (!thumbnail || thumbnail === undefined) {
-            const response = await appAPI.get(`/api/image/${imageId}`, {
-              responseType: "arraybuffer",
-            });
+          const response = await appAPI.get(`/api/file/${imageId}/image`, {
+            responseType: "arraybuffer",
+          });
 
-            if (response.status === 200) {
-              const base64Image = btoa(
-                new Uint8Array(response.data).reduce(
-                  (data, byte) => data + String.fromCharCode(byte),
-                  ""
-                )
-              );
+          if (response.status === 200) {
+            const base64Image = btoa(
+              new Uint8Array(response.data).reduce(
+                (data, byte) => data + String.fromCharCode(byte),
+                ""
+              )
+            );
 
-              const imageSrc = `data:image/png;base64,${base64Image}`;
+            const imageSrc = `data:image/png;base64,${base64Image}`;
 
-              setImageData(imageSrc);
-            } else {
-              console.error("Wystąpił błąd podczas wyświetlania zdjęcia");
-              return "Wystąpił błąd podczas wyświetlania zdjęcia";
-            }
-          } else if (thumbnail) {
-            try {
-              const response = await appAPI.get(
-                `/api/image/${imageId}?thumbnail=true`,
-                {
-                  responseType: "arraybuffer",
-                }
-              );
-
-              if (response.status === 200) {
-                const base64Image = btoa(
-                  new Uint8Array(response.data).reduce(
-                    (data, byte) => data + String.fromCharCode(byte),
-                    ""
-                  )
-                );
-
-                const imageSrc = `data:image/png;base64,${base64Image}`;
-
-                setImageData(imageSrc);
-              }
-            } catch (error: any) {
-              if (error.response && error.response.status === 404) {
-                const response = await appAPI.get(`/api/image/${imageId}`, {
-                  responseType: "arraybuffer",
-                });
-
-                if (response.status === 200) {
-                  const base64Image = btoa(
-                    new Uint8Array(response.data).reduce(
-                      (data, byte) => data + String.fromCharCode(byte),
-                      ""
-                    )
-                  );
-
-                  const imageSrc = `data:image/png;base64,${base64Image}`;
-
-                  setImageData(imageSrc);
-                } else {
-                  console.error("Wystąpił błąd podczas wyświetlania zdjęcia");
-                  return "Wystąpił błąd podczas wyświetlania zdjęcia";
-                }
-              }
-            }
+            setImageData(imageSrc);
+          } else {
+            console.error("Wystąpił błąd podczas wyświetlania zdjęcia");
+            return "Wystąpił błąd podczas wyświetlania zdjęcia";
           }
         }
       } catch (error) {
-        window.location.replace("/500");
+        console.error("Error:", error);
       }
     };
 

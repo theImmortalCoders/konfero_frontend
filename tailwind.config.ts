@@ -8,6 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        xxs: "0.65rem",
+        xs: "0.75rem",
+        tiny: "0.875rem",
+      },
+      lineHeight: {
+        xxs: "0.875rem",
+        xs: "1rem",
+        tiny: "1.15rem",
+      },
       screens: {
         xs: "475px",
         mds: "799px",
@@ -55,7 +65,7 @@ const config: Config = {
       },
       boxShadow: {
         navbarShadow: "0px 3px 20px 3px rgba(186, 182, 182, 1)",
-        whiteShadow: "0px 0px 20px 3px rgba(186, 182, 182, 1)",
+        whiteShadow: "0px 5px 20px 1px rgba(186, 182, 182, 1)",
       },
     },
   },
