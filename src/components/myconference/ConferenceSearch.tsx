@@ -4,9 +4,11 @@ import AddButton from "../common/List/AddButton";
 
 export default function ConferenceSearch({
   data,
+  disablerole,
   role,
 }: {
   data: GetAllConferencesData;
+  disablerole: boolean;
   role: string;
 }) {
   return (
@@ -14,7 +16,7 @@ export default function ConferenceSearch({
       <div className="flex justify-between items-center font-black text-darkblue w-full">
         Znalezione konferencje:{" "}
         {(data as GetAllConferencesData)?.numberOfElements}
-        {role === "ORGANIZER" ? (
+        {!disablerole && (role === "ORGANIZER" || role === "ADMIN") ? (
           <AddButton href={"/addconference"}>Dodaj Konferencje</AddButton>
         ) : null}
       </div>

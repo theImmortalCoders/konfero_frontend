@@ -16,12 +16,20 @@ import Photos from "@/components/myconferenceId/Photos/Photos";
 import Lectures from "@/components/myconferenceId/Lectures/Lectures";
 import Title from "@/components/myconferenceId/Title/Title";
 import Panel from "@/components/myconferenceId/OrganizerAndAdminPanel/Panel";
+import useAuth from "@/hooks/useAuth";
+import NotFound from "../../addlecture/[conferenceId]/not-found";
 
 export default function MyConferencePage({
   params,
 }: {
   params: { conferenceId: string };
 }) {
+  const {
+    isAuthorise,
+    isLoading: isAuthLoading,
+    userRole,
+  } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+
   const {
     data: conferenceIdData,
     isLoading,
@@ -31,19 +39,24 @@ export default function MyConferencePage({
   );
 
   if (isError) return <Error500 />;
-
+  if (isAuthorise === false) return <NotFound />;
   return (
     <Page className="py-10">
-      {!isLoading &&
+      {!isAuthLoading &&
+      userRole &&
+      !isLoading &&
       conferenceIdData &&
       typeof conferenceIdData !== "string" ? (
         <>
-          <Panel conferenceIdData={conferenceIdData} />
+          {userRole === "ORGANIZER" || userRole === "ADMIN" ? (
+            <Panel conferenceIdData={conferenceIdData} />
+          ) : null}
           <Title conferenceIdData={conferenceIdData} />
           <Organizers organizer={conferenceIdData.organizer} />
           <Lectures
             lectures={conferenceIdData.lectures}
             conferenceId={conferenceIdData.id}
+            userRole={userRole}
           />
           {conferenceIdData.participants !== null ? (
             <Participants conferenceIdData={conferenceIdData} />
