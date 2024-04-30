@@ -9,6 +9,7 @@ import {
   IoCloseOutline,
 } from "react-icons/io5";
 import Link from "next/link";
+import { updateLastVisitedPage } from "@/utils/cookie";
 import { UserData, getCurrentUser } from "@/hooks/user";
 import { useQuery } from "react-query";
 import { NEXT_PUBLIC_FRONT_BASE_URL, appAPI } from "@/utils/appENV";
@@ -17,12 +18,19 @@ function Navbox() {
   return (
     <>
       <Link href="/aboutus">
-        <button>O nas</button>
+        <button onClick={() => updateLastVisitedPage("/aboutus")}>O nas</button>
       </Link>
       <Link href="/conference">
-        <button>Konferencje</button>
+        <button onClick={() => updateLastVisitedPage("/conference")}>
+          Konferencje
+        </button>
       </Link>
-      <Link href="/myconference">Moje konferencje</Link>
+      <Link
+        href="/myconference"
+        onClick={() => updateLastVisitedPage("/myconference")}
+      >
+        Moje konferencje
+      </Link>
     </>
   );
 }
@@ -48,7 +56,7 @@ export default function Navbar() {
 
   return (
     <nav className="max-w-screen h-navbar bg-close2White flex items-center justify-between px-4 md:px-8 shadow-navbarShadow sticky z-20">
-      <Link href="/">
+      <Link href="/" onClick={() => updateLastVisitedPage("/")}>
         <Image src={Logo} alt="Logo" width={70} height={70} />
       </Link>
 
@@ -63,9 +71,7 @@ export default function Navbar() {
           !currentUserData ||
           currentUserData === null ||
           isError ? (
-            <Link href="/login">
-              <IoPersonCircleOutline className="w-8 h-8 text-darkblue" />
-            </Link>
+            <Link href="/login"><IoPersonCircleOutline className="w-8 h-8 text-darkblue" /></Link>
           ) : (
             <div className="flex justify-end relative">
               <Image
@@ -76,14 +82,8 @@ export default function Navbar() {
                 alt="Avatar"
                 onClick={toggleUserMenu}
               />
-              <div
-                className={`absolute -right-5 top-0 w-32 mt-[40px] bg-close2White rounded-b-lg px-3 py-2 ${
-                  showUserMenu ? "flex" : "hidden"
-                } items-center justify-start text-sm`}
-              >
-                <Link href={`${appAPI.defaults.baseURL}/api/oauth2/logout`}>
-                  Wyloguj
-                </Link>
+              <div className={`absolute -right-5 top-0 w-32 mt-[40px] bg-close2White rounded-b-lg px-3 py-2 ${showUserMenu ? 'flex' : 'hidden'} items-center justify-start text-sm`}>
+                <Link href={`${appAPI.defaults.baseURL}/api/oauth2/logout`}>Wyloguj</Link>
               </div>
             </div>
           )}
