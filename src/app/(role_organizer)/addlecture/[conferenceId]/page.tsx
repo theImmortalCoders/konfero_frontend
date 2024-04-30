@@ -34,7 +34,8 @@ export default function AddLecture({
   if (isAuthorise === false) return <NotFound />;
   return (
     <Page className="justify-start py-10">
-      {!conferenceLoading &&
+      {!isAuthLoading &&
+      !conferenceLoading &&
       conferenceData &&
       typeof conferenceData !== "string" ? (
         <>

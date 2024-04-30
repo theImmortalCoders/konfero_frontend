@@ -25,11 +25,11 @@ export default function LecturePage({
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
   const [refetchState, setRefetchState] = useState<number>(0);
-  const { isAuthorise, isLoading: isAuthLoading } = useAuth([
-    "ORGANIZER",
-    "ADMIN",
-  ]);
-  if (isAuthorise === false) return <NotFound />;
+  const {
+    isAuthorise,
+    isLoading: isAuthLoading,
+    userRole,
+  } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
 
   useEffect(() => {
     async function fetchData() {
@@ -51,11 +51,13 @@ export default function LecturePage({
   };
 
   if (isError) return <Error500 />;
+  if (isAuthorise === false) return <NotFound />;
 
   return (
     <Page>
       {!isAuthLoading &&
       !isLoading &&
+      userRole &&
       lectureIdData &&
       typeof lectureIdData !== "string" ? (
         <>
@@ -64,7 +66,10 @@ export default function LecturePage({
             src={lectureIdData.image.id}
             alt={"Logo"}
           >
-            <MyLecturePageImageBox lectureIdData={lectureIdData} />
+            <MyLecturePageImageBox
+              lectureIdData={lectureIdData}
+              userRole={userRole}
+            />
             <div className="px-4 py-2 sm:px-8 sm:py-4 w-full">
               <TitleHeader title={lectureIdData.name} />
               <p className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg pt-2 sm:pt-3 md:pt-4 lg:pt-3 xl:pt-4">
@@ -90,10 +95,12 @@ export default function LecturePage({
             <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
             <TitleHeader title={"Materiały"} />
             <div className="w-full flex justify-center md:justify-end items-center mb-4">
-              <AddLectureMaterials
-                lectureId={params.lectureId}
-                handleRefetch={handleLectureDataRefetch}
-              />
+              {userRole === "ORGANIZER" || userRole === "ADMIN" ? (
+                <AddLectureMaterials
+                  lectureId={params.lectureId}
+                  handleRefetch={handleLectureDataRefetch}
+                />
+              ) : null}
             </div>
             {lectureIdData.materials.length !== 0 ? (
               <>

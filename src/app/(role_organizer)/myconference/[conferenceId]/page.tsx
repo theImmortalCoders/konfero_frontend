@@ -24,10 +24,11 @@ export default function MyConferencePage({
 }: {
   params: { conferenceId: string };
 }) {
-  const { isAuthorise, isLoading: isAuthLoading } = useAuth([
-    "ORGANIZER",
-    "ADMIN",
-  ]);
+  const {
+    isAuthorise,
+    isLoading: isAuthLoading,
+    userRole,
+  } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
 
   const {
     data: conferenceIdData,
@@ -42,16 +43,20 @@ export default function MyConferencePage({
   return (
     <Page className="py-10">
       {!isAuthLoading &&
+      userRole &&
       !isLoading &&
       conferenceIdData &&
       typeof conferenceIdData !== "string" ? (
         <>
-          <Panel conferenceIdData={conferenceIdData} />
+          {userRole === "ORGANIZER" || userRole === "ADMIN" ? (
+            <Panel conferenceIdData={conferenceIdData} />
+          ) : null}
           <Title conferenceIdData={conferenceIdData} />
           <Organizers organizer={conferenceIdData.organizer} />
           <Lectures
             lectures={conferenceIdData.lectures}
             conferenceId={conferenceIdData.id}
+            userRole={userRole}
           />
           {conferenceIdData.participants !== null ? (
             <Participants conferenceIdData={conferenceIdData} />
