@@ -34,12 +34,12 @@ export default function MyConferenceListPage() {
   return (
     <Page className="pb-10">
       {!isLoading && !isAuthLoading ? (
-        <div className="w-[90%] lg:w-[60%] h-full justify-start">
+        <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
           <ConferenceSearch
             data={data as GetAllConferencesData}
             role={"ORGANIZER"}
           />
-          <div className="w-full flex flex-col gap-y-8">
+          <div className="w-full flex flex-col gap-y-10">
             {(data as GetAllConferencesData)?.content?.map((conf) => {
               return (
                 <ConferenceList
