@@ -13,13 +13,14 @@ import useAuth from "@/hooks/useAuth";
 import NotFound from "@/app/not-found";
 
 export default function MyConferenceListPage() {
-  const { isAuthorise, isLoading: isAuthLoading } = useAuth([
-    "ORGANIZER",
-    "ADMIN",
-  ]);
+  const {
+    isAuthorise,
+    isLoading: isAuthLoading,
+    userRole,
+  } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
 
   const { data, isLoading, isError } = useQuery(
-    "konferencje",
+    "NotCanceledConferences",
     () => getNotCanceledConferences(),
     {
       staleTime: Infinity,
@@ -33,11 +34,12 @@ export default function MyConferenceListPage() {
 
   return (
     <Page className="pb-10">
-      {!isLoading && !isAuthLoading ? (
+      {!isLoading && !isAuthLoading && userRole ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
           <ConferenceSearch
             data={data as GetAllConferencesData}
-            role={"ORGANIZER"}
+            disablerole={false}
+            role={userRole}
           />
           <div className="w-full flex flex-col gap-y-10">
             {(data as GetAllConferencesData)?.content?.map((conf) => {

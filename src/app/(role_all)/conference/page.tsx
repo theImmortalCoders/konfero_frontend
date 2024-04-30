@@ -11,7 +11,7 @@ import { getCurrentUser } from "@/hooks/user";
 
 export default function ConferencePage() {
   const { data, isLoading, isError } = useQuery(
-    "konferencje",
+    "AllConferences",
     () => getAllConferences(),
     {
       staleTime: Infinity,
@@ -27,6 +27,7 @@ export default function ConferencePage() {
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
           <ConferenceSearch
             data={data as GetAllConferencesData}
+            disablerole={true}
             role={"USER"}
           />
           <div className="w-full flex flex-col gap-y-10">
