@@ -16,12 +16,19 @@ import Photos from "@/components/myconferenceId/Photos/Photos";
 import Lectures from "@/components/myconferenceId/Lectures/Lectures";
 import Title from "@/components/myconferenceId/Title/Title";
 import Panel from "@/components/myconferenceId/OrganizerAndAdminPanel/Panel";
+import useAuth from "@/hooks/useAuth";
+import NotFound from "../../addlecture/[conferenceId]/not-found";
 
 export default function MyConferencePage({
   params,
 }: {
   params: { conferenceId: string };
 }) {
+  const { isAuthorise, isLoading: isAuthLoading } = useAuth([
+    "ORGANIZER",
+    "ADMIN",
+  ]);
+
   const {
     data: conferenceIdData,
     isLoading,
@@ -31,10 +38,11 @@ export default function MyConferencePage({
   );
 
   if (isError) return <Error500 />;
-
+  if (isAuthorise === false) return <NotFound />;
   return (
     <Page className="py-10">
-      {!isLoading &&
+      {!isAuthLoading &&
+      !isLoading &&
       conferenceIdData &&
       typeof conferenceIdData !== "string" ? (
         <>

@@ -1,13 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { getCurrentUser, UserData } from "./user";
 
 const useAuth = (allowedRoles: string[]) => {
   const [isAuthorise, setIsAuthorise] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const checkUserRole = async () => {
+  const checkUserRole = useMemo(
+    () => async () => {
       try {
         const currentUser: UserData | null = await getCurrentUser();
         if (currentUser && allowedRoles.includes(currentUser.role)) {
@@ -21,10 +21,13 @@ const useAuth = (allowedRoles: string[]) => {
       } finally {
         setIsLoading(false);
       }
-    };
+    },
+    [allowedRoles]
+  );
 
+  useEffect(() => {
     checkUserRole();
-  }, [allowedRoles]);
+  }, [checkUserRole]);
 
   return { isAuthorise, isLoading };
 };

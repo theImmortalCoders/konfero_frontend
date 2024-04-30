@@ -11,6 +11,8 @@ import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrap
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 import AddLectureMaterials from "@/components/lecture/AddLectureMaterials";
 import { useEffect, useState } from "react";
+import useAuth from "@/hooks/useAuth";
+import NotFound from "../../addlecture/[conferenceId]/not-found";
 
 export default function LecturePage({
   params,
@@ -23,6 +25,11 @@ export default function LecturePage({
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
   const [refetchState, setRefetchState] = useState<number>(0);
+  const { isAuthorise, isLoading: isAuthLoading } = useAuth([
+    "ORGANIZER",
+    "ADMIN",
+  ]);
+  if (isAuthorise === false) return <NotFound />;
 
   useEffect(() => {
     async function fetchData() {
@@ -47,7 +54,10 @@ export default function LecturePage({
 
   return (
     <Page>
-      {!isLoading && lectureIdData && typeof lectureIdData !== "string" ? (
+      {!isAuthLoading &&
+      !isLoading &&
+      lectureIdData &&
+      typeof lectureIdData !== "string" ? (
         <>
           <BoxWithImage
             className="text-darkblue w-[90%] lg:w-[60%] mt-20 mb-5"

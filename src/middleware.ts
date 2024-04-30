@@ -5,7 +5,15 @@ export function middleware(request: NextRequest) {
   const nextpath = request.nextUrl.pathname;
 
   const isRestrictedPath =
-    nextpath === "/myconference" || nextpath.startsWith("/myconference/");
+    nextpath === "/addconference" ||
+    nextpath.startsWith("/addlecture/") ||
+    nextpath.startsWith("/lecture/") ||
+    nextpath === "/myconference" ||
+    nextpath.startsWith("/myconference/") ||
+    nextpath.startsWith("/updateconference/") ||
+    nextpath.startsWith("/updatelecture/") ||
+    nextpath === "/attend" ||
+    nextpath === "/becomeorganizer";
 
   const isLoginPath = nextpath === "/login";
 

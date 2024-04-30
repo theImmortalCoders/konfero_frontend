@@ -19,36 +19,15 @@ export default function ConferencePage() {
     }
   );
 
-  const {
-    data: currentUserData,
-    isLoading: currentUserLoading,
-    isError: currentUserError,
-  } = useQuery("currentUser", getCurrentUser, {
-    staleTime: Infinity,
-  });
-
-  if (isError || currentUserError) return <Error500 />;
-
-  let userRole: string = "ALL";
-  if (currentUserData !== undefined) {
-    if (currentUserData === null) {
-      userRole = "ALL";
-    } else {
-      if (currentUserData.role === "ORGANIZER") {
-        userRole = "USER";
-      } else {
-        userRole = currentUserData.role;
-      }
-    }
-  }
+  if (isError) return <Error500 />;
 
   return (
     <Page>
-      {!isLoading && !currentUserLoading && currentUserData ? (
+      {!isLoading ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start">
           <ConferenceSearch
             data={data as GetAllConferencesData}
-            role={userRole}
+            role={"USER"}
           />
           <div className="w-full flex flex-col gap-y-4">
             {(data as GetAllConferencesData)?.content?.map((conf) => {
@@ -56,7 +35,7 @@ export default function ConferencePage() {
                 <ConferenceList
                   key={`${conf.id}`}
                   conference={conf}
-                  role={userRole}
+                  role={"USER"}
                 />
               );
             })}
