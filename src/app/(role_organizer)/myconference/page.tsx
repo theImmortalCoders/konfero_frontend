@@ -1,5 +1,4 @@
 "use client";
-
 import Page from "@/components/common/Page/Page";
 import {
   GetAllConferencesData,
@@ -10,8 +9,15 @@ import ConferenceList from "@/components/myconference/list/ConferenceList";
 import Error500 from "@/components/common/Error/Error500";
 import ConferenceSearch from "@/components/myconference/ConferenceSearch";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
+import useAuth from "@/hooks/useAuth";
+import NotFound from "@/app/not-found";
 
 export default function MyConferenceListPage() {
+  const { isAuthorise, isLoading: isAuthLoading } = useAuth([
+    "ORGANIZER",
+    "ADMIN",
+  ]);
+
   const { data, isLoading, isError } = useQuery(
     "konferencje",
     () => getNotCanceledConferences(),
@@ -23,9 +29,11 @@ export default function MyConferenceListPage() {
 
   if (isError) return <Error500 />;
 
+  if (isAuthorise === false) return <NotFound />;
+
   return (
     <Page>
-      {!isLoading ? (
+      {!isLoading && !isAuthLoading ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start">
           <ConferenceSearch
             data={data as GetAllConferencesData}
