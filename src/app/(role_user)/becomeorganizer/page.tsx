@@ -18,9 +18,9 @@ function Description({ children }: { children: React.ReactNode }) {
 }
 
 export default function BecomeOrganizer() {
-  const { isAuthorize, isLoading: isAuthLoading } = useAuth(["USER"]);
+  const { isAuthorise, isLoading: isAuthLoading } = useAuth(["USER"]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  if (isAuthorize === false) return <NotFound />;
+  if (isAuthorise === false) return <NotFound />;
   return (
     <Page className="justify-center">
       {!isAuthLoading ? (
