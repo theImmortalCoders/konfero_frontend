@@ -2,7 +2,7 @@
 
 import {useQuery, UseQueryResult} from "react-query";
 import {getAllPendingBecomeOrganizerRequest, GetAllPendingBecomeOrganizerRequestData, getAllUsers} from "@/hooks/user";
-import AcceptOrganizerCard from "@/components/admin/AcceptOrganizerCard";
+import AcceptOrganizerCard from "@/components/admindashboard/AcceptOrganizerCard";
 
 const AcceptOrganizer = () => {
 
@@ -17,9 +17,8 @@ const AcceptOrganizer = () => {
     <div className="flex flex-col justify-center gap-y-5">
       {
         !isLoadingRequests &&
-        pendingRequestsData &&
         typeof pendingRequestsData !== "string" ?
-        pendingRequestsData.map((req, index) => {
+        pendingRequestsData?.map((req, index) => {
           return (
             <AcceptOrganizerCard
               request={req}

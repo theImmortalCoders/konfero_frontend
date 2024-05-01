@@ -1,6 +1,6 @@
 import {Tag} from "@/hooks/conference";
 import { BsFillTrash3Fill } from "react-icons/bs";
-import {useCallback, useState} from "react";
+import {useCallback} from "react";
 import {deleteTag} from "@/hooks/tag";
 import {UseQueryResult} from "react-query";
 

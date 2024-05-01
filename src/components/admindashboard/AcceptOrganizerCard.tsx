@@ -27,7 +27,7 @@ const AcceptOrganizerCard = ({request, refetchRequests}: props) => {
   },[])
 
   return (
-    <div className="flex flex-col md:flex-row justify-between border-2 border-black w-full py-5 px-2 sm:px-6 gap-x-4 gap-y-6 rounded-3xl shadow-darkblue shadow-md">
+    <div className="flex flex-col md:flex-row justify-between border-2 border-black w-full py-5 px-2 sm:px-6 gap-x-4 gap-y-6 rounded-3xl shadow-darkblue shadow-sm">
       <div className="flex flex-col items-center gap-y-4 xs:w-56 self-center">
         <p className="font-black text-lg text-center w-full" >{request.user.username}</p>
         <Image

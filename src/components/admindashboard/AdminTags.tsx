@@ -1,9 +1,7 @@
 import {useQuery} from "react-query";
 import {addNewTag, getAllTags} from "@/hooks/tag";
-import SingleTag from "@/components/admin/SingleTag";
+import SingleTag from "@/components/admindashboard/SingleTag";
 import {useCallback, useState} from "react";
-import {Tag} from "@/hooks/conference";
-
 
 const AdminTags = () => {
 
@@ -22,7 +20,10 @@ const AdminTags = () => {
       if (tagName.length > 0) {
         setAddError(undefined)
         const response = await addNewTag(tagName);
-        if (response === 200) await tagsRefetch();
+        if (response === 200) {
+          await tagsRefetch();
+          setNewTag("");
+        }
       } else {
         setAddError("Wystąpił błąd podczas dodawania tag'u.")
       }
@@ -44,11 +45,10 @@ const AdminTags = () => {
           onChange={(e) => {
             const value = e.target.value;
             const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,40}$/i.test(value);
-            if (isValid) setNewTag(value.toUpperCase());
+            if (isValid) setNewTag(value.toUpperCase().replace(/\s/g, ''));
           }}
           onKeyDown={(e) => {e.code === 'Enter' && handleAddTag(newTag)}}
           className="max-w-full border-2 border-blue px-2 focus:outline-none focus:border-darkblue focus:border-b-2 bg-close2White transition-colors rounded-lg"
-          autoComplete="off"
           required
         />
         <button
@@ -64,18 +64,9 @@ const AdminTags = () => {
           tagsData &&
           !tagsLoading &&
           typeof tagsData !== "string" ?
-            (tagsData.map((tag) => {
+            (tagsData.sort((a,b) => {return a.tagName < b.tagName ? -1 : 1}).map((tag) => {
             return <SingleTag key={tag.id} tag={tag} refetch={tagsRefetch}/>
           }))
-            : <p>Ładowanie...</p>
-        }
-        {
-          tagsData &&
-          !tagsLoading &&
-          typeof tagsData !== "string" ?
-            (tagsData.map((tag, index) => {
-              return <p>{tag.id}</p>
-            }))
             : <p>Ładowanie...</p>
         }
       </div>

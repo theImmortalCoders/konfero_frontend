@@ -1,8 +1,8 @@
 'use client'
 
-import AdminTags from "@/components/admin/AdminTags";
-import AcceptOrganizer from "@/components/admin/AcceptOrganizer";
-import AdminVerifyUser from "@/components/admin/AdminVerifyUser";
+import AdminTags from "@/components/admindashboard/AdminTags";
+import AcceptOrganizer from "@/components/admindashboard/AcceptOrganizer";
+import AdminVerifyUser from "@/components/admindashboard/AdminVerifyUser";
 import {useState} from "react";
 
 const AdminSidebar = () => {
