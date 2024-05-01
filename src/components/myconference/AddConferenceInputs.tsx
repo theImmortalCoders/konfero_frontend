@@ -5,6 +5,7 @@ import {
   addNewConference,
   AddNewConferenceData,
   getConferenceDetailsWithRoleFiltering,
+  Tag,
   updateInfoAboutConference,
 } from "@/hooks/conference";
 import { uploadFile, FileResponseData } from "@/hooks/file";
@@ -13,6 +14,9 @@ import { MdOutlineDeleteForever } from "react-icons/md";
 import { LocationMap } from "../common/Input/LocationMap";
 import { useQuery } from "react-query";
 import { ImageCropFrame } from "../common/ImageCrop/ImageCropFrame";
+import SearchBarTag from "../tag/SearchBarTag";
+import { getAllTags } from "@/hooks/tag";
+import { TiDeleteOutline } from "react-icons/ti";
 
 export default function AddConferenceInputs({
   isUpdate,
@@ -35,13 +39,57 @@ export default function AddConferenceInputs({
   const [format, setFormat] = useState<string>("STATIONARY");
   const [imageId, setImageId] = useState<number>(0);
   const [imageFile, setImageFile] = useState<File>(new File([], ""));
+  const [tagsIds, setTagsIds] = useState<number[]>([]);
   const [galleryPhotosIds, setGalleryPhotosIds] = useState<number[]>([]);
   const [imageGalleryFiles, setImageGalleryFiles] = useState<File[]>([]);
+
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [tagsNames, setTagsNames] = useState<string[]>([]);
+  const [cleanSearchBar, setCleanSearchBar] = useState(false);
 
   const [statusError, setStatusError] = useState<boolean | undefined>(
     undefined
   );
   const [message, setMessage] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      const result = await getAllTags();
+      if (typeof result !== "string") {
+        setTags(result);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
+  const handleTagSelected = (tag: Tag) => {
+    setTagsIds((prevState) => {
+        if (!prevState.includes(tag.id)) {
+            return [...prevState, tag.id];
+        }
+        return prevState;
+    });
+    setTagsNames((prevState) => {
+        if (!prevState.includes(tag.tagName)) {
+            return [...prevState, tag.tagName];
+        }
+        return prevState;
+    });
+    setCleanSearchBar(true);
+  };
+
+  useEffect(() => {
+    if (tagsIds.length !== 0) {
+      setStatusError(undefined);
+      setCleanSearchBar(false);
+    }
+  }, [tagsIds]);
+
+  const handleDeleteLecturers = (indexToDelete: number) => {
+    setTagsIds(tagsIds.filter((_, index) => index !== indexToDelete));
+    setTagsNames(tagsNames.filter((_, index) => index !== indexToDelete));
+  };
 
   if (isUpdate) {
     const {
@@ -154,7 +202,7 @@ export default function AddConferenceInputs({
     name: name,
     description: description,
     logoId: imageId,
-    tagsIds: [],
+    tagsIds: tagsIds,
     location: {
       locX: locX,
       locY: locY,
@@ -348,6 +396,30 @@ export default function AddConferenceInputs({
             onClick={handleDeleteImage}
           />
         </div>
+      </div>
+      <div className="flex flex-col">
+          <SearchBarTag
+            items={tags}
+            renderItem={(tag) => `${tag.tagName}`}
+            onItemSelected={handleTagSelected}
+            placeholder="Dodaj tagi"
+            handleReset={cleanSearchBar}
+            pt={-1}
+          />
+          <div className="grid grid-cols-2 gap-2 w-full text-blue pt-2">
+              {tagsNames.map((name, index) => (
+              <span
+                  key={index}
+                  className="flex flex-row items-center justify-between p-1 border border-blue rounded-lg"
+              >
+                  {name}
+                  <TiDeleteOutline
+                  className="h-5 w-5 cursor-pointer"
+                  onClick={() => handleDeleteLecturers(index)}
+                  />
+              </span>
+              ))}
+          </div>
       </div>
       { format === "STATIONARY" && (
         <div className="pt-4">
