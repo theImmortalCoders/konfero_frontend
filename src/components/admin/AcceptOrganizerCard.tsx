@@ -10,7 +10,7 @@ import { FiPhone } from "react-icons/fi";
 
 type props = {
   request: GetAllPendingBecomeOrganizerRequestData,
-  refetchRequests: () => Promise<UseQueryResult>
+  refetchRequests: () => Promise<UseQueryResult>,
 }
 
 const AcceptOrganizerCard = ({request, refetchRequests}: props) => {

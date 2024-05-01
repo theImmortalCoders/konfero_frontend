@@ -8,6 +8,7 @@ import {Tag} from "@/hooks/conference";
 const AdminTags = () => {
 
   const [newTag, setNewTag] = useState<string>("")
+  const [addError, setAddError] = useState<string | undefined>(undefined)
 
   const {
     data: tagsData,
@@ -18,17 +19,18 @@ const AdminTags = () => {
 
   const handleAddTag = useCallback(async (tagName: string) => {
     try {
-      const response = await addNewTag(tagName);
-      if (response === 200) await tagsRefetch();
-
+      if (tagName.length > 0) {
+        setAddError(undefined)
+        const response = await addNewTag(tagName);
+        if (response === 200) await tagsRefetch();
+      } else {
+        setAddError("Wystąpił błąd podczas dodawania tag'u.")
+      }
     } catch (error) {
       console.log(error);
+      setAddError("Wystąpił błąd podczas dodawania tag'u.")
     }
   },[])
-
-  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    console.log(e.key)
-  }
 
   return (
     <>
@@ -50,20 +52,30 @@ const AdminTags = () => {
           required
         />
         <button
-          className="rounded-full bg-darkblue text-white px-2 py-1 w-min text-nowrap"
+          className="rounded-full border-2 border-darkblue hover:bg-darkblue hover:text-white px-2 py-1 w-min text-nowrap transition-colors"
           onClick={() => {handleAddTag(newTag)}}
         >
           Zapisz
         </button>
       </div>
+      {addError && <p className="text-red-600">{addError}</p>}
       <div className="flex flex-wrap gap-3">
         {
           tagsData &&
           !tagsLoading &&
           typeof tagsData !== "string" ?
-          tagsData.sort((a: Tag, b: Tag) => a.tagName < b.tagName ? -1 : 1).map((tag, index) => {
-            return <SingleTag key={index} tag={tag}/>
-          })
+            (tagsData.map((tag) => {
+            return <SingleTag key={tag.id} tag={tag} refetch={tagsRefetch}/>
+          }))
+            : <p>Ładowanie...</p>
+        }
+        {
+          tagsData &&
+          !tagsLoading &&
+          typeof tagsData !== "string" ?
+            (tagsData.map((tag, index) => {
+              return <p>{tag.id}</p>
+            }))
             : <p>Ładowanie...</p>
         }
       </div>
