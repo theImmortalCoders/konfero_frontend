@@ -121,6 +121,8 @@ export default function AddConferenceInputs({
             );
             setFormat(conferenceDetailsData.format);
             setImageId(conferenceDetailsData.logo.id);
+            setTagsIds(conferenceDetailsData.tags.map((tag => tag.id)));
+            setTagsNames(conferenceDetailsData.tags.map((tag => tag.tagName)));
             setGalleryPhotosIds(
               conferenceDetailsData.photos.map((photo) => photo.id)
             );
@@ -134,6 +136,8 @@ export default function AddConferenceInputs({
             setParticipantsLimit("");
             setFormat("STATIONARY");
             setImageId(0);
+            setTagsIds([]);
+            setTagsNames([]);
             setGalleryPhotosIds([]);
           }
         } else {
@@ -406,7 +410,7 @@ export default function AddConferenceInputs({
             handleReset={cleanSearchBar}
             pt={-1}
           />
-          <div className="grid grid-cols-2 gap-2 w-full text-blue pt-2">
+          <div className="grid grid-cols-3 gap-2 w-full text-blue pt-2">
               {tagsNames.map((name, index) => (
               <span
                   key={index}
