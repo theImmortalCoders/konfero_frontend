@@ -25,8 +25,8 @@ export async function deleteConference(conferenceId: number) {
       console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
       return "Nie jesteś właścicielem konferencji lub nie masz roli";
     } else {
-      console.error("Wystąpił błąd podczas usuwania prelekcji");
-      return "Wystąpił błąd podczas usuwania prelekcji";
+      console.error("Wystąpił błąd podczas usuwania konferencji");
+      return "Wystąpił błąd podczas usuwania konferencji";
     }
   } catch (error: any) {
     if (error.response.status === 400) {
@@ -40,7 +40,45 @@ export async function deleteConference(conferenceId: number) {
       console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
       return "Nie jesteś właścicielem konferencji lub nie masz roli";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas usuwania konferencji");
+      return "Wystąpił błąd podczas usuwania konferencji";
+    }
+  }
+}
+
+export async function signOutFromConference(conferenceId: number) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.delete(
+      `/api/conference/${conferenceId}/attend`,
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.status === 200) {
+      console.log("Wypisano z konferencji poprawnie!");
+      return response.status;
+    } else if (response.status === 400) {
+      console.error("Nie byłeś zarejestrowany na tę konferencję!");
+      return "Nie byłeś zarejestrowany na tę konferencję!";
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      console.error("Wystąpił błąd podczas wypisywania z konferencji");
+      return "Wystąpił błąd podczas wypisywania z konferencji";
+    }
+  } catch (error: any) {
+    if (error.response.status === 400) {
+      console.error("Nie byłeś zarejestrowany na tę konferencję!");
+      return "Nie byłeś zarejestrowany na tę konferencję!";
+    } else if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      console.error("Wystąpił błąd podczas wypisywania z konferencji");
+      return "Wystąpił błąd podczas wypisywania z konferencji";
     }
   }
 }
@@ -114,18 +152,20 @@ export async function getAllConferences(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error(
+      console.error(
         "Wystąpił błąd podczas pobierania wszystkich konferencji"
       );
+      return "Wystąpił błąd podczas pobierania wszystkich konferencji";
     }
   } catch (error: any) {
     if (error.response.status === 401) {
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error(
+      console.error(
         "Wystąpił błąd podczas pobierania wszystkich konferencji"
       );
+      return "Wystąpił błąd podczas pobierania wszystkich konferencji";
     }
   }
 }
@@ -151,18 +191,20 @@ export async function getNotCanceledConferences(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error(
+      console.error(
         "Wystąpił błąd podczas pobierania wszystkich konferencji"
       );
+      return "Wystąpił błąd podczas pobierania wszystkich konferencji";
     }
   } catch (error: any) {
     if (error.response.status === 401) {
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error(
+      console.error(
         "Wystąpił błąd podczas pobierania wszystkich konferencji"
       );
+      return "Wystąpił błąd podczas pobierania wszystkich konferencji";
     }
   }
 }
@@ -237,18 +279,20 @@ export async function getConferenceDetailsWithRoleFiltering(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error(
+      console.error(
         "Wystąpił błąd podczas pobierania szczegółów konferencji"
       );
+      return "Wystąpił błąd podczas pobierania szczegółów konferencji";
     }
   } catch (error: any) {
     if (error.response.status === 401) {
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error(
+      console.error(
         "Wystąpił błąd podczas pobierania szczegółów konferencji"
       );
+      return "Wystąpił błąd podczas pobierania szczegółów konferencji";
     }
   }
 }
@@ -284,7 +328,8 @@ export async function cancelConference(conferenceId: number) {
       console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
       return "Nie jesteś właścicielem konferencji lub nie masz roli";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas anulowania konferencji");
+      return "Wystąpił błąd podczas anulowania konferencji";
     }
   }
 }
@@ -333,7 +378,46 @@ export async function addNewConference(conferenceData: AddNewConferenceData) {
       console.error("Nie jesteś organizatorem");
       return "Nie jesteś organizatorem";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas dodawania konferencji");
+      return "Wystąpił błąd podczas dodawania konferencji";
+    }
+  }
+}
+
+export async function signUpForConference(conferenceId: number) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.post(
+      `/api/conference/${conferenceId}/attend`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.status === 200) {
+      console.log("Zapisano na konferencję poprawnie!");
+      return response.status;
+    } else if (response.status === 400) {
+      console.error("Jesteś już zapisany na tę konferencję");
+      return "Jesteś już zapisany na te konferencję";
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      console.error("Wystąpił błąd podczas zapisywania na konferencję");
+      return "Wystąpił błąd podczas zapisywania na konferencję";
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 400) {
+      console.error("Jesteś już zapisany na tę konferencję");
+      return "Jesteś już zapisany na te konferencję";
+    } else {
+      console.error("Wystąpił błąd podczas zapisywania na konferencję");
+      return "Wystąpił błąd podczas zapisywania na konferencję";
     }
   }
 }
