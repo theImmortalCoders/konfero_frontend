@@ -32,6 +32,7 @@ export default function ConferenceList({
           <p className="text-sm xs:text-base">{formatDate(conference?.startDateTime)}
           &nbsp;- {formatDate(conference?.endDateTime)}</p>
           <p className="font-semibold xs:font-bold text-sm xs:text-base">{conference?.location?.name}</p>
+          <p>{conference.tags.map((tag => tag.tagName))}</p>
         </div>
       </ListItemImage>
       {(role === "USER" || role === "ALL") && (

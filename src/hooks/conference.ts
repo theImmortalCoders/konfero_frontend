@@ -51,6 +51,7 @@ export interface Content {
   endDateTime: string;
   organizer: Organizer;
   name: string;
+  tags: Tag[];
   logo: LogoInterface;
   location: Location;
   finished: boolean;
