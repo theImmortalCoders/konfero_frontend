@@ -35,12 +35,12 @@ export default function ConferenceList({
             <p className="font-semibold xs:font-bold text-sm xs:text-base">{conference?.location?.name}</p>
           </div>
           <div className="flex flex-row w-full pl-4 items-center justify-start mt-1 mb-2 space-x-1">
-            {conference.tags.slice(0, 8).map((tag) => (
+            {conference.tags?.slice(0, 8).map((tag) => (
               <p key={tag.id} className="w-20 h-fit text-xxs overflow-hidden overflow-ellipsis whitespace-nowrap text-center bg-gray-200 border-[1px] border-blue rounded-lg px-1">
                 {tag.tagName}
               </p>
             ))}
-            {conference.tags.length > 8 && 
+            {conference.tags?.length > 8 &&
               <p className="w-20 h-fit text-xxs overflow-hidden overflow-ellipsis whitespace-nowrap text-center bg-gray-200 border-[1px] border-blue rounded-lg px-1">{conference.tags.length - 8} więcej...</p>
             }
           </div>
