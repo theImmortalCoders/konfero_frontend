@@ -1,6 +1,6 @@
 import { appAPI } from "@/utils/appENV";
 import { AxiosResponse } from "axios";
-import { ImageInterface, LogoInterface } from "./imageAPI";
+import { ImageInterface } from "./imageAPI";
 
 export async function deleteLecture(lectureId: number) {
   try {
@@ -33,7 +33,51 @@ export async function deleteLecture(lectureId: number) {
       console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
       return "Nie jesteś właścicielem konferencji lub nie masz roli";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas usuwania prelekcji");
+      return "Wystąpił błąd podczas usuwania prelekcji";
+    }
+  }
+}
+
+export async function removeLectureFromFavourites(lectureId: number) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.delete(
+      `/api/lecture/${lectureId}/interested`,
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.status === 200) {
+      console.log("Prelekcja została usunięta z ulubionych!");
+      return response.status;
+    } else if (response.status === 400) {
+      console.error("Prelekcja nie była dodana do ulubionych");
+      return "Prelekcja nie była dodana do ulubionych";
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie jesteś zapisany na tę konferencję");
+      return "Nie jesteś zapisany na tę konferencję";
+    } else {
+      console.error("Wystąpił błąd podczas usuwania prelekcji z ulubionych");
+      return "Wystąpił błąd podczas usuwania prelekcji z ulubionych";
+    }
+  } catch (error: any) {
+    if (error.response.status === 400) {
+      console.error("Prelekcja nie była dodana do ulubionych");
+      return "Prelekcja nie była dodana do ulubionych";
+    } else if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie jesteś zapisany na tę konferencję");
+      return "Nie jesteś zapisany na tę konferencję";
+    } else {
+      console.error("Wystąpił błąd podczas usuwania prelekcji z ulubionych");
+      return "Wystąpił błąd podczas usuwania prelekcji z ulubionych";
     }
   }
 }
@@ -84,14 +128,16 @@ export async function getLectureDetails(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error("Wystąpił błąd podczas pobierania szczegółów prelekcji");
+      console.error("Wystąpił błąd podczas pobierania szczegółów prelekcji");
+      return "Wystąpił błąd podczas pobierania szczegółów prelekcji";
     }
   } catch (error: any) {
     if (error.response.status === 401) {
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error("Wystąpił błąd podczas pobierania szczegółów prelekcji");
+      console.error("Wystąpił błąd podczas pobierania szczegółów prelekcji");
+      return "Wystąpił błąd podczas pobierania szczegółów prelekcji";
     }
   }
 }
@@ -141,7 +187,8 @@ export async function modifyLectureInfoByOrganizer(
       console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
       return "Nie jesteś właścicielem konferencji lub nie masz roli";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas modyfikacji danych prelekcji");
+      return "Wystąpił błąd podczas modyfikacji danych prelekcji";
     }
   }
 }
@@ -186,7 +233,8 @@ export async function modifyLectureInfoByLecturer(
       console.error("Nie jesteś prelegentem");
       return "Nie jesteś prelegentem";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas modyfikacji danych prelekcji");
+      return "Wystąpił błąd podczas modyfikacji danych prelekcji";
     }
   }
 }
@@ -236,7 +284,8 @@ export async function addLectureToConference(
       console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
       return "Nie jesteś właścicielem konferencji lub nie masz roli";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas dodawania prelekcji do konferencji");
+      return "Wystąpił błąd podczas dodawania prelekcji do konferencji";
     }
   }
 }

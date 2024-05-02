@@ -1,7 +1,7 @@
 import { appAPI } from "@/utils/appENV";
 import { AxiosResponse } from "axios";
 import { Location, Organizer } from "@/hooks/user";
-import { ImageInterface, LogoInterface } from "./imageAPI";
+import { ImageInterface } from "./imageAPI";
 
 export async function deleteConference(conferenceId: number) {
   try {
@@ -127,7 +127,7 @@ export interface Content {
   organizer: Organizer;
   name: string;
   tags: Tag[];
-  logo: LogoInterface;
+  logo: ImageInterface;
   location: Location;
   finished: boolean;
   canceled: boolean;
@@ -460,7 +460,8 @@ export async function updateInfoAboutConference(
       console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
       return "Nie jesteś właścicielem konferencji lub nie masz roli";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas aktualizowania danych konferencji");
+      return "Wystąpił błąd podczas aktualizowania danych konferencji";
     }
   }
 }
