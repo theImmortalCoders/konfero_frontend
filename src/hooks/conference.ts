@@ -83,6 +83,43 @@ export async function signOutFromConference(conferenceId: number) {
   }
 }
 
+export async function cancelConference(conferenceId: number) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.delete(
+      `/api/conference/${conferenceId}/cancel`,
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.status === 200) {
+      console.log("Konferencja anulowana poprawnie!");
+      return response.status;
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+      return "Nie jesteś właścicielem konferencji lub nie masz roli";
+    } else {
+      console.error("Wystąpił błąd podczas anulowania konferencji");
+      return "Wystąpił błąd podczas anulowania konferencji";
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
+      return "Nie jesteś właścicielem konferencji lub nie masz roli";
+    } else {
+      console.error("Wystąpił błąd podczas anulowania konferencji");
+      return "Wystąpił błąd podczas anulowania konferencji";
+    }
+  }
+}
+
 export interface Content {
   id: number;
   startDateTime: string;
@@ -227,8 +264,11 @@ export interface Lecture {
   name: string;
   startDateTime: string;
   durationMinutes: number;
-  image: LogoInterface;
+  image: ImageInterface;
   place: string;
+  interestedAmount: number;
+  conferenceId: number;
+  conferenceName: string;
 }
 
 interface Comment {
@@ -245,7 +285,7 @@ export interface GetConferenceDetailsWithRoleFilteringData {
   organizer: Organizer;
   name: string;
   description: string;
-  logo: LogoInterface;
+  logo: ImageInterface;
   tags: Tag[];
   location: Location;
   participants: Participant[];
@@ -293,43 +333,6 @@ export async function getConferenceDetailsWithRoleFiltering(
         "Wystąpił błąd podczas pobierania szczegółów konferencji"
       );
       return "Wystąpił błąd podczas pobierania szczegółów konferencji";
-    }
-  }
-}
-
-export async function cancelConference(conferenceId: number) {
-  try {
-    const response: AxiosResponse<void> = await appAPI.delete(
-      `/api/conference/${conferenceId}/cancel`,
-      {
-        withCredentials: true,
-      }
-    );
-    if (response.status === 200) {
-      console.log("Konferencja anulowana poprawnie!");
-      return response.status;
-    } else if (response.status === 401) {
-      window.location.replace("/login");
-      console.error("Brak autoryzacji użytkownika");
-      return "Brak autoryzacji użytkownika";
-    } else if (response.status === 403) {
-      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
-      return "Nie jesteś właścicielem konferencji lub nie masz roli";
-    } else {
-      console.error("Wystąpił błąd podczas anulowania konferencji");
-      return "Wystąpił błąd podczas anulowania konferencji";
-    }
-  } catch (error: any) {
-    if (error.response.status === 401) {
-      window.location.replace("/login");
-      console.error("Brak autoryzacji użytkownika");
-      return "Brak autoryzacji użytkownika";
-    } else if (error.response.status === 403) {
-      console.error("Nie jesteś właścicielem konferencji lub nie masz roli");
-      return "Nie jesteś właścicielem konferencji lub nie masz roli";
-    } else {
-      console.error("Wystąpił błąd podczas anulowania konferencji");
-      return "Wystąpił błąd podczas anulowania konferencji";
     }
   }
 }
