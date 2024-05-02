@@ -60,6 +60,8 @@ export interface Content {
   format: string;
   verified: boolean;
   participantsFull: boolean;
+  participantsAmount: number;
+  amISignedUp: boolean;
 }
 
 interface Sort {
@@ -214,6 +216,8 @@ export interface GetConferenceDetailsWithRoleFilteringData {
   verified: boolean;
   comments: Comment[];
   participantsFull: boolean;
+  participantsAmount: number;
+  amISignedUp: boolean;
 }
 
 export async function getConferenceDetailsWithRoleFiltering(
