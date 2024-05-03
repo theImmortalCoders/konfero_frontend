@@ -13,9 +13,11 @@ export default function ConferenceSearch({
 }) {
   return (
     <Box className="w-full my-8">
-      <div className="flex justify-between items-center font-black text-darkblue w-full">
-        Znalezione konferencje:{" "}
-        {(data as GetAllConferencesData)?.numberOfElements}
+      <div className="flex flex-col xs:flex-row gap-y-2 justify-between items-center font-black text-darkblue w-full">
+        <p className="text-center break-all 2xs:break-normal">
+          Znalezione konferencje:{" "}
+          {(data as GetAllConferencesData)?.numberOfElements}
+        </p>
         {!disablerole && (role === "ORGANIZER" || role === "ADMIN") ? (
           <AddButton href={"/addconference"}>Dodaj Konferencje</AddButton>
         ) : null}

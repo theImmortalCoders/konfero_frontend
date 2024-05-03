@@ -38,11 +38,11 @@ export default function MyConferenceListPage() {
             role={userRole}
           />
           <div className="w-full flex flex-col gap-y-10">
-            {(data as GetAllConferencesData)?.content?.map((conf) => {
+            {(data as GetAllConferencesData)?.content?.map((conference) => {
               return (
                 <ConferenceList
-                  key={`${conf.id}`}
-                  conference={conf}
+                  key={`${conference.id}`}
+                  conference={conference}
                   role={"ORGANIZER"}
                 />
               );
