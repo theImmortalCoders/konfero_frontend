@@ -26,7 +26,8 @@ export async function deleteFileById(fileId: number) {
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas usuwania pliku");
+      return "Wystąpił błąd podczas usuwania pliku";
     }
   }
 }
@@ -55,7 +56,8 @@ export async function getAllFilesByAuthorId(authorId: number) {
       return "Wystąpił błąd podczas pobierania plików danego autora";
     }
   } catch (error: any) {
-    throw new Error("Error500");
+    console.error("Wystąpił błąd podczas pobierania plików danego autora");
+    return "Wystąpił błąd podczas pobierania plików danego autora";
   }
 }
 
@@ -75,7 +77,8 @@ export async function downloadFileById(fileId: string) {
       return "Wystąpił błąd podczas pobierania pliku";
     }
   } catch (error: any) {
-    throw new Error("Error500");
+      console.error("Wystąpił błąd podczas pobierania pliku");
+      return "Wystąpił błąd podczas pobierania pliku";
   }
 }
 
@@ -120,7 +123,8 @@ export async function uploadFile(
       console.error("Plik jest zbyt duży!");
       return "Plik jest zbyt duży!";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas przesyłania pliku");
+      return "Wystąpił błąd podczas przesyłania pliku";
     }
   }
 }

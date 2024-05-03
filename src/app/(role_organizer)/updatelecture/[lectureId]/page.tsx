@@ -12,10 +12,7 @@ import useAuth from "@/hooks/useAuth";
 import NotFound from "../../addlecture/[conferenceId]/not-found";
 
 const EditLecture = () => {
-  const { isAuthorise, isLoading: isAuthLoading } = useAuth([
-    "ORGANIZER",
-    "ADMIN",
-  ]);
+  const { isAuthorise } = useAuth(["ORGANIZER", "ADMIN"]);
 
   const { lectureId } = useParams<{ lectureId: string }>();
 
@@ -53,7 +50,7 @@ const EditLecture = () => {
 
   return (
     <Page className="justify-start py-20">
-      {!isAuthLoading &&
+      {isAuthorise === true &&
       !userLoading &&
       !lectureLoading &&
       !conferenceLoading &&

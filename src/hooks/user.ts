@@ -76,9 +76,10 @@ export async function getAllPendingBecomeOrganizerRequest(): Promise<
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
-      throw new Error(
+      console.error(
         "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem"
       );
+      return "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem";
     }
   } catch (error: any) {
     if (error.response.status === 401) {
@@ -89,9 +90,10 @@ export async function getAllPendingBecomeOrganizerRequest(): Promise<
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
-      throw new Error(
+      console.error(
         "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem"
       );
+      return "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem";
     }
   }
 }
@@ -150,9 +152,10 @@ export async function getAllUsers(): Promise<
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
-      throw new Error(
+      console.error(
         "Wystąpił błąd podczas pobierania danych wszystkich użytkowników"
       );
+      return "Wystąpił błąd podczas pobierania danych wszystkich użytkowników";
     }
   } catch (error: any) {
     if (error.response.status === 401) {
@@ -163,9 +166,10 @@ export async function getAllUsers(): Promise<
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
-      throw new Error(
+      console.error(
         "Wystąpił błąd podczas pobierania danych wszystkich użytkowników"
       );
+      return "Wystąpił błąd podczas pobierania danych wszystkich użytkowników";
     }
   }
 }
@@ -202,7 +206,8 @@ export async function verifyUser(userId: number) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas weryfikacji użytkownika");
+      return "Wystąpił błąd podczas weryfikacji użytkownika";
     }
   }
 }
@@ -239,7 +244,8 @@ export async function changeUserRole(userId: number, newRole: string) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas zmiany roli użytkownika");
+      return "Wystąpił błąd podczas zmiany roli użytkownika";
     }
   }
 }
@@ -276,7 +282,8 @@ export async function banUser(userId: number) {
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas zablokowywania użytkownika");
+      return "Wystąpił błąd podczas zablokowywania użytkownika";
     }
   }
 }
@@ -313,7 +320,8 @@ export async function updateProfileWithAdditionalData(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas aktualizacji danych użytkownika");
+      return "Wystąpił błąd podczas aktualizacji danych użytkownika";
     }
   }
 }
@@ -355,7 +363,10 @@ export async function becomeOrganizerWithUpdateData(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      throw new Error("Error500");
+      console.error(
+        "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora"
+      );
+      return "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora";
     }
   }
 }
@@ -397,7 +408,10 @@ export async function reviewOrganizerRequest(
       console.error("Nie jesteś administratorem!");
       return "Nie jesteś administratorem!";
     } else {
-      throw new Error("Error500");
+      console.error(
+        "Wystąpił błąd podczas rozpatrywania prośby o zostanie organizatorem"
+      );
+      return "Wystąpił błąd podczas rozpatrywania prośby o zostanie organizatorem";
     }
   }
 }

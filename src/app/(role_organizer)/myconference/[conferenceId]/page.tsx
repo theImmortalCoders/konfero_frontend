@@ -24,11 +24,7 @@ export default function MyConferencePage({
 }: {
   params: { conferenceId: string };
 }) {
-  const {
-    isAuthorise,
-    isLoading: isAuthLoading,
-    userRole,
-  } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+  const { isAuthorise, userRole } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
 
   const {
     data: conferenceIdData,
@@ -42,7 +38,7 @@ export default function MyConferencePage({
   if (isAuthorise === false) return <NotFound />;
   return (
     <Page className="py-10">
-      {!isAuthLoading &&
+      {isAuthorise === true &&
       userRole &&
       !isLoading &&
       conferenceIdData &&

@@ -25,11 +25,7 @@ export default function LecturePage({
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
   const [refetchState, setRefetchState] = useState<number>(0);
-  const {
-    isAuthorise,
-    isLoading: isAuthLoading,
-    userRole,
-  } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+  const { isAuthorise, userRole } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
 
   useEffect(() => {
     async function fetchData() {
@@ -55,7 +51,7 @@ export default function LecturePage({
 
   return (
     <Page>
-      {!isAuthLoading &&
+      {isAuthorise === true &&
       !isLoading &&
       userRole &&
       lectureIdData &&
