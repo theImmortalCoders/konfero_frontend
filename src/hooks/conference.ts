@@ -376,10 +376,10 @@ export async function getConferenceDetailsWithRoleFiltering(
   }
 }
 
-export async function getConferencesIAmSignedFor(conferenceStatus?: string): Promise<GetConferenceDetailsWithRoleFilteringData | string> {
+export async function getConferencesIAmSignedFor(conferenceStatus?: string): Promise<Content[] | string> {
   try {
     const response: AxiosResponse<
-      GetConferenceDetailsWithRoleFilteringData | string
+      Content[] | string
     > = await appAPI.get(conferenceStatus ? `/api/conference/my?conferenceStatus=${conferenceStatus}` : `/api/conference/my`, {
       withCredentials: true,
     });
