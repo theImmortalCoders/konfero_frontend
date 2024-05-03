@@ -13,11 +13,7 @@ import useAuth from "@/hooks/useAuth";
 import NotFound from "@/app/not-found";
 
 export default function MyConferenceListPage() {
-  const {
-    isAuthorise,
-    isLoading: isAuthLoading,
-    userRole,
-  } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+  const { isAuthorise, userRole } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
 
   const { data, isLoading, isError } = useQuery(
     "NotCanceledConferences",
@@ -34,7 +30,7 @@ export default function MyConferenceListPage() {
 
   return (
     <Page className="pb-10">
-      {!isLoading && !isAuthLoading && userRole ? (
+      {!isLoading && isAuthorise === true && userRole ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
           <ConferenceSearch
             data={data as GetAllConferencesData}
