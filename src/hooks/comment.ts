@@ -32,7 +32,8 @@ export async function deleteComment(commentId: number) {
       console.error("Nie masz odpowiedniej roli lub nie jesteś autorem komentarza");
       return "Nie masz odpowiedniej roli lub nie jesteś autorem komentarza";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas usuwania komentarza");
+      return "Wystąpił błąd podczas usuwania komentarza";
     }
   }
 }

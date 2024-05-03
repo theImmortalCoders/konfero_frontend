@@ -32,7 +32,8 @@ export async function deleteMaterialFromLecture(lectureId: number, materialId: n
       console.error("Nie jesteś właścicielem prelekcji");
       return "Nie jesteś właścicielem prelekcji";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas usuwania materiału");
+      return "Wystąpił błąd podczas usuwania materiału";
     }
   }
 }
@@ -77,7 +78,10 @@ export async function addMaterialToLecture(lectureId: number, materialId: number
         console.error("Nie jesteś właścicielem prelekcji");
         return "Nie jesteś właścicielem prelekcji";
       } else {
-        throw new Error("Error500");
+        console.error(
+          "Wystąpił błąd podczas dodawania materiału do prelekcji"
+        );
+        return "Wystąpił błąd podczas dodawania materiału do prelekcji";
       }
     }
 }

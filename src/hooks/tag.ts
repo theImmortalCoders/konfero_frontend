@@ -33,7 +33,8 @@ export async function deleteTag(tagId: number) {
       console.error("Nie masz odpowiedniej roli");
       return "Nie masz odpowiedniej roli";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas usuwania taga");
+      return "Wystąpił błąd podczas usuwania taga";
     }
   }
 }
@@ -52,14 +53,16 @@ export async function getAllTags(): Promise<Tag[] | string> {
         console.error("Brak autoryzacji użytkownika");
         return "Brak autoryzacji użytkownika";
       } else {
-        throw new Error("Wystąpił błąd podczas pobierania wszystkich tagów");
+        console.error("Wystąpił błąd podczas pobierania wszystkich tagów");
+        return "Wystąpił błąd podczas pobierania wszystkich tagów";
       }
     } catch (error: any) {
       if (error.response.status === 401) {
         console.error("Brak autoryzacji użytkownika");
         return "Brak autoryzacji użytkownika";
       } else {
-        throw new Error("Wystąpił błąd podczas pobierania wszystkich tagów");
+        console.error("Wystąpił błąd podczas pobierania wszystkich tagów");
+        return "Wystąpił błąd podczas pobierania wszystkich tagów";
       }
     }
 }
@@ -98,7 +101,8 @@ export async function addNewTag(value: string) {
         console.error("Nie masz odpowiedniej roli");
         return "Nie masz odpowiedniej roli";
       } else {
-        throw new Error("Error500");
+        console.error("Wystąpił błąd podczas dodawania taga");
+        return "Wystąpił błąd podczas dodawania taga";
       }
     }
 }
