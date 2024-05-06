@@ -5,23 +5,27 @@ import { formatDate } from "@/utils/date";
 import { CiCirclePlus } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useEffect } from "react";
+import { useEffect, Dispatch, SetStateAction } from "react";
 import { base } from "next/dist/build/webpack/config/blocks/base";
 
 export default function ConferenceList({
   conference,
   role,
+  setSignUpWarning,
+  setTempId
 }: {
   conference: Content;
   role: string;
+  setSignUpWarning: Dispatch<SetStateAction<boolean>>;
+  setTempId: Dispatch<SetStateAction<number>>;
 }) {
   const router = useRouter();
   const handleCirclePlusClick = () => {
-    if (role === "USER") {
-      router.push("/attend");
-    } else if (role === "ALL") {
+    if (role === "ALL") {
       router.push("/login");
     }
+    setSignUpWarning(true);
+    setTempId(conference.id);
   };
 
   const baseScale = useMediaQuery("(min-width:1024px)");
