@@ -15,17 +15,28 @@ export default function ConferenceList({
   setTempId
 }: {
   conference: Content;
-  role: string;
+  role: string | null;
   setSignUpWarning: Dispatch<SetStateAction<boolean>>;
   setTempId: Dispatch<SetStateAction<number>>;
 }) {
   const router = useRouter();
   const handleCirclePlusClick = () => {
-    if (role === "ALL") {
+    if (role === null) {
       router.push("/login");
     }
-    setSignUpWarning(true);
-    setTempId(conference.id);
+    else {
+      setSignUpWarning(true);
+      setTempId(conference.id);
+    }
+  };
+
+  const handleCircleMinusClick = () => {
+    if (role === null) {
+      router.push("/login");
+    }
+    else {
+      setTempId(conference.id);
+    }
   };
 
   const baseScale = useMediaQuery("(min-width:1024px)");
@@ -79,28 +90,28 @@ export default function ConferenceList({
           ) : null}
         </div>
       </ListItemImage>
-      {(role === "USER" || role === "ALL") && (
-        <div className="flex flex-col items-center space-y-2 xs:space-y-0">
-          <div
-            className="w-auto h-min flex justify-center items-center xs:h-min gap-x-2 xs:mr-4 xs:mt-4 2xs:px-2 xs:px-0 2xs:bg-gray-300 xs:bg-transparent rounded-full cursor-pointer"
-            onClick={() => {
-            if(!conference.participantsFull && !conference.amISignedUp) {
-              handleCirclePlusClick();
+      <div className="flex flex-col items-center space-y-2 xs:space-y-0">
+        <div
+          className="w-auto h-min flex justify-center items-center xs:h-min gap-x-2 xs:mr-4 xs:mt-4 2xs:px-2 xs:px-0 2xs:bg-gray-300 xs:bg-transparent rounded-full cursor-pointer"
+          onClick={() => {
+            if(!conference.participantsFull) {
+              if (!conference.amISignedUp) {
+                handleCirclePlusClick();
+              } 
             }
-            }}
-          >
-            <p className="font-semibold text-xs 2xs:text-base hidden 2xs:block xs:hidden ">
-              {conference.participantsFull && !conference.amISignedUp ? "Brak miejsc" : conference.amISignedUp ? "Wypisz się" : "Zapisz się"}
-            </p>
-            {conference.participantsFull && !conference.amISignedUp ? 
-              <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conference.amISignedUp ? 
-                <CiCircleMinus className="text-4xl text-darkblue" /> : <CiCirclePlus className="text-4xl text-darkblue" />}
-            </div>
-            <p className="font-semibold text-base xs:text-xs xs:mr-4">
-              {conference.participantsAmount}/{conference.participantsLimit}
-            </p>
+          }}
+        >
+          <p className="font-semibold text-xs 2xs:text-base hidden 2xs:block xs:hidden ">
+            {conference.participantsFull && !conference.amISignedUp ? "Brak miejsc" : conference.amISignedUp ? "Wypisz się" : "Zapisz się"}
+          </p>
+          {conference.participantsFull && !conference.amISignedUp ? 
+            <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conference.amISignedUp ? 
+              <CiCircleMinus className="text-4xl text-darkblue" /> : <CiCirclePlus className="text-4xl text-darkblue" />}
           </div>
-        )}
+          <p className="font-semibold text-base xs:text-xs xs:mr-4">
+            {conference.participantsAmount}/{conference.participantsLimit}
+          </p>
+        </div>
     </div>
   );
 }

@@ -11,7 +11,26 @@ import SignUpWarning from "@/components/conference/SignUpWarning";
 import { getCurrentUser } from "@/hooks/user";
 import { useEffect, useState } from "react";
 
+async function getRole() {
+  const userData = await getCurrentUser();
+  if (userData && typeof userData === 'object' && 'role' in userData) {
+    return userData.role;
+  }
+  return null;
+}
+
 export default function ConferencePage() {
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRole = async () => {
+      const role = await getRole();
+      console.log(role);
+      setUserRole(role);
+    };
+    fetchRole();
+  }, []);
+
   const { data, isLoading, isError, refetch } = useQuery(
     "AllConferences",
     () => getAllConferences(),
@@ -44,7 +63,7 @@ export default function ConferencePage() {
                 <ConferenceList
                   key={`${conf.id}`}
                   conference={conf}
-                  role={"USER"}
+                  role={userRole}
                   setSignUpWarning={setSignUpWarning}
                   setTempId={setTempId}
                 />
