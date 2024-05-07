@@ -2,7 +2,7 @@
 import { Content } from "@/hooks/conference";
 import ListItemImage from "../../common/List/ListItemImage";
 import { formatDate } from "@/utils/date";
-import { CiCirclePlus } from "react-icons/ci";
+import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useEffect, Dispatch, SetStateAction } from "react";
@@ -82,14 +82,20 @@ export default function ConferenceList({
       {(role === "USER" || role === "ALL") && (
         <div
           className="w-auto h-min flex justify-center items-center xs:h-min gap-x-2 xs:mr-4 xs:mt-4 2xs:px-2 xs:px-0 2xs:bg-gray-300 xs:bg-transparent rounded-full cursor-pointer"
-          onClick={handleCirclePlusClick}
+          onClick={() => {
+          if(!conference.participantsFull && !conference.amISignedUp) {
+            handleCirclePlusClick();
+          }
+          }}
         >
           <p className="font-semibold text-xs 2xs:text-base hidden 2xs:block xs:hidden ">
-            Dołącz
+            {conference.participantsFull && !conference.amISignedUp ? "Brak miejsc" : conference.amISignedUp ? "Wypisz się" : "Zapisz się"}
           </p>
-          <CiCirclePlus className="text-4xl text-darkblue" />
-        </div>
-      )}
+          {conference.participantsFull && !conference.amISignedUp ? 
+            <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conference.amISignedUp ? 
+              <CiCircleMinus className="text-4xl text-darkblue" /> : <CiCirclePlus className="text-4xl text-darkblue" />}
+          </div>
+        )}
     </div>
   );
 }

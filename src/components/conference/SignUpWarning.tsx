@@ -30,7 +30,7 @@ export default function SignUpWarning({
 
     return (
         <div className="fixed flex items-center justify-center inset-0 z-10">
-            <div onClick={() => setSignUpWarning(false)} className="absolute inset-0 bg-darkblue opacity-80"></div>
+            <div onClick={() => {setSignUpWarning(false); setTempId(-1)}} className="absolute inset-0 bg-darkblue opacity-80"></div>
             <div className="flex flex-col justify-center items-center w-64 sm:w-96 border-2 border-black text-black bg-close2White rounded-xl space-y-2 p-4 z-20">
                 <h1 className="text-xl">Zapis na konferencję</h1>
                 <p className="text-sm text-center font-sans">

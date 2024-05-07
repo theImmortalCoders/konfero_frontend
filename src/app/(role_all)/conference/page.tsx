@@ -9,10 +9,10 @@ import ConferenceSearch from "@/components/myconference/ConferenceSearch";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 import SignUpWarning from "@/components/conference/SignUpWarning";
 import { getCurrentUser } from "@/hooks/user";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ConferencePage() {
-  const { data, isLoading, isError } = useQuery(
+  const { data, isLoading, isError, refetch } = useQuery(
     "AllConferences",
     () => getAllConferences(),
     {
@@ -24,6 +24,10 @@ export default function ConferencePage() {
   if (isError) return <Error500 />;
   const [signUpWarning, setSignUpWarning] = useState<boolean>(false);
   const [tempId, setTempId] = useState<number>(-1);
+
+  useEffect(() => {
+    refetch();
+    }, [tempId]);
 
   return (
     <Page>
