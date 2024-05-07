@@ -80,7 +80,7 @@ export default function ConferenceList({
         </div>
       </ListItemImage>
       {(role === "USER" || role === "ALL") && (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center space-y-2 xs:space-y-0">
           <div
             className="w-auto h-min flex justify-center items-center xs:h-min gap-x-2 xs:mr-4 xs:mt-4 2xs:px-2 xs:px-0 2xs:bg-gray-300 xs:bg-transparent rounded-full cursor-pointer"
             onClick={() => {
