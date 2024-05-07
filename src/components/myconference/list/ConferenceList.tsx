@@ -80,20 +80,25 @@ export default function ConferenceList({
         </div>
       </ListItemImage>
       {(role === "USER" || role === "ALL") && (
-        <div
-          className="w-auto h-min flex justify-center items-center xs:h-min gap-x-2 xs:mr-4 xs:mt-4 2xs:px-2 xs:px-0 2xs:bg-gray-300 xs:bg-transparent rounded-full cursor-pointer"
-          onClick={() => {
-          if(!conference.participantsFull && !conference.amISignedUp) {
-            handleCirclePlusClick();
-          }
-          }}
-        >
-          <p className="font-semibold text-xs 2xs:text-base hidden 2xs:block xs:hidden ">
-            {conference.participantsFull && !conference.amISignedUp ? "Brak miejsc" : conference.amISignedUp ? "Wypisz się" : "Zapisz się"}
-          </p>
-          {conference.participantsFull && !conference.amISignedUp ? 
-            <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conference.amISignedUp ? 
-              <CiCircleMinus className="text-4xl text-darkblue" /> : <CiCirclePlus className="text-4xl text-darkblue" />}
+        <div className="flex flex-col items-center">
+          <div
+            className="w-auto h-min flex justify-center items-center xs:h-min gap-x-2 xs:mr-4 xs:mt-4 2xs:px-2 xs:px-0 2xs:bg-gray-300 xs:bg-transparent rounded-full cursor-pointer"
+            onClick={() => {
+            if(!conference.participantsFull && !conference.amISignedUp) {
+              handleCirclePlusClick();
+            }
+            }}
+          >
+            <p className="font-semibold text-xs 2xs:text-base hidden 2xs:block xs:hidden ">
+              {conference.participantsFull && !conference.amISignedUp ? "Brak miejsc" : conference.amISignedUp ? "Wypisz się" : "Zapisz się"}
+            </p>
+            {conference.participantsFull && !conference.amISignedUp ? 
+              <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conference.amISignedUp ? 
+                <CiCircleMinus className="text-4xl text-darkblue" /> : <CiCirclePlus className="text-4xl text-darkblue" />}
+            </div>
+            <p className="font-semibold text-base xs:text-xs xs:mr-4">
+              {conference.participantsAmount}/{conference.participantsLimit}
+            </p>
           </div>
         )}
     </div>
