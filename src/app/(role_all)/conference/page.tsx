@@ -43,10 +43,11 @@ export default function ConferencePage() {
   if (isError) return <Error500 />;
   const [signUpWarning, setSignUpWarning] = useState<boolean>(false);
   const [tempId, setTempId] = useState<number>(-1);
+  const [update, setUpdate] = useState<boolean>(false);
 
   useEffect(() => {
     refetch();
-    }, [tempId]);
+    }, [update]);
 
   return (
     <Page>
@@ -66,6 +67,9 @@ export default function ConferencePage() {
                   role={userRole}
                   setSignUpWarning={setSignUpWarning}
                   setTempId={setTempId}
+                  update={update}
+                  setUpdate={setUpdate}
+                  mode={"conference"}
                 />
               );
             })}
@@ -75,7 +79,7 @@ export default function ConferencePage() {
         <LoadingMessage />
       )}
       {signUpWarning && (
-          <SignUpWarning setSignUpWarning={setSignUpWarning} tempId={tempId} setTempId={setTempId}/>
+          <SignUpWarning setSignUpWarning={setSignUpWarning} tempId={tempId} setTempId={setTempId} update={update} setUpdate={setUpdate}/>
       )}
     </Page>
   );

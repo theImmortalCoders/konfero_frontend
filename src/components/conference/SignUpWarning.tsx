@@ -4,20 +4,25 @@ import { signUpForConference } from "@/hooks/conference";
 export default function SignUpWarning({
     setSignUpWarning,
     tempId,
-    setTempId
+    setTempId,
+    update,
+    setUpdate
 } : { 
     setSignUpWarning: Dispatch<SetStateAction<boolean>>;
     tempId: number;
     setTempId: Dispatch<SetStateAction<number>>;
+    update: boolean;
+    setUpdate: Dispatch<SetStateAction<boolean>>;
 }) {
     const [message, setMessage] = useState<string>("");
     
     const confirmSignUp = async () => {
         try {
-            const result_1 = await signUpForConference(tempId);
-            if (result_1 === 200) {
-              setTempId(-1);
+            const result = await signUpForConference(tempId);
+            if (result === 200) {
               setSignUpWarning(false);
+              setTempId(-1);
+              setUpdate(!update);
             } else {
               console.error("Błąd zapisywania na konferencję");
               setMessage("Błąd zapisywania na konferencję");
