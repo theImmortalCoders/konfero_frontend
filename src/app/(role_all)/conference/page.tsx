@@ -19,6 +19,7 @@ export default function ConferencePage() {
     }
   );
 
+
   if (isError) return <Error500 />;
 
   return (

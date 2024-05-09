@@ -1,4 +1,4 @@
-import APIImageComponent, { LogoInterface } from "@/hooks/imageAPI";
+import APIImageComponent, { ImageInterface } from "@/hooks/imageAPI";
 import Link from "next/link";
 
 export default function ListItemImage({
@@ -8,7 +8,7 @@ export default function ListItemImage({
   className,
 }: {
   href: string;
-  logo: LogoInterface;
+  logo: ImageInterface;
   children: React.ReactNode;
   className?: string;
 }) {
