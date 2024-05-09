@@ -78,8 +78,7 @@ export default function MyConferencePage({
           ) : null}
           <Title conferenceIdData={conferenceIdData}>
             <span className="flex justify-center w-full">
-              <span className="flex bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2">
-                <button onClick={() => {
+              <span onClick={() => {
                   if(conferenceIdData.amISignedUp) {
                     signOut(conferenceIdData.id);
                   }
@@ -87,8 +86,8 @@ export default function MyConferencePage({
                     setSignUpWarning(true);
                   }
                 }}
-                className="text-black font-semibold"
-                >
+              className="flex bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2">
+                <button className="text-black font-semibold">
                   {conferenceIdData.participantsFull && !conferenceIdData.amISignedUp ? "Brak miejsc" : conferenceIdData.amISignedUp ? "Wypisz się" : "Zapisz się"}
                 </button>  
                 {conferenceIdData.participantsFull && !conferenceIdData.amISignedUp ? 
