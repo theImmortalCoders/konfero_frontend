@@ -7,10 +7,31 @@ import ConferenceList from "@/components/myconference/list/ConferenceList";
 import Error500 from "@/components/common/Error/Error500";
 import ConferenceSearch from "@/components/myconference/ConferenceSearch";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
+import SignUpWarning from "@/components/conference/SignUpWarning";
 import { getCurrentUser } from "@/hooks/user";
+import { useEffect, useState } from "react";
+
+async function getRole() {
+  const userData = await getCurrentUser();
+  if (userData && typeof userData === 'object' && 'role' in userData) {
+    return userData.role;
+  }
+  return null;
+}
 
 export default function ConferencePage() {
-  const { data, isLoading, isError } = useQuery(
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRole = async () => {
+      const role = await getRole();
+      console.log(role);
+      setUserRole(role);
+    };
+    fetchRole();
+  }, []);
+
+  const { data, isLoading, isError, refetch } = useQuery(
     "AllConferences",
     () => getAllConferences(),
     {
@@ -20,6 +41,13 @@ export default function ConferencePage() {
   );
 
   if (isError) return <Error500 />;
+  const [signUpWarning, setSignUpWarning] = useState<boolean>(false);
+  const [tempId, setTempId] = useState<number>(-1);
+  const [update, setUpdate] = useState<boolean>(false);
+
+  useEffect(() => {
+    refetch();
+    }, [update]);
 
   return (
     <Page>
@@ -36,7 +64,12 @@ export default function ConferencePage() {
                 <ConferenceList
                   key={`${conf.id}`}
                   conference={conf}
-                  role={"USER"}
+                  role={userRole}
+                  setSignUpWarning={setSignUpWarning}
+                  setTempId={setTempId}
+                  update={update}
+                  setUpdate={setUpdate}
+                  mode={"conference"}
                 />
               );
             })}
@@ -44,6 +77,9 @@ export default function ConferencePage() {
         </div>
       ) : (
         <LoadingMessage />
+      )}
+      {signUpWarning && (
+          <SignUpWarning setSignUpWarning={setSignUpWarning} tempId={tempId} setTempId={setTempId} update={update} setUpdate={setUpdate}/>
       )}
     </Page>
   );

@@ -43,7 +43,7 @@ export default function MyConferenceListPage() {
                 <ConferenceList
                   key={`${conference.id}`}
                   conference={conference}
-                  role={"ORGANIZER"}
+                  role={userRole}
                 />
               );
             })}
