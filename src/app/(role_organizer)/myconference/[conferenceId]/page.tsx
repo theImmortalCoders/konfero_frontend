@@ -86,10 +86,10 @@ export default function MyConferencePage({
                     setSignUpWarning(true);
                   }
                 }}
-              className="flex bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2">
-                <button className="text-black font-semibold">
+              className="flex items-center bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2">
+                <p className="text-black font-semibold">
                   {conferenceIdData.participantsFull && !conferenceIdData.amISignedUp ? "Brak miejsc" : conferenceIdData.amISignedUp ? "Wypisz się" : "Zapisz się"}
-                </button>  
+                </p>  
                 {conferenceIdData.participantsFull && !conferenceIdData.amISignedUp ? 
                   <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conferenceIdData.amISignedUp ? 
                     <CiCircleMinus className="text-4xl text-darkblue" /> : <CiCirclePlus className="text-4xl text-darkblue" />}
