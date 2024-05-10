@@ -184,7 +184,7 @@ export default function LecturePage({
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
                 <TitleHeader title={"Zainteresowani"} />
-                <div className="w-full grid grid-cols-4 gap-8 pt-4">
+                <div className="w-full flex flex-row justify-center items-start gap-16 py-4 flex-wrap px-4">
                   {lectureIdData.interested.map((interested, index) => (
                     <People
                       key={index}
@@ -195,6 +195,7 @@ export default function LecturePage({
                 </div>
               </>
             ) : null}
+
           </BoxWithImage>
         </>
       ) : (
