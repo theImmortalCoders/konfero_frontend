@@ -25,7 +25,6 @@ export default function ConferencePage() {
   useEffect(() => {
     const fetchRole = async () => {
       const role = await getRole();
-      console.log(role);
       setUserRole(role);
     };
     fetchRole();
@@ -47,7 +46,7 @@ export default function ConferencePage() {
 
   useEffect(() => {
     refetch();
-    }, [update]);
+  }, [update]);
 
   return (
     <Page>

@@ -63,7 +63,7 @@ export default function MyConferencePage({
 
   useEffect(() => {
     refetch();
-    }, [update]);
+  }, [update]);
 
   return (
     <Page className="py-10">
