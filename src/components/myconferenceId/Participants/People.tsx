@@ -10,7 +10,7 @@ export default function People({
   email?: string;
 }) {
   return (
-    <div className="w-full">
+    <div>
       <div className="flex justify-center items-center w-auto h-auto">
         <div className="relative w-[40px] h-[40px] md:w-[60px] md:h-[60px] lg:w-[40px] lg:h-[40px] xl:w-[60px] xl:h-[60px] ">
           <Image
