@@ -42,7 +42,6 @@ export default function LectureList({
         setIsFavourite(result.interested.some(user => user.id === userId));
       }
     };
-    console.log(conference?.amISignedUp);
 
     fetchData();
   }, [update, userId]); // fetchData zależy od userId (używany do sprawdzenia, czy użytkownik jest na liście zainteresowanych).
