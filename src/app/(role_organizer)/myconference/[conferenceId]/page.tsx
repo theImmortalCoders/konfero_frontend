@@ -99,7 +99,7 @@ export default function MyConferencePage({
           <Organizers organizer={conferenceIdData.organizer} />
           <Lectures
             lectures={conferenceIdData.lectures}
-            conferenceId={conferenceIdData.id}
+            conference={conferenceIdData}
             userRole={userRole}
           />
           {conferenceIdData.participants !== null ? (

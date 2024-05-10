@@ -3,14 +3,15 @@ import TitleHeader from "@/components/common/Box/TitleHeader";
 import LectureList from "./LectureList";
 import { Lecture } from "@/hooks/conference";
 import LectureSearch from "./LectureSearch";
+import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
 
 export default function Lectures({
   lectures,
-  conferenceId,
+  conference,
   userRole,
 }: {
   lectures: Lecture[];
-  conferenceId: number;
+  conference:  GetConferenceDetailsWithRoleFilteringData;
   userRole: string;
 }) {
   return (
@@ -18,14 +19,14 @@ export default function Lectures({
       <TitleHeader title={"Wykłady"} />
       <LectureSearch
         data={lectures}
-        conferenceId={conferenceId}
+        conferenceId={conference.id}
         userRole={userRole}
       />
       {lectures.length !== 0 ? (
         <div className="w-full">
           {lectures.map((lecture, index) => (
             <div className="py-3" key={index}>
-              <LectureList key={index} lecture={lecture} />
+              <LectureList key={index} lecture={lecture} conference={conference} />
             </div>
           ))}
         </div>

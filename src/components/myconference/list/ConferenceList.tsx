@@ -26,6 +26,7 @@ export default function ConferenceList({
   setUpdate?: Dispatch<SetStateAction<boolean>>;
   mode?: string;
 }) {
+  
   const router = useRouter();
   const handleCirclePlusClick = () => {
     if (role === null) {
