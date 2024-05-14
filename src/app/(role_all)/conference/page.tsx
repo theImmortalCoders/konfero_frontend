@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 
 async function getRole() {
   const userData = await getCurrentUser();
-  if (userData && typeof userData === 'object' && 'role' in userData) {
+  if (userData && typeof userData === "object" && "role" in userData) {
     return userData.role;
   }
   return null;
@@ -50,15 +50,15 @@ export default function ConferencePage() {
 
   return (
     <Page>
-      {!isLoading ? (
+      {!isLoading && data && typeof data !== "string" ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
           <ConferenceSearch
-            data={data as GetAllConferencesData}
+            numberOfConferences={data.totalElements}
             disablerole={true}
             role={"USER"}
           />
           <div className="w-full flex flex-col gap-y-10">
-            {(data as GetAllConferencesData)?.content?.map((conf) => {
+            {data.content?.map((conf) => {
               return (
                 <ConferenceList
                   key={`${conf.id}`}
@@ -78,7 +78,13 @@ export default function ConferencePage() {
         <LoadingMessage />
       )}
       {signUpWarning && (
-          <SignUpWarning setSignUpWarning={setSignUpWarning} tempId={tempId} setTempId={setTempId} update={update} setUpdate={setUpdate}/>
+        <SignUpWarning
+          setSignUpWarning={setSignUpWarning}
+          tempId={tempId}
+          setTempId={setTempId}
+          update={update}
+          setUpdate={setUpdate}
+        />
       )}
     </Page>
   );
