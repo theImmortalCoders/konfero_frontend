@@ -18,30 +18,14 @@ const FavouriteLectures = ({lectures}: {lectures: GetFavouriteLecturesData[]}) =
           <TitleHeader title={"Polubione wykłady"} />
           <p className="font-semibold text-xs sm:text-sm xl:text-base text-center xs:text-left">Znalezione wykłady: {lectures.length}</p>
 
-          {lectures.map((lecture, index) => {
-            const {
-              data: conferenceData,
-              isLoading,
-              isError,
-            } = useQuery("Conference details", () => {
-              return getConferenceDetailsWithRoleFiltering(lecture.conferenceId)
-            })
-
-            if (isError) return null;
-
-            if (!isLoading && typeof conferenceData !== 'string') {
-              return (
-                <div key={index}>
-                  {!isLoading ?
-                    <div className="py-3" key={index}>
-                      <LectureList key={index} lecture={lecture} conference={conferenceData}/>
-                    </div> : null
-                  }
+          {lectures.map((lecture) => {
+            return (
+              <div key={lecture.id}>
+                <div className="py-3" key={lecture.id}>
+                  <LectureList key={lecture.id} lecture={lecture}/>
                 </div>
-              )
-            } else {
-              return null;
-            }
+              </div>
+            )
           })}
         </>
           :
