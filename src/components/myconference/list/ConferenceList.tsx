@@ -2,25 +2,63 @@
 import { Content } from "@/hooks/conference";
 import ListItemImage from "../../common/List/ListItemImage";
 import { formatDate } from "@/utils/date";
-import { CiCirclePlus } from "react-icons/ci";
+import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useEffect } from "react";
+import { useEffect, Dispatch, SetStateAction } from "react";
 import { base } from "next/dist/build/webpack/config/blocks/base";
+import { signOutFromConference } from "@/hooks/conference";
 
 export default function ConferenceList({
   conference,
   role,
+  setSignUpWarning,
+  setTempId,
+  update,
+  setUpdate,
+  mode
 }: {
   conference: Content;
-  role: string;
+  role: string | null;
+  setSignUpWarning?: Dispatch<SetStateAction<boolean>>;
+  setTempId?: Dispatch<SetStateAction<number>>;
+  update?: boolean;
+  setUpdate?: Dispatch<SetStateAction<boolean>>;
+  mode?: string;
 }) {
+  
   const router = useRouter();
   const handleCirclePlusClick = () => {
-    if (role === "USER") {
-      router.push("/attend");
-    } else if (role === "ALL") {
+    if (role === null) {
       router.push("/login");
+    }
+    else if (setSignUpWarning && setTempId) {
+      setSignUpWarning(true);
+      setTempId(conference.id);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      const result = await signOutFromConference(conference.id);
+      if (result === 200) {
+        console.log("Wypisano z konferencji.");
+        if (setUpdate)
+          setUpdate(!update);
+      } else {
+        console.error("Błąd wypisywania z konferencji.");
+      }
+    } catch (error) {
+      console.error("Błąd wypisywania z konferencji.", error);
+    }
+  }
+
+  const handleCircleMinusClick = () => {
+    if (role === null) {
+      router.push("/login");
+    }
+    else {
+      signOut();
     }
   };
 
@@ -75,17 +113,31 @@ export default function ConferenceList({
           ) : null}
         </div>
       </ListItemImage>
-      {(role === "USER" || role === "ALL") && (
-        <div
-          className="w-auto h-min flex justify-center items-center xs:h-min gap-x-2 xs:mr-4 xs:mt-4 2xs:px-2 xs:px-0 2xs:bg-gray-300 xs:bg-transparent rounded-full cursor-pointer"
-          onClick={handleCirclePlusClick}
-        >
-          <p className="font-semibold text-xs 2xs:text-base hidden 2xs:block xs:hidden ">
-            Dołącz
-          </p>
-          <CiCirclePlus className="text-4xl text-darkblue" />
-        </div>
-      )}
+      {mode === "conference" && (
+        <div className="flex flex-col items-center space-y-2 xs:space-y-0">
+          <div
+            className="w-auto h-min flex justify-center items-center xs:h-min gap-x-2 xs:mr-4 xs:mt-4 2xs:px-2 xs:px-0 2xs:bg-gray-300 xs:bg-transparent rounded-full cursor-pointer"
+            onClick={() => {
+              if(conference.amISignedUp) {
+                handleCircleMinusClick();
+              }
+              else if (!conference.participantsFull && !conference.amISignedUp) {
+                handleCirclePlusClick();
+              }
+            }}
+          >
+            <p className="font-semibold text-xs 2xs:text-base hidden 2xs:block xs:hidden ">
+              {conference.participantsFull && !conference.amISignedUp ? "Brak miejsc" : conference.amISignedUp ? "Wypisz się" : "Zapisz się"}
+            </p>
+            {conference.participantsFull && !conference.amISignedUp ? 
+              <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conference.amISignedUp ? 
+                <CiCircleMinus className="text-4xl text-darkblue" /> : <CiCirclePlus className="text-4xl text-darkblue" />}
+            </div>
+            <p className="font-semibold text-base xs:text-xs xs:mr-4">
+              {conference.participantsAmount}/{conference.participantsLimit}
+            </p>
+          </div>
+        )}
     </div>
   );
 }
