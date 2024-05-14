@@ -25,7 +25,7 @@ const ConferenceSwitch = (
 
   return (
     <div
-      className="flex h-10 w-full xs:w-96 items-center mt-10 border-2 border-darkblue rounded-full relative bg-close2White transition-all"
+      className="flex h-10 w-full xs:w-96 items-center mt-10 border-2 border-darkblue rounded-full relative bg-close2White transition-all z-0"
     >
       <div className={`${mySwitch?"translate-x-[-4px]":"translate-x-full"} bg-darkblue w-[50.5%] h-full duration-300 ease-out rounded-full absolute z-10`}></div>
       <div
