@@ -26,7 +26,7 @@ export default function ConferenceList({
   setUpdate?: Dispatch<SetStateAction<boolean>>;
   mode?: string;
 }) {
-  
+
   const router = useRouter();
   const handleCirclePlusClick = () => {
     if (role === null) {
@@ -79,14 +79,14 @@ export default function ConferenceList({
         logo={conference.logo}
         className="rounded-l-3xl"
       >
-        <div className="flex flex-col w-4/5">
-          <div className="flex flex-col xs:pl-4 gap-y-0 xs:gap-y-1 py-2 w-full items-center xs:items-start text-center break-all 2xs:break-normal">
-            <p className="font-black text-sm 2xs:text-xl">{conference?.name}</p>
+        <div className="flex flex-col w-4/5 h-full">
+          <div className="flex flex-col xs:pl-4 gap-y-0 xs:gap-y-1 py-2 w-full h-full items-center xs:items-start text-center break-all 2xs:break-normal">
+            <p className="font-black text-sm 2xs:text-xl line-clamp-1">{conference?.name}</p>
             <p className="text-xs 2xs:text-base">
               {formatDate(conference?.startDateTime)}
               &nbsp;- {formatDate(conference?.endDateTime)}
             </p>
-            <p className="font-semibold xs:font-bold text-xs 2xs:text-base">
+            <p className="font-semibold xs:font-bold text-xs 2xs:text-base line-clamp-1">
               {conference?.location?.name}
             </p>
           </div>
@@ -129,8 +129,8 @@ export default function ConferenceList({
             <p className="font-semibold text-xs 2xs:text-base hidden 2xs:block xs:hidden ">
               {conference.participantsFull && !conference.amISignedUp ? "Brak miejsc" : conference.amISignedUp ? "Wypisz się" : "Zapisz się"}
             </p>
-            {conference.participantsFull && !conference.amISignedUp ? 
-              <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conference.amISignedUp ? 
+            {conference.participantsFull && !conference.amISignedUp ?
+              <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conference.amISignedUp ?
                 <CiCircleMinus className="text-4xl text-darkblue" /> : <CiCirclePlus className="text-4xl text-darkblue" />}
             </div>
             <p className="font-semibold text-base xs:text-xs xs:mr-4">

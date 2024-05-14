@@ -14,7 +14,7 @@ export default function ListItemImage({
 }) {
   return (
     <Link href={href} className={`w-full ${className}`}>
-      <div className="flex flex-col xs:flex-row items-center space-l-3.5 mt-0 2xs:mt-4 xs:mt-0 xs:h-28">
+      <div className="flex flex-col xs:flex-row items-center space-l-3.5 mt-0 2xs:mt-4 xs:mt-0 xs:h-32">
         <div className="flex rounded-t-3xl 2xs:rounded-b-3xl xs:rounded-r-none xs:rounded-l-3xl overflow-hidden max-h-full w-full 2xs:size-36 xs:w-48">
           <APIImageComponent imageId={logo.id} type={"IMAGE"} />
         </div>
