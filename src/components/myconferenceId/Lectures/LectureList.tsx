@@ -1,11 +1,16 @@
 "use client";
-import { Lecture, GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
+import {
+  Lecture,
+  GetConferenceDetailsWithRoleFilteringData,
+  getConferenceDetailsWithRoleFiltering
+} from "@/hooks/conference";
 import { getCurrentUser } from "@/hooks/user";
 import { getLectureDetails, addLectureToFavourites, removeLectureFromFavourites } from "@/hooks/lecture";
 import ListItemImage from "../../common/List/ListItemImage";
 import { formatDateWithHour } from "@/utils/date";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { useState, useEffect } from "react";
+import {useQuery} from "react-query";
 
 async function getId() {
   const userData = await getCurrentUser();
@@ -18,11 +23,18 @@ async function getId() {
 export default function LectureList({
   lecture,
   conference
-}: { 
+}: {
   lecture: Lecture;
   conference?: GetConferenceDetailsWithRoleFilteringData;
 }) {
   const [userId, setUserId] = useState<number | null>(null);
+
+  const {
+    data: conferenceData,
+    isLoading: isConferenceLoading,
+    isError: isConferenceError
+  } = useQuery("Get conference details", () => getConferenceDetailsWithRoleFiltering(lecture.conferenceId),
+    {enabled: conference === undefined})
 
   useEffect(() => {
     const fetchId = async () => {
@@ -71,7 +83,7 @@ export default function LectureList({
       }
     } catch (error) {
       console.error("Błąd usuwania wykładu z ulubionych.", error);
-    }    
+    }
   }
 
   return (
@@ -88,7 +100,7 @@ export default function LectureList({
           <p className="font-bold">Miejsce: {lecture?.place}</p>
         </div>
       </ListItemImage>
-      {conference?.amISignedUp && (
+      {(conference?.amISignedUp || (conferenceData as GetConferenceDetailsWithRoleFilteringData)?.amISignedUp) && (
         <span
           onClick={() => {
             isFavourite ? handleRemoveFromFavourites() : handleAddToFavourites();
