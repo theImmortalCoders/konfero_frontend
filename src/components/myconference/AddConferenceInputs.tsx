@@ -1,6 +1,5 @@
 "use client";
 import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
-import SingleFormInput from "@/components/common/Input/SingleFormInput";
 import {
   addNewConference,
   AddNewConferenceData,
@@ -17,12 +16,13 @@ import { ImageCropFrame } from "../common/ImageCrop/ImageCropFrame";
 import SearchBarTag from "../tag/SearchBarTag";
 import { getAllTags } from "@/hooks/tag";
 import { TiDeleteOutline } from "react-icons/ti";
+import SingleFormInput from "../common/Input/SingleFormInput";
 
 export default function AddConferenceInputs({
   isUpdate,
   conferenceid,
   tempId,
-  setTempId
+  setTempId,
 }: {
   isUpdate: boolean;
   conferenceid?: string;
@@ -65,16 +65,16 @@ export default function AddConferenceInputs({
 
   const handleTagSelected = (tag: Tag) => {
     setTagsIds((prevState) => {
-        if (!prevState.includes(tag.id)) {
-            return [...prevState, tag.id];
-        }
-        return prevState;
+      if (!prevState.includes(tag.id)) {
+        return [...prevState, tag.id];
+      }
+      return prevState;
     });
     setTagsNames((prevState) => {
-        if (!prevState.includes(tag.tagName)) {
-            return [...prevState, tag.tagName];
-        }
-        return prevState;
+      if (!prevState.includes(tag.tagName)) {
+        return [...prevState, tag.tagName];
+      }
+      return prevState;
     });
     setCleanSearchBar(true);
   };
@@ -121,8 +121,8 @@ export default function AddConferenceInputs({
             );
             setFormat(conferenceDetailsData.format);
             setImageId(conferenceDetailsData.logo.id);
-            setTagsIds(conferenceDetailsData.tags.map((tag => tag.id)));
-            setTagsNames(conferenceDetailsData.tags.map((tag => tag.tagName)));
+            setTagsIds(conferenceDetailsData.tags.map((tag) => tag.id));
+            setTagsNames(conferenceDetailsData.tags.map((tag) => tag.tagName));
             setGalleryPhotosIds(
               conferenceDetailsData.photos.map((photo) => photo.id)
             );
@@ -190,7 +190,7 @@ export default function AddConferenceInputs({
     setLocX(0);
     setLocY(0);
     setPlace("");
-  }, [format])
+  }, [format]);
 
   const handleDeleteImage = () => {
     setImageFile(new File([], ""));
@@ -262,14 +262,12 @@ export default function AddConferenceInputs({
           setStatusError(false);
           setMessage("Dodano konferencję");
           window.location.replace(`/myconference`);
-        }
-        else {
+        } else {
           console.error("Błąd dodawania konferencji");
           setStatusError(true);
           setMessage("Wystąpił błąd podczas dodawania konferencji");
         }
-      } 
-      else {
+      } else {
         const conferenceId = Number(conferenceid);
         const result = await updateInfoAboutConference(
           conferenceId,
@@ -282,13 +280,20 @@ export default function AddConferenceInputs({
         } else {
           console.error("Błąd aktualizowania konferencji");
           setStatusError(true);
-          setMessage("Wystąpił błąd podczas aktualizowania konferencji")
+          setMessage("Wystąpił błąd podczas aktualizowania konferencji");
         }
       }
     } catch (error) {
       setStatusError(true);
-      console.error(isUpdate ? "Updating conference failed:" : "Adding conference failed:", error);
-      setMessage(isUpdate ? "Błąd aktualizowania konferencji" : "Błąd dodawania konferencji");
+      console.error(
+        isUpdate ? "Updating conference failed:" : "Adding conference failed:",
+        error
+      );
+      setMessage(
+        isUpdate
+          ? "Błąd aktualizowania konferencji"
+          : "Błąd dodawania konferencji"
+      );
     }
   };
 
@@ -384,11 +389,11 @@ export default function AddConferenceInputs({
       </div>
 
       <div className="flex flex-col sm:flex-row">
-        <ImageCropFrame 
-          formName="imageInput" 
-          inputDescription="Logo konferencji" 
-          croppingRatio={16/16}
-          imageFile={imageFile} 
+        <ImageCropFrame
+          formName="imageInput"
+          inputDescription="Logo konferencji"
+          croppingRatio={16 / 16}
+          imageFile={imageFile}
           setImageFile={setImageFile}
         />
         <div className="flex flex-row items-center mt-10 justify-center space-x-12 pt-2 bg-close2White pr-0 sm:pr-10 lg:pr-20">
@@ -402,30 +407,30 @@ export default function AddConferenceInputs({
         </div>
       </div>
       <div className="flex flex-col">
-          <SearchBarTag
-            items={tags}
-            renderItem={(tag) => `${tag.tagName}`}
-            onItemSelected={handleTagSelected}
-            placeholder="Dodaj tagi"
-            handleReset={cleanSearchBar}
-            pt={-1}
-          />
-          <div className="grid grid-cols-3 gap-2 w-full text-blue pt-2">
-              {tagsNames.map((name, index) => (
-              <span
-                  key={index}
-                  className="flex flex-row items-center justify-between p-1 border border-blue rounded-lg"
-              >
-                  {name}
-                  <TiDeleteOutline
-                  className="h-5 w-5 cursor-pointer"
-                  onClick={() => handleDeleteLecturers(index)}
-                  />
-              </span>
-              ))}
-          </div>
+        <SearchBarTag
+          items={tags}
+          renderItem={(tag) => `${tag.tagName}`}
+          onItemSelected={handleTagSelected}
+          placeholder="Dodaj tagi"
+          handleReset={cleanSearchBar}
+          pt={-1}
+        />
+        <div className="grid grid-cols-3 gap-2 w-full text-blue pt-2">
+          {tagsNames.map((name, index) => (
+            <span
+              key={index}
+              className="flex flex-row items-center justify-between p-1 border border-blue rounded-lg"
+            >
+              {name}
+              <TiDeleteOutline
+                className="h-5 w-5 cursor-pointer"
+                onClick={() => handleDeleteLecturers(index)}
+              />
+            </span>
+          ))}
+        </div>
       </div>
-      { format === "STATIONARY" && (
+      {format === "STATIONARY" && (
         <div className="pt-4">
           <h1 className="text-xs text-darkblue font-bold font-sans">
             Miejsce konferencji:
@@ -439,7 +444,7 @@ export default function AddConferenceInputs({
             setLocName={setPlace}
           />
         </div>
-        ) }
+      )}
       <div className="relative">
         <SingleFormInput
           type="text"
@@ -515,10 +520,10 @@ export default function AddConferenceInputs({
         </button>
         {(statusError !== undefined || message !== undefined) && (
           <p
-            className={` ${ statusError ? "text-red-800" : "text-green-800"} 
-            bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center` }
+            className={` ${statusError ? "text-red-800" : "text-green-800"} 
+            bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center`}
           >
-            { message }
+            {message}
           </p>
         )}
       </div>

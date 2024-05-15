@@ -23,7 +23,6 @@ export default function ListItemOptions({
 
   window.addEventListener("click", handleClickOutside);
 
-  console.log("conferenceIdData", conferenceIdData);
   return (
     <div className="relative select-none" ref={optionsRef}>
       <div
