@@ -12,7 +12,6 @@ const useAuth = (allowedRoles: string[]) => {
     () => async () => {
       try {
         const currentUser: UserData | null = await getCurrentUser();
-        console.log("currentUser", currentUser);
         if (currentUser === null) {
           router.push("/login");
         } else if (currentUser && allowedRoles.includes(currentUser.role)) {

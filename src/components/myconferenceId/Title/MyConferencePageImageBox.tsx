@@ -32,23 +32,25 @@ export default function MyConferencePageImageBox({
           </h1>
         </div>
       </div>
-      <div className="flex-col flex gap-x-1 md:gap-x-3 w-full h-auto items-center justify-center pt-[5%]">
-        <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
-          <IoMdPin className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
-          <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">
-            {conferenceIdData.location.name}
-          </h1>
+      {conferenceIdData.format === "STATIONARY" ? (
+        <div className="flex-col flex gap-x-1 md:gap-x-3 w-full h-auto items-center justify-center pt-[5%]">
+          <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
+            <IoMdPin className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
+            <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">
+              {conferenceIdData.location.name}
+            </h1>
+          </div>
+          <Link
+            href={`https://www.google.com/maps/place/${conferenceIdData.location.locX}+${conferenceIdData.location.locY}`}
+            className={"pt-2 hover:underline flex items-center gap-2 "}
+          >
+            <h1 className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
+              Zobacz lokalizację na mapie
+            </h1>
+            <FaChevronRight />
+          </Link>
         </div>
-        <Link
-          href={`https://www.google.com/maps/place/${conferenceIdData.location.locX}+${conferenceIdData.location.locY}`}
-          className={"pt-2 hover:underline flex items-center gap-2 "}
-        >
-          <h1 className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
-            Zobacz lokalizację na mapie
-          </h1>
-          <FaChevronRight />
-        </Link>
-      </div>
+      ) : null}
     </div>
   );
 }
