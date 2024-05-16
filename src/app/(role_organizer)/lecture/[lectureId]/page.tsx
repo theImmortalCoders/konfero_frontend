@@ -15,6 +15,8 @@ import { useEffect, useState } from "react";
 import useAuth from "@/hooks/useAuth";
 import NotFound from "../../addlecture/[conferenceId]/not-found";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import { IoArrowBackCircle } from "react-icons/io5";
+import {useRouter} from "next/navigation";
 
 async function getId() {
   const userData = await getCurrentUser();
@@ -22,6 +24,22 @@ async function getId() {
     return userData.id;
   }
   return null;
+}
+
+const RedirectToConference = ({conferenceId} : {conferenceId: number}) => {
+  const router = useRouter();
+
+  return (
+    <div
+      className="relative self-start bg-white rounded-t-2xl font-semibold text-black text-center text-nowrap w-36 xs:w-44 md:w-60 h-10 md:h-12 p-1 hover:py-2 hover:top-0 mt-20 top-2 cursor-pointer duration-100"
+      onClick={() => router.push(`/myconference/${conferenceId}`)}
+    >
+      <div className="flex justify-center items-center gap-x-2">
+        <IoArrowBackCircle className="size-5 md:size-7 hidden xs:block"/>
+        <p className="text-xs md:text-base">Przejdź do konferencji</p>
+      </div>
+    </div>
+  )
 }
 
 export default function LecturePage({
@@ -41,6 +59,7 @@ export default function LecturePage({
   const [userId, setUserId] = useState<number | null>(null);
   const [update, setUpdate] = useState<boolean>(false);
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
+
 
   useEffect(() => {
     const fetchId = async () => {
@@ -104,8 +123,10 @@ export default function LecturePage({
       }
     } catch (error) {
       console.error("Błąd usuwania wykładu z ulubionych.", error);
-    }    
+    }
   }
+
+
 
   return (
     <Page>
@@ -114,9 +135,10 @@ export default function LecturePage({
       userRole &&
       lectureIdData &&
       typeof lectureIdData !== "string" ? (
-        <>
+        <div className="w-[90%] lg:w-[60%]">
+          <RedirectToConference conferenceId={lectureIdData.conferenceId}/>
           <BoxWithImage
-            className="text-darkblue w-[90%] lg:w-[60%] mt-20 mb-5"
+            className="text-darkblue mb-5 rounded-tl-none"
             src={lectureIdData.image.id}
             alt={"Logo"}
           >
@@ -142,7 +164,7 @@ export default function LecturePage({
                       {isFavourite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
                     </p>
                   </span>
-                </span>  
+                </span>
               )}
             </div>
             {lectureIdData.lecturers.length !== 0 ? (
@@ -197,7 +219,7 @@ export default function LecturePage({
             ) : null}
 
           </BoxWithImage>
-        </>
+        </div>
       ) : (
         <LoadingMessage />
       )}
