@@ -40,3 +40,38 @@ export async function deleteComment(commentId: number) {
     }
   }
 }
+
+export async function addCommentToConference(
+  conferenceId: number,
+  value: string
+) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.post(
+      `/api/comment?conferenceId=${conferenceId}`,
+      { value },
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.status === 200) {
+      console.log("Komentarz został dodany poprawnie!");
+      return response.status;
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      console.error("Wystąpił błąd podczas dodawania komentarza");
+      return "Wystąpił błąd podczas dodawania komentarza";
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      console.error("Wystąpił błąd podczas dodawania komentarza");
+      return "Wystąpił błąd podczas dodawania komentarza";
+    }
+  }
+}
