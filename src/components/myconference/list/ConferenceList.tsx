@@ -5,8 +5,9 @@ import { formatDate } from "@/utils/date";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useEffect, Dispatch, SetStateAction } from "react";
-import { base } from "next/dist/build/webpack/config/blocks/base";
+import {Dispatch, SetStateAction } from "react";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { FcCancel } from "react-icons/fc";
 import { signOutFromConference } from "@/hooks/conference";
 
 export default function ConferenceList({
@@ -73,26 +74,45 @@ export default function ConferenceList({
   }, 0);
 
   return (
-    <div className="flex flex-col xs:flex-row items-center xs:items-start w-full text-black bg-close2White hover:bg-gray-200 duration-200 shadow-whiteShadow h-full z-0 rounded-3xl relative pb-4 xs:py-0">
+    <div className="flex flex-col sm:flex-row items-center sm:items-start w-full text-black bg-close2White hover:bg-gray-200 duration-200 shadow-whiteShadow h-full z-0 rounded-3xl relative pb-4 sm:py-0">
       <ListItemImage
         href={`/myconference/${conference.id}`}
         logo={conference.logo}
         className="rounded-l-3xl"
       >
         <div className="flex flex-col w-4/5 h-full">
-          <div className="flex flex-col xs:pl-4 gap-y-0 xs:gap-y-1 py-2 w-full h-full items-center xs:items-start text-center break-all 2xs:break-normal">
+          <div className="flex flex-col sm:pl-4 gap-y-0 py-2 w-full h-full items-center sm:items-start text-center break-all 2sm:break-normal">
+              <div className="flex flex-col sm:flex-row sm:h-3 gap-x-4 text-xs text-cyan-700 font-bold">
+                {conference.verified &&
+                  <div className="flex items-center justify-center gap-x-1">
+                    <RiVerifiedBadgeFill />
+                    <p>Zweryfikowana</p>
+                  </div>
+                }
+                {conference.canceled &&
+                  <div className="flex items-center justify-center gap-x-1">
+                    <FcCancel />
+                    <p className="text-red-700" >Anulowana</p>
+                  </div>
+                }
+              </div>
             <p className="font-black text-sm 2xs:text-xl line-clamp-1">{conference?.name}</p>
-            <p className="text-xs 2xs:text-base">
-              {formatDate(conference?.startDateTime)}
-              &nbsp;- {formatDate(conference?.endDateTime)}
-            </p>
+            <div className="flex flex-col gap-x-1 items-center sm:flex-row text-xs 2xs:text-base">
+              <p>
+                {formatDate(conference?.startDateTime)}
+                &nbsp;- {formatDate(conference?.endDateTime)}
+              </p>
+              {conference.finished &&
+                <p className="w-min font-semibold text-nowrap text-rose-800 text-sm" >Zakończona</p>
+              }
+            </div>
             <p className="font-semibold xs:font-bold text-xs 2xs:text-base line-clamp-1">
               {conference?.location?.name}
             </p>
           </div>
           {conference.tags !== null ? (
             <>
-              <div className="flex flex-wrap xs:flex-row justify-center w-full xs:pl-4 items-center xs:justify-start mt-1 mb-2 gap-1">
+              <div className="flex flex-wrap sm:flex-row justify-center w-full sm:pl-4 items-center sm:justify-start mt-1 mb-2 gap-1">
                 {conference.tags?.slice(0, 2 + sumRwd).map((tag) => (
                   <p
                     key={tag.id}
@@ -114,9 +134,9 @@ export default function ConferenceList({
         </div>
       </ListItemImage>
       {mode === "conference" && (
-        <div className="flex flex-col items-center space-y-2 xs:space-y-0">
+        <div className="flex flex-col items-center space-y-2 sm:space-y-0">
           <div
-            className="w-auto h-min flex justify-center items-center xs:h-min gap-x-2 xs:mr-4 xs:mt-4 2xs:px-2 xs:px-0 2xs:bg-gray-300 xs:bg-transparent rounded-full cursor-pointer"
+            className="w-auto h-min flex justify-center items-center sm:h-min gap-x-2 sm:mr-4 sm:mt-4 2xs:px-2 sm:px-0 2xs:bg-gray-300 sm:bg-transparent rounded-full cursor-pointer"
             onClick={() => {
               if(conference.amISignedUp) {
                 handleCircleMinusClick();
@@ -126,14 +146,14 @@ export default function ConferenceList({
               }
             }}
           >
-            <p className="font-semibold text-xs 2xs:text-base hidden 2xs:block xs:hidden ">
+            <p className="font-semibold text-xs 2xs:text-base hidden 2xs:block sm:hidden ">
               {conference.participantsFull && !conference.amISignedUp ? "Brak miejsc" : conference.amISignedUp ? "Wypisz się" : "Zapisz się"}
             </p>
             {conference.participantsFull && !conference.amISignedUp ?
               <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conference.amISignedUp ?
                 <CiCircleMinus className="text-4xl text-darkblue" /> : <CiCirclePlus className="text-4xl text-darkblue" />}
             </div>
-            <p className="font-semibold text-base xs:text-xs xs:mr-4">
+            <p className="font-semibold text-base xs:text-xs sm:mr-4">
               {conference.participantsAmount}/{conference.participantsLimit}
             </p>
           </div>

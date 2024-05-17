@@ -76,7 +76,10 @@ export default function MyConferenceListPage() {
     data: signedConferencesData,
     isLoading: isSignedConferencesLoading,
     isError: isSignedConferencesError,
-  } = useQuery("conferences user attends", () => getConferencesIAmSignedFor())
+  } = useQuery("conferences user attends", () => getConferencesIAmSignedFor(),{
+    refetchOnMount: true,
+    staleTime: 1000
+  })
 
   if (isSignedConferencesError || isConferencesError || isUserError) return <Error500 />;
   if (isAuthorise === false) return <NotFound />;
@@ -105,7 +108,7 @@ export default function MyConferenceListPage() {
                 (signedConferencesData as Content[])
                   :
                 (conferencesData as GetAllConferencesData)?.content
-              )?.map((conference) => {
+              )?.toSorted((a, b) => Number(a.canceled?1:0) - Number(b.canceled)).map((conference) => {
               return (
                 <ConferenceList
                   key={`${conference.id}`}
