@@ -169,18 +169,28 @@ export interface GetAllConferencesData {
 }
 
 export async function getAllConferences(
-  organizerId?: number
+  organizerId?: number,
+  sort?:
+    | "startDateTime"
+    | "location"
+    | "canceled"
+    | "format"
+    | "participantsFull"
 ): Promise<GetAllConferencesData | string> {
   try {
+    let url = `/api/conference`;
+    url =
+      sort && organizerId
+        ? url.concat(`?sort=${sort}&organizerId=${organizerId.toString()}`)
+        : sort
+        ? url.concat(`?sort=${sort}`)
+        : organizerId
+        ? url.concat(`?organizerId=${organizerId.toString()}`)
+        : url;
     const response: AxiosResponse<GetAllConferencesData | string> =
-      await appAPI.get(
-        organizerId
-          ? `/api/conference?organizerId=${organizerId.toString()}`
-          : `/api/conference`,
-        {
-          withCredentials: true,
-        }
-      );
+      await appAPI.get(`${url}`, {
+        withCredentials: true,
+      });
     if (response.status === 200) {
       console.log("Wszystkie konferencje pobrano poprawnie!");
       return response.data;
@@ -189,9 +199,7 @@ export async function getAllConferences(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error(
-        "Wystąpił błąd podczas pobierania wszystkich konferencji"
-      );
+      console.error("Wystąpił błąd podczas pobierania wszystkich konferencji");
       return "Wystąpił błąd podczas pobierania wszystkich konferencji";
     }
   } catch (error: any) {
@@ -199,27 +207,35 @@ export async function getAllConferences(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error(
-        "Wystąpił błąd podczas pobierania wszystkich konferencji"
-      );
+      console.error("Wystąpił błąd podczas pobierania wszystkich konferencji");
       return "Wystąpił błąd podczas pobierania wszystkich konferencji";
     }
   }
 }
 
 export async function getAllConferencesByLocationName(
-  locationName?: number
+  locationName?: number,
+  sort?:
+    | "startDateTime"
+    | "location"
+    | "canceled"
+    | "format"
+    | "participantsFull"
 ): Promise<GetAllConferencesData | string> {
   try {
+    let url = `/api/conference`;
+    url =
+      sort && locationName
+        ? url.concat(`?sort=${sort}&locationName=${locationName.toString()}`)
+        : sort
+        ? url.concat(`?sort=${sort}`)
+        : locationName
+        ? url.concat(`?locationName=${locationName}`)
+        : url;
     const response: AxiosResponse<GetAllConferencesData | string> =
-      await appAPI.get(
-        locationName
-          ? `/api/conference?locationName=${locationName}`
-          : `/api/conference`,
-        {
-          withCredentials: true,
-        }
-      );
+      await appAPI.get(`${url}`, {
+        withCredentials: true,
+      });
     if (response.status === 200) {
       console.log("Wszystkie konferencje pobrano poprawnie!");
       return response.data;
@@ -228,9 +244,7 @@ export async function getAllConferencesByLocationName(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error(
-        "Wystąpił błąd podczas pobierania wszystkich konferencji"
-      );
+      console.error("Wystąpił błąd podczas pobierania wszystkich konferencji");
       return "Wystąpił błąd podczas pobierania wszystkich konferencji";
     }
   } catch (error: any) {
@@ -238,9 +252,7 @@ export async function getAllConferencesByLocationName(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error(
-        "Wystąpił błąd podczas pobierania wszystkich konferencji"
-      );
+      console.error("Wystąpił błąd podczas pobierania wszystkich konferencji");
       return "Wystąpił błąd podczas pobierania wszystkich konferencji";
     }
   }
@@ -267,9 +279,7 @@ export async function getNotCanceledConferences(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error(
-        "Wystąpił błąd podczas pobierania wszystkich konferencji"
-      );
+      console.error("Wystąpił błąd podczas pobierania wszystkich konferencji");
       return "Wystąpił błąd podczas pobierania wszystkich konferencji";
     }
   } catch (error: any) {
@@ -277,9 +287,7 @@ export async function getNotCanceledConferences(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error(
-        "Wystąpił błąd podczas pobierania wszystkich konferencji"
-      );
+      console.error("Wystąpił błąd podczas pobierania wszystkich konferencji");
       return "Wystąpił błąd podczas pobierania wszystkich konferencji";
     }
   }
@@ -358,9 +366,7 @@ export async function getConferenceDetailsWithRoleFiltering(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error(
-        "Wystąpił błąd podczas pobierania szczegółów konferencji"
-      );
+      console.error("Wystąpił błąd podczas pobierania szczegółów konferencji");
       return "Wystąpił błąd podczas pobierania szczegółów konferencji";
     }
   } catch (error: any) {
@@ -368,21 +374,24 @@ export async function getConferenceDetailsWithRoleFiltering(
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error(
-        "Wystąpił błąd podczas pobierania szczegółów konferencji"
-      );
+      console.error("Wystąpił błąd podczas pobierania szczegółów konferencji");
       return "Wystąpił błąd podczas pobierania szczegółów konferencji";
     }
   }
 }
 
-export async function getConferencesIAmSignedFor(conferenceStatus?: string): Promise<Content[] | string> {
+export async function getConferencesIAmSignedFor(
+  conferenceStatus?: string
+): Promise<Content[] | string> {
   try {
-    const response: AxiosResponse<
-      Content[] | string
-    > = await appAPI.get(conferenceStatus ? `/api/conference/my?conferenceStatus=${conferenceStatus}` : `/api/conference/my`, {
-      withCredentials: true,
-    });
+    const response: AxiosResponse<Content[] | string> = await appAPI.get(
+      conferenceStatus
+        ? `/api/conference/my?conferenceStatus=${conferenceStatus}`
+        : `/api/conference/my`,
+      {
+        withCredentials: true,
+      }
+    );
     if (response.status === 200) {
       console.log("Konferencje użytkownika pobrano poprawnie!");
       return response.data;
@@ -391,9 +400,7 @@ export async function getConferencesIAmSignedFor(conferenceStatus?: string): Pro
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error(
-        "Wystąpił błąd podczas pobierania konferencji użytkownika"
-      );
+      console.error("Wystąpił błąd podczas pobierania konferencji użytkownika");
       return "Wystąpił błąd podczas pobierania konferencji użytkownika";
     }
   } catch (error: any) {
@@ -401,9 +408,7 @@ export async function getConferencesIAmSignedFor(conferenceStatus?: string): Pro
       console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error(
-        "Wystąpił błąd podczas pobierania konferencji użytkownika"
-      );
+      console.error("Wystąpił błąd podczas pobierania konferencji użytkownika");
       return "Wystąpił błąd podczas pobierania konferencji użytkownika";
     }
   }
