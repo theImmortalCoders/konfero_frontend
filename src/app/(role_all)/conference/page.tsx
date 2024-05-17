@@ -10,6 +10,7 @@ import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 import SignUpWarning from "@/components/conference/SignUpWarning";
 import { getCurrentUser } from "@/hooks/user";
 import { useEffect, useState } from "react";
+import { Box } from "@/components/common/Box/Box";
 
 async function getRole() {
   const userData = await getCurrentUser();
@@ -52,6 +53,23 @@ export default function ConferencePage() {
     <Page>
       {!isLoading && data && typeof data !== "string" ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
+          <Box className="flex flex-row w-full my-8 text-close2White justify-center gap-6">
+            <div className="flex justify-center w-2/5 bg-darkblue rounded-xl py-[6px] gap-4">
+              <p className="font-bold">SORTUJ:</p>
+              <select className="bg-darkblue px-2 border-b-2 border-close2White">
+                <option value="">aaa</option>
+                <option value="">bbb</option>
+                <option value="">ccc</option>
+              </select>
+            </div>
+            <div className="flex justify-center w-2/5 bg-darkblue rounded-xl py-[6px] gap-4">
+              <p className="font-bold">KOLEJNOŚĆ:</p>
+              <select className="bg-darkblue px-2 border-b-2 border-close2White">
+                <option value="">Rosnąco</option>
+                <option value="">Malejąco</option>
+              </select>
+            </div>
+          </Box>
           <ConferenceSearch
             numberOfConferences={data.totalElements}
             disablerole={true}
