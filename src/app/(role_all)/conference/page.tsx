@@ -20,6 +20,22 @@ async function getRole() {
   return null;
 }
 
+function SortFilterSection({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex justify-center w-2/5 bg-darkblue rounded-xl py-[6px] gap-4">
+      {children}
+    </div>
+  );
+}
+
+function SortFilterRow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex flex-row w-full justify-center items-center gap-6">
+      {children}
+    </div>
+  );
+}
+
 export default function ConferencePage() {
   const [userRole, setUserRole] = useState<string | null>(null);
 
@@ -53,22 +69,35 @@ export default function ConferencePage() {
     <Page>
       {!isLoading && data && typeof data !== "string" ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
-          <Box className="flex flex-row w-full my-8 text-close2White justify-center gap-6">
-            <div className="flex justify-center w-2/5 bg-darkblue rounded-xl py-[6px] gap-4">
-              <p className="font-bold">SORTUJ:</p>
-              <select className="bg-darkblue px-2 border-b-2 border-close2White">
-                <option value="">aaa</option>
-                <option value="">bbb</option>
-                <option value="">ccc</option>
-              </select>
-            </div>
-            <div className="flex justify-center w-2/5 bg-darkblue rounded-xl py-[6px] gap-4">
-              <p className="font-bold">KOLEJNOŚĆ:</p>
-              <select className="bg-darkblue px-2 border-b-2 border-close2White">
-                <option value="">Rosnąco</option>
-                <option value="">Malejąco</option>
-              </select>
-            </div>
+          <Box className="flex flex-col gap-4 w-full my-8 text-close2White">
+            <SortFilterRow>
+              <SortFilterSection>
+                <p className="font-bold">SORTUJ:</p>
+                <select className="bg-darkblue px-2 border-b-[1px] border-close2White">
+                  <option value="">aaa</option>
+                  <option value="">bbb</option>
+                  <option value="">ccc</option>
+                </select>
+              </SortFilterSection>
+              <SortFilterSection>
+                <p className="font-bold">KOLEJNOŚĆ:</p>
+                <select className="bg-darkblue px-2 border-b-[1px] border-close2White">
+                  <option value="">Rosnąco</option>
+                  <option value="">Malejąco</option>
+                </select>
+              </SortFilterSection>
+            </SortFilterRow>
+            <hr className="size-[2px] rounded-full w-full bg-darkblue" />
+            <SortFilterRow>
+              <SortFilterSection>
+                <p>Data rozpoczęcia od:</p>
+                <p>sroda</p>
+              </SortFilterSection>
+              <SortFilterSection>
+                <p>Data rozpoczęcia do:</p>
+                <p>piatek</p>
+              </SortFilterSection>
+            </SortFilterRow>
           </Box>
           <ConferenceSearch
             numberOfConferences={data.totalElements}
