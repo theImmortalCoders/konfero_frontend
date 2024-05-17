@@ -75,3 +75,35 @@ export async function addCommentToConference(
     }
   }
 }
+
+export async function respondToComment(commentId: number, value: string) {
+  try {
+    const response: AxiosResponse<void> = await appAPI.post(
+      `/api/comment/${commentId}/respond`,
+      { value },
+      {
+        withCredentials: true,
+      }
+    );
+    if (response.status === 200) {
+      console.log("Odpowiedź na komentarz zostaa dodana poprawnie!");
+      return response.status;
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      console.error("Wystąpił błąd podczas dodawania odpowiedzi na komentarz");
+      return "Wystąpił błąd podczas dodawania odpowiedzi na komentarz";
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      console.error("Wystąpił błąd podczas dodawania odpowiedzi na komentarz");
+      return "Wystąpił błąd podczas dodawania odpowiedzi na komentarz";
+    }
+  }
+}
