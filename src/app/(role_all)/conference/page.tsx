@@ -61,9 +61,17 @@ export default function ConferencePage() {
     "AllConferences",
     () =>
       getAllConferences(
-        undefined,
         sortFilterData?.sort,
-        sortFilterData?.sortDirection
+        sortFilterData?.sortDirection,
+        sortFilterData?.startDateTimeFrom,
+        sortFilterData?.startDateTimeTo,
+        sortFilterData?.name,
+        sortFilterData?.tagsIds,
+        sortFilterData?.canceled,
+        sortFilterData?.verified,
+        sortFilterData?.participantsFull,
+        sortFilterData?.organizerId,
+        sortFilterData?.locationName
       ),
     {
       staleTime: Infinity,

@@ -156,17 +156,19 @@ export default function ConferenceSortAndFilter({
         <>
           <SortFilterRow>
             <FilterSection
-              title="Data od:"
-              type="date"
+              title="Rozpoczyna się po:"
+              type="datetime-local"
               setState={setStartDateTimeFrom}
             ></FilterSection>
             <FilterSection
-              title="Data do:"
-              type="date"
+              title="Rozpoczyna się przed:"
+              type="datetime-local"
               setState={setStartDateTimeTo}
             ></FilterSection>
+          </SortFilterRow>
+          <SortFilterRow>
             <FilterSection
-              title="Tytuł:"
+              title="Nazwa:"
               type="text"
               setState={setName}
             ></FilterSection>
