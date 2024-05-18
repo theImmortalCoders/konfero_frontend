@@ -21,13 +21,17 @@ function FilterSection({
   setState: React.Dispatch<React.SetStateAction<any | undefined>>;
 }) {
   return (
-    <div className="flex justify-center w-auto bg-darkblue rounded-xl py-[6px] gap-4 px-2">
+    <div className="flex justify-center w-auto bg-darkblue rounded-xl py-[6px] gap-3 px-2">
       <p className="font-bold">{title}</p>
       <input
         type={type}
         className="w-auto bg-close2White text-darkblue rounded-md px-1 text-center text-sm"
         onChange={(e) => {
-          e.target.value ? setState(e.target.value) : setState(undefined);
+          type !== "checkbox"
+            ? e.target.value
+              ? setState(e.target.value)
+              : setState(undefined)
+            : setState(e.target.checked);
         }}
       />
     </div>
@@ -36,7 +40,7 @@ function FilterSection({
 
 function SortFilterRow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-row w-full justify-center items-center gap-6">
+    <div className="flex flex-row w-full justify-center items-center gap-4">
       {children}
     </div>
   );
@@ -150,7 +154,7 @@ export default function ConferenceSortAndFilter({
         }}
         className="text-darkblue font-bold -mt-4 w-full flex gap-1 items-center justify-end cursor-pointer"
       >
-        {showFilters ? "Ukryj" : "Filtrowanie"}
+        {showFilters ? "- Ukryj filtry" : "+ Pokaż filtry"}
       </p>
       {showFilters && (
         <>
@@ -161,7 +165,7 @@ export default function ConferenceSortAndFilter({
               setState={setStartDateTimeFrom}
             ></FilterSection>
             <FilterSection
-              title="Rozpoczyna się przed:"
+              title="Kończy się przed:"
               type="datetime-local"
               setState={setStartDateTimeTo}
             ></FilterSection>
@@ -171,6 +175,38 @@ export default function ConferenceSortAndFilter({
               title="Nazwa:"
               type="text"
               setState={setName}
+            ></FilterSection>
+            <FilterSection
+              title="Organizator:"
+              type="text"
+              setState={setOrganizerId}
+            ></FilterSection>
+            <FilterSection
+              title="Lokalizacja:"
+              type="string"
+              setState={setLocationName}
+            ></FilterSection>
+          </SortFilterRow>
+          <SortFilterRow>
+            <FilterSection
+              title="Tagi:"
+              type="text"
+              setState={setTagsIds}
+            ></FilterSection>
+            <FilterSection
+              title="Brak miejsc:"
+              type="checkbox"
+              setState={setParticipantsFull}
+            ></FilterSection>
+            <FilterSection
+              title="Odwołane:"
+              type="checkbox"
+              setState={setCanceled}
+            ></FilterSection>
+            <FilterSection
+              title="Zweryfikowane:"
+              type="checkbox"
+              setState={setVerified}
             ></FilterSection>
           </SortFilterRow>
         </>
