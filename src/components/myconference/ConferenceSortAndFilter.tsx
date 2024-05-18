@@ -41,7 +41,11 @@ function SortFilterRow({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function ConferenceSortAndFilter({}: {}) {
+export default function ConferenceSortAndFilter({
+  onData,
+}: {
+  onData: (data: any) => void;
+}) {
   const [showFilters, setShowFilters] = useState<boolean>(false);
 
   const [startDateTimeFrom, setStartDateTimeFrom] = useState<

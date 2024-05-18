@@ -23,6 +23,8 @@ async function getRole() {
 export default function ConferencePage() {
   const [userRole, setUserRole] = useState<string | null>(null);
 
+  const [sortFilterData, setSortFilterData] = useState<any[]>([]);
+
   useEffect(() => {
     const fetchRole = async () => {
       const role = await getRole();
@@ -33,7 +35,7 @@ export default function ConferencePage() {
 
   const { data, isLoading, isError, refetch } = useQuery(
     "AllConferences",
-    () => getAllConferences(),
+    () => getAllConferences(undefined, "location", "DESC"),
     {
       staleTime: Infinity,
       refetchOnMount: "always",
@@ -41,6 +43,7 @@ export default function ConferencePage() {
   );
 
   if (isError) return <Error500 />;
+
   const [signUpWarning, setSignUpWarning] = useState<boolean>(false);
   const [tempId, setTempId] = useState<number>(-1);
   const [update, setUpdate] = useState<boolean>(false);
@@ -49,11 +52,15 @@ export default function ConferencePage() {
     refetch();
   }, [update]);
 
+  const handleData = (data: any) => {
+    // setChildData(data);
+  };
+
   return (
     <Page>
       {!isLoading && data && typeof data !== "string" ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
-          <ConferenceSortAndFilter />
+          <ConferenceSortAndFilter onData={handleData} />
           <ConferenceSearch
             numberOfConferences={data.totalElements}
             disablerole={true}

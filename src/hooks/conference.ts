@@ -175,15 +175,18 @@ export async function getAllConferences(
     | "location"
     | "canceled"
     | "format"
-    | "participantsFull"
+    | "participantsFull",
+  sortDirection?: "ASC" | "DESC"
 ): Promise<GetAllConferencesData | string> {
   try {
     let url = `/api/conference`;
     url =
-      sort && organizerId
-        ? url.concat(`?sort=${sort}&organizerId=${organizerId.toString()}`)
-        : sort
-        ? url.concat(`?sort=${sort}`)
+      sort && sortDirection && organizerId
+        ? url.concat(
+            `?sort=${sort}&sortDirection=${sortDirection}&organizerId=${organizerId.toString()}`
+          )
+        : sort && sortDirection
+        ? url.concat(`?sort=${sort}&sortDirection=${sortDirection}`)
         : organizerId
         ? url.concat(`?organizerId=${organizerId.toString()}`)
         : url;
