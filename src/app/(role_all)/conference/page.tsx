@@ -11,6 +11,7 @@ import SignUpWarning from "@/components/conference/SignUpWarning";
 import { getCurrentUser } from "@/hooks/user";
 import { useEffect, useState } from "react";
 import { Box } from "@/components/common/Box/Box";
+import { FaChevronDown } from "react-icons/fa";
 
 async function getRole() {
   const userData = await getCurrentUser();
@@ -20,10 +21,22 @@ async function getRole() {
   return null;
 }
 
-function SortFilterSection({ children }: { children: React.ReactNode }) {
+function SortSection({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex justify-center w-2/5 bg-darkblue rounded-xl py-[6px] gap-4">
       {children}
+    </div>
+  );
+}
+
+function FilterSection({ title, type }: { title: string; type: string }) {
+  return (
+    <div className="flex justify-center w-auto bg-darkblue rounded-xl py-[6px] gap-4 px-2">
+      <p className="font-bold">{title}</p>
+      <input
+        type={type}
+        className="w-auto bg-close2White text-darkblue rounded-md px-1 text-center text-sm"
+      />
     </div>
   );
 }
@@ -61,6 +74,8 @@ export default function ConferencePage() {
   const [tempId, setTempId] = useState<number>(-1);
   const [update, setUpdate] = useState<boolean>(false);
 
+  const [showFilters, setShowFilters] = useState<boolean>(false);
+
   useEffect(() => {
     refetch();
   }, [update]);
@@ -71,33 +86,46 @@ export default function ConferencePage() {
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
           <Box className="flex flex-col gap-4 w-full my-8 text-close2White">
             <SortFilterRow>
-              <SortFilterSection>
-                <p className="font-bold">SORTUJ:</p>
+              <SortSection>
+                <p className="font-bold">SORTUJ PO:</p>
                 <select className="bg-darkblue px-2 border-b-[1px] border-close2White">
                   <option value="">aaa</option>
                   <option value="">bbb</option>
                   <option value="">ccc</option>
                 </select>
-              </SortFilterSection>
-              <SortFilterSection>
+              </SortSection>
+              <SortSection>
                 <p className="font-bold">KOLEJNOŚĆ:</p>
                 <select className="bg-darkblue px-2 border-b-[1px] border-close2White">
                   <option value="">Rosnąco</option>
                   <option value="">Malejąco</option>
                 </select>
-              </SortFilterSection>
+              </SortSection>
             </SortFilterRow>
             <hr className="size-[2px] rounded-full w-full bg-darkblue" />
-            <SortFilterRow>
-              <SortFilterSection>
-                <p>Data rozpoczęcia od:</p>
-                <p>sroda</p>
-              </SortFilterSection>
-              <SortFilterSection>
-                <p>Data rozpoczęcia do:</p>
-                <p>piatek</p>
-              </SortFilterSection>
-            </SortFilterRow>
+            <p
+              onClick={() => {
+                setShowFilters(!showFilters);
+              }}
+              className="text-darkblue font-bold -mt-4 w-full flex gap-1 items-center justify-end cursor-pointer"
+            >
+              {showFilters ? "Ukryj" : "Filtrowanie"}
+            </p>
+            {showFilters && (
+              <>
+                <SortFilterRow>
+                  <FilterSection
+                    title="Data od:"
+                    type="datetime-local"
+                  ></FilterSection>
+                  <FilterSection
+                    title="Data do:"
+                    type="datetime-local"
+                  ></FilterSection>
+                  <FilterSection title="Tytuł" type="text"></FilterSection>
+                </SortFilterRow>
+              </>
+            )}
           </Box>
           <ConferenceSearch
             numberOfConferences={data.totalElements}
