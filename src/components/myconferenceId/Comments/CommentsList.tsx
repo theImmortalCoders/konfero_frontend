@@ -3,6 +3,47 @@ import TitleHeader from "@/components/common/Box/TitleHeader";
 import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
 import { addCommentToConference } from "@/hooks/comment";
 import { useState, Dispatch, SetStateAction } from "react";
+import Image from "next/image";
+import { getId, getRole } from "@/utils/userInformation";
+
+function SingleComment({
+    key,
+    photo,
+    authorId,
+    authorName,
+    date,
+    content
+} : {
+    key: number;
+    photo: string;
+    authorId: number;
+    authorName: string;
+    date: string;
+    content: string;
+}) {
+
+    
+    return (
+        <div key={key} className="w-full py-3 space-y-2">
+            <span className="flex items-center space-x-3">
+                <Image alt="image" src={photo} width={32} height={32} className="rounded-full"/>
+                <p className="inline-flex items-center justify-center text-sm font-semibold">
+                    { authorName }
+                </p>
+                <p className="text-sm">
+                    { date.replace('T', ' ').slice(0, 16) }
+                </p>
+            </span>
+            <p className="min-h-16">
+                { content }
+            </p>
+            <button className="text-xs hover:underline">
+                Odpowiedz
+            </button>
+            <hr className="border-darkblue"/>
+        </div>
+    )
+}
 
 export default function CommentsList({
     conference,
@@ -23,6 +64,7 @@ export default function CommentsList({
                     console.log("Opublikowano komentarz.");
                     if (setUpdate)
                         setUpdate(!update);
+                    setNewComment("");
                 } else {
                     console.error("Błąd publikowania komentarza.");
                 }
@@ -59,6 +101,17 @@ export default function CommentsList({
             >
                 Opublikuj
             </button>
+            {conference.comments.map((comment) => {
+            return (
+                <SingleComment 
+                    key={comment.id} 
+                    photo={comment.author.photo}
+                    authorId={comment.author.id}
+                    authorName={comment.author.username} 
+                    date={comment.createdAt} 
+                    content={comment.content} />
+                )
+            })}
         </Box>
     )
 }
