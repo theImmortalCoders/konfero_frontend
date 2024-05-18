@@ -12,6 +12,25 @@ import { getCurrentUser } from "@/hooks/user";
 import { useEffect, useState } from "react";
 import ConferenceSortAndFilter from "@/components/myconference/ConferenceSortAndFilter";
 
+export interface SortAndFilterConferenceData {
+  sort?:
+    | "startDateTime"
+    | "location"
+    | "canceled"
+    | "format"
+    | "participantsFull";
+  sortDirection?: "ASC" | "DESC";
+  startDateTimeFrom?: string;
+  startDateTimeTo?: string;
+  name?: string;
+  tagsIds?: number[];
+  canceled?: boolean;
+  verified?: boolean;
+  participantsFull?: boolean;
+  organizerId?: number;
+  locationName?: string;
+}
+
 async function getRole() {
   const userData = await getCurrentUser();
   if (userData && typeof userData === "object" && "role" in userData) {
@@ -23,7 +42,8 @@ async function getRole() {
 export default function ConferencePage() {
   const [userRole, setUserRole] = useState<string | null>(null);
 
-  const [sortFilterData, setSortFilterData] = useState<any[]>([]);
+  const [sortFilterData, setSortFilterData] =
+    useState<SortAndFilterConferenceData>();
 
   useEffect(() => {
     const fetchRole = async () => {
@@ -32,6 +52,10 @@ export default function ConferencePage() {
     };
     fetchRole();
   }, []);
+
+  useEffect(() => {
+    console.log(sortFilterData);
+  }, [sortFilterData]);
 
   const { data, isLoading, isError, refetch } = useQuery(
     "AllConferences",
@@ -52,15 +76,14 @@ export default function ConferencePage() {
     refetch();
   }, [update]);
 
-  const handleData = (data: any) => {
-    // setChildData(data);
-  };
-
   return (
     <Page>
       {!isLoading && data && typeof data !== "string" ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
-          <ConferenceSortAndFilter onData={handleData} />
+          <ConferenceSortAndFilter
+            sortFilterData={sortFilterData}
+            setSortFilterData={setSortFilterData}
+          />
           <ConferenceSearch
             numberOfConferences={data.totalElements}
             disablerole={true}

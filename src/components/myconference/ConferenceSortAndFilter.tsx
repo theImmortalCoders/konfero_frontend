@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box } from "../common/Box/Box";
+import { SortAndFilterConferenceData } from "@/app/(role_all)/conference/page";
 
 function SortSection({ children }: { children: React.ReactNode }) {
   return (
@@ -26,7 +27,7 @@ function FilterSection({
         type={type}
         className="w-auto bg-close2White text-darkblue rounded-md px-1 text-center text-sm"
         onChange={(e) => {
-          setState(e.target.value);
+          e.target.value ? setState(e.target.value) : setState(undefined);
         }}
       />
     </div>
@@ -42,11 +43,20 @@ function SortFilterRow({ children }: { children: React.ReactNode }) {
 }
 
 export default function ConferenceSortAndFilter({
-  onData,
+  sortFilterData,
+  setSortFilterData,
 }: {
-  onData: (data: any) => void;
+  sortFilterData: SortAndFilterConferenceData | undefined;
+  setSortFilterData: React.Dispatch<
+    React.SetStateAction<SortAndFilterConferenceData | undefined>
+  >;
 }) {
   const [showFilters, setShowFilters] = useState<boolean>(false);
+
+  const [sort, setSort] = useState<
+    "startDateTime" | "location" | "canceled" | "format" | "participantsFull"
+  >("startDateTime");
+  const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("ASC");
 
   const [startDateTimeFrom, setStartDateTimeFrom] = useState<
     string | undefined
@@ -66,12 +76,39 @@ export default function ConferenceSortAndFilter({
     undefined
   );
 
+  useEffect(() => {
+    setSortFilterData({
+      sort: sort,
+      sortDirection: sortDirection,
+      startDateTimeFrom: startDateTimeFrom,
+      startDateTimeTo: startDateTimeTo,
+      name: name,
+      tagsIds: tagsIds,
+      canceled: canceled,
+      verified: verified,
+      participantsFull: participantsFull,
+      organizerId: organizerId,
+      locationName: locationName,
+    });
+  }, [startDateTimeFrom, name]);
+
   return (
     <Box className="flex flex-col gap-4 w-full my-8 text-close2White">
       <SortFilterRow>
         <SortSection>
           <p className="font-bold">SORTUJ PO:</p>
-          <select className="bg-darkblue px-2 border-b-[1px] border-close2White">
+          <select
+            className="bg-darkblue px-2 border-b-[1px] border-close2White"
+            onChange={(e) => {
+              e.target.value === "startDateTime" ||
+              e.target.value === "location" ||
+              e.target.value === "canceled" ||
+              e.target.value === "format" ||
+              e.target.value === "participantsFull"
+                ? setSort(e.target.value)
+                : setSort("startDateTime");
+            }}
+          >
             <option value="startDateTime">Data rozpoczęcia</option>
             <option value="location">Lokalizacja</option>
             <option value="canceled">Odwołane</option>
@@ -81,9 +118,16 @@ export default function ConferenceSortAndFilter({
         </SortSection>
         <SortSection>
           <p className="font-bold">KOLEJNOŚĆ:</p>
-          <select className="bg-darkblue px-2 border-b-[1px] border-close2White">
-            <option value="">Rosnąco</option>
-            <option value="">Malejąco</option>
+          <select
+            className="bg-darkblue px-2 border-b-[1px] border-close2White"
+            onChange={(e) => {
+              e.target.value === "ASC" || e.target.value === "DESC"
+                ? setSortDirection(e.target.value)
+                : setSortDirection("ASC");
+            }}
+          >
+            <option value="ASC">Rosnąco</option>
+            <option value="DESC">Malejąco</option>
           </select>
         </SortSection>
       </SortFilterRow>
