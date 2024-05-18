@@ -1,14 +1,15 @@
 import { Box } from "@/components/common/Box/Box";
 import TitleHeader from "@/components/common/Box/TitleHeader";
+import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
 import { addCommentToConference } from "@/hooks/comment";
 import { useState, Dispatch, SetStateAction } from "react";
 
 export default function CommentsList({
-    conferenceId,
+    conference,
     update,
     setUpdate
 } : { 
-    conferenceId: number;
+    conference: GetConferenceDetailsWithRoleFilteringData;
     update: boolean;
     setUpdate: Dispatch<SetStateAction<boolean>>;
 }) {
@@ -17,7 +18,7 @@ export default function CommentsList({
     const publishComment = async () => {
         try {
             if (newcomment !== "") {
-                const result = await addCommentToConference(conferenceId, newcomment);
+                const result = await addCommentToConference(conference.id, newcomment);
                 if (result === 200) {
                     console.log("Opublikowano komentarz.");
                     if (setUpdate)

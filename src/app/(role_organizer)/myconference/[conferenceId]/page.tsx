@@ -109,7 +109,7 @@ export default function MyConferencePage({
           {conferenceIdData.photos.length !== 0 ? (
             <Photos photos={conferenceIdData.photos} />
           ) : null}
-          <CommentsList conferenceId={conferenceIdData.id} update={update} setUpdate={setUpdate}/>
+          <CommentsList conference={conferenceIdData} update={update} setUpdate={setUpdate}/>
           {signUpWarning && (
             <SignUpWarning setSignUpWarning={setSignUpWarning} tempId={conferenceIdData.id} update={update} setUpdate={setUpdate}/>
           )}
