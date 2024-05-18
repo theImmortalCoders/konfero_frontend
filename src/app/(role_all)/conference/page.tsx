@@ -59,12 +59,21 @@ export default function ConferencePage() {
 
   const { data, isLoading, isError, refetch } = useQuery(
     "AllConferences",
-    () => getAllConferences(undefined, "location", "DESC"),
+    () =>
+      getAllConferences(
+        undefined,
+        sortFilterData?.sort,
+        sortFilterData?.sortDirection
+      ),
     {
       staleTime: Infinity,
       refetchOnMount: "always",
     }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [sortFilterData, refetch]);
 
   if (isError) return <Error500 />;
 

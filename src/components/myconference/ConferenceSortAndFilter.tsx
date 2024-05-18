@@ -90,7 +90,19 @@ export default function ConferenceSortAndFilter({
       organizerId: organizerId,
       locationName: locationName,
     });
-  }, [startDateTimeFrom, name]);
+  }, [
+    sort,
+    sortDirection,
+    startDateTimeFrom,
+    startDateTimeTo,
+    name,
+    tagsIds,
+    canceled,
+    verified,
+    participantsFull,
+    organizerId,
+    locationName,
+  ]);
 
   return (
     <Box className="flex flex-col gap-4 w-full my-8 text-close2White">
