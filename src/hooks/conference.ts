@@ -318,7 +318,7 @@ export interface Lecture {
   conferenceName: string;
 }
 
-interface Comment {
+export interface Comment {
   id: number;
   content: string;
   createdAt: string;

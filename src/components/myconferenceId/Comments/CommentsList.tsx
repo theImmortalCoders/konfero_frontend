@@ -1,41 +1,63 @@
 import { Box } from "@/components/common/Box/Box";
 import TitleHeader from "@/components/common/Box/TitleHeader";
-import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
-import { addCommentToConference } from "@/hooks/comment";
-import { useState, Dispatch, SetStateAction } from "react";
+import { GetConferenceDetailsWithRoleFilteringData, Comment } from "@/hooks/conference";
+import { addCommentToConference, deleteComment } from "@/hooks/comment";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import Image from "next/image";
 import { getId, getRole } from "@/utils/userInformation";
+import { FaCommentSlash } from "react-icons/fa";
 
 function SingleComment({
-    key,
-    photo,
-    authorId,
-    authorName,
-    date,
-    content
+    comment,
+    organizerId,
+    userId,
+    userRole,
+    update,
+    setUpdate
 } : {
-    key: number;
-    photo: string;
-    authorId: number;
-    authorName: string;
-    date: string;
-    content: string;
+    comment: Comment;
+    organizerId: number;
+    userId: number | null;
+    userRole: string | null;
+    update: boolean;
+    setUpdate: Dispatch<SetStateAction<boolean>>;
 }) {
-
     
+    const removeComment = async () => {
+        try {
+            const result = await deleteComment(comment.id);
+            if (result === 200) {
+                console.log("Usunięto komentarz.");
+                if (setUpdate)
+                    setUpdate(!update);
+            } else {
+                console.error("Błąd usuwania komentarza.");
+            }
+        } catch (error) {
+          console.error("Błąd usuwanoa komentarza.", error);
+        }
+      }
+
     return (
-        <div key={key} className="w-full py-3 space-y-2">
-            <span className="flex items-center space-x-3">
-                <Image alt="image" src={photo} width={32} height={32} className="rounded-full"/>
-                <p className="inline-flex items-center justify-center text-sm font-semibold">
-                    { authorName }
-                </p>
-                <p className="text-sm">
-                    { date.replace('T', ' ').slice(0, 16) }
-                </p>
+        <div className="w-full py-3 space-y-2">
+            <span className="flex">
+                <span className="flex items-center space-x-3 w-full">
+                    <Image alt="image" src={comment.author.photo} width={32} height={32} className="rounded-full"/>
+                    <p className="inline-flex items-center justify-center text-sm font-semibold">
+                        { comment.author.username }
+                    </p>
+                    <p className="text-sm">
+                        { comment.createdAt.replace('T', ' ').slice(0, 16) }
+                    </p>
+                </span>
+                <span className="flex justify-end items-center w-full">
+                    { (userId === comment.author.id || userRole === "ADMIN") && (
+                        <FaCommentSlash onClick={removeComment} className="cursor-pointer"/>
+                    )}
+                </span>
             </span>
             <p className="min-h-16">
-                { content }
+                { comment.content }
             </p>
             <button className="text-xs hover:underline">
                 Odpowiedz
@@ -54,6 +76,19 @@ export default function CommentsList({
     update: boolean;
     setUpdate: Dispatch<SetStateAction<boolean>>;
 }) {
+    const [userId, setUserId] = useState<number | null>(null);
+    const [userRole, setUserRole] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchId = async () => {
+          const id = await getId();
+          const role = await getRole();
+          setUserId(id);
+          setUserRole(role);
+        };
+        fetchId();
+      }, []);
+
     const [newcomment, setNewComment] = useState<string>("");
 
     const publishComment = async () => {
@@ -85,7 +120,8 @@ export default function CommentsList({
                 value={newcomment}
                 onChange={(e) => {
                     const value = e.target.value;
-                    const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,255}$/i.test(
+                    const maxLength = 23; // Długość najdłuższego polskiego słowa
+                    const isValid = value.split(' ').every(word => word.length <= maxLength) && /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,255}$/i.test(
                         value
                     );
 
@@ -103,13 +139,15 @@ export default function CommentsList({
             </button>
             {conference.comments.map((comment) => {
             return (
-                <SingleComment 
-                    key={comment.id} 
-                    photo={comment.author.photo}
-                    authorId={comment.author.id}
-                    authorName={comment.author.username} 
-                    date={comment.createdAt} 
-                    content={comment.content} />
+                <SingleComment
+                    key={comment.id}
+                    organizerId={conference.organizer.id}
+                    comment={comment}
+                    userId={userId}
+                    userRole={userRole}
+                    update={update}
+                    setUpdate={setUpdate} 
+                    />
                 )
             })}
         </Box>
