@@ -19,12 +19,10 @@ function FilterSection({
   title,
   type,
   setState,
-  tagsData,
 }: {
   title: string;
   type: string;
   setState: React.Dispatch<React.SetStateAction<any | undefined>>;
-  tagsData?: Tag[];
 }) {
   const [tags, setTags] = useState<Tag[]>([]);
   const [tagsIds, setTagsIds] = useState<number[]>([]);
@@ -74,7 +72,7 @@ function FilterSection({
     <div
       className={`flex justify-center ${
         type === "tag" ? "w-64 items-start" : "w-auto items-center"
-      } bg-darkblue rounded-xl py-[6px] gap-3 px-2`}
+      } bg-darkblue rounded-xl py-[6px] gap-3 px-4`}
     >
       <p className="font-bold">{title}</p>
       {type !== "tag" ? (
