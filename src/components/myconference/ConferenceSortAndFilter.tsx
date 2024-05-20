@@ -2,6 +2,10 @@
 import { useEffect, useState } from "react";
 import { Box } from "../common/Box/Box";
 import { SortAndFilterConferenceData } from "@/app/(role_all)/conference/page";
+import { Tag } from "@/hooks/conference";
+import SearchBarTag from "../tag/SearchBarTag";
+import { getAllTags } from "@/hooks/tag";
+import { TiDeleteOutline } from "react-icons/ti";
 
 function SortSection({ children }: { children: React.ReactNode }) {
   return (
@@ -15,32 +19,124 @@ function FilterSection({
   title,
   type,
   setState,
+  tagsData,
 }: {
   title: string;
   type: string;
   setState: React.Dispatch<React.SetStateAction<any | undefined>>;
+  tagsData?: Tag[];
 }) {
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [tagsIds, setTagsIds] = useState<number[]>([]);
+  const [tagsNames, setTagsNames] = useState<string[]>([]);
+  const [cleanSearchBar, setCleanSearchBar] = useState(false);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      const result = await getAllTags();
+      if (typeof result !== "string") {
+        setTags(result);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
+  const handleTagSelected = (tag: Tag) => {
+    setTagsIds((prevState) => {
+      if (!prevState.includes(tag.id)) {
+        return [...prevState, tag.id];
+      }
+      return prevState;
+    });
+    setTagsNames((prevState) => {
+      if (!prevState.includes(tag.tagName)) {
+        return [...prevState, tag.tagName];
+      }
+      return prevState;
+    });
+    setCleanSearchBar(true);
+  };
+
+  useEffect(() => {
+    if (tagsIds.length !== 0) {
+      setCleanSearchBar(false);
+    }
+    setState(tagsIds.length !== 0 ? tagsIds : undefined);
+  }, [tagsIds]);
+
+  const handleDeleteTags = (indexToDelete: number) => {
+    setTagsIds(tagsIds.filter((_, index) => index !== indexToDelete));
+    setTagsNames(tagsNames.filter((_, index) => index !== indexToDelete));
+  };
+
   return (
-    <div className="flex justify-center w-auto bg-darkblue rounded-xl py-[6px] gap-3 px-2">
+    <div
+      className={`flex justify-center ${
+        type === "tag" ? "w-64 items-start" : "w-auto items-center"
+      } bg-darkblue rounded-xl py-[6px] gap-3 px-2`}
+    >
       <p className="font-bold">{title}</p>
-      <input
-        type={type}
-        className="w-auto bg-close2White text-darkblue rounded-md px-1 text-center text-sm"
-        onChange={(e) => {
-          type !== "checkbox"
-            ? e.target.value
-              ? setState(e.target.value)
-              : setState(undefined)
-            : setState(e.target.checked ? e.target.checked : undefined);
-        }}
-      />
+      {type !== "tag" ? (
+        <input
+          type={type}
+          className="w-auto bg-close2White text-darkblue rounded-md px-1 text-center text-sm"
+          onChange={(e) => {
+            type !== "checkbox"
+              ? e.target.value
+                ? setState(e.target.value)
+                : setState(undefined)
+              : setState(e.target.checked ? e.target.checked : undefined);
+          }}
+        />
+      ) : (
+        <div>
+          <SearchBarTag
+            items={tags}
+            renderItem={(tag) => `${tag.tagName}`}
+            onItemSelected={handleTagSelected}
+            placeholder="Dodaj tagi"
+            handleReset={cleanSearchBar}
+            pt={-1}
+            isFiltering={true}
+          />
+          <div
+            className={`grid grid-cols-1 gap-1 w-full text-blue ${
+              tagsNames.length !== 0 ? "pt-2" : "pt-0"
+            }`}
+          >
+            {tagsNames.map((name, index) => (
+              <span
+                key={index}
+                className="flex flex-row items-center w-full text-sm text-close2White justify-between p-1 border border-close2White rounded-lg"
+              >
+                {name}
+                <TiDeleteOutline
+                  className="size-5 cursor-pointer"
+                  onClick={() => handleDeleteTags(index)}
+                />
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function SortFilterRow({ children }: { children: React.ReactNode }) {
+function SortFilterRow({
+  children,
+  isTagsThere,
+}: {
+  children: React.ReactNode;
+  isTagsThere?: boolean;
+}) {
   return (
-    <div className="flex flex-row w-full justify-center items-center gap-4">
+    <div
+      className={`flex flex-row w-full justify-center ${
+        isTagsThere ? "items-start" : "items-center"
+      } gap-4`}
+    >
       {children}
     </div>
   );
@@ -172,28 +268,6 @@ export default function ConferenceSortAndFilter({
           </SortFilterRow>
           <SortFilterRow>
             <FilterSection
-              title="Nazwa:"
-              type="text"
-              setState={setName}
-            ></FilterSection>
-            <FilterSection
-              title="Organizator:"
-              type="text"
-              setState={setOrganizerId}
-            ></FilterSection>
-            <FilterSection
-              title="Lokalizacja:"
-              type="string"
-              setState={setLocationName}
-            ></FilterSection>
-          </SortFilterRow>
-          <SortFilterRow>
-            <FilterSection
-              title="Tagi:"
-              type="text"
-              setState={setTagsIds}
-            ></FilterSection>
-            <FilterSection
               title="Brak miejsc:"
               type="checkbox"
               setState={setParticipantsFull}
@@ -207,6 +281,28 @@ export default function ConferenceSortAndFilter({
               title="Zweryfikowane:"
               type="checkbox"
               setState={setVerified}
+            ></FilterSection>
+          </SortFilterRow>
+          <SortFilterRow isTagsThere={true}>
+            <FilterSection
+              title="Tagi:"
+              type="tag"
+              setState={setTagsIds}
+            ></FilterSection>
+            <FilterSection
+              title="Nazwa:"
+              type="text"
+              setState={setName}
+            ></FilterSection>
+            {/* <FilterSection
+              title="Organizator:"
+              type="organizer"
+              setState={setOrganizerId}
+            ></FilterSection> */}
+            <FilterSection
+              title="Lokalizacja:"
+              type="string"
+              setState={setLocationName}
             ></FilterSection>
           </SortFilterRow>
         </>
