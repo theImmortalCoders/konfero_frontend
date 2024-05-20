@@ -86,7 +86,7 @@ export default function AddConferenceInputs({
     }
   }, [tagsIds]);
 
-  const handleDeleteLecturers = (indexToDelete: number) => {
+  const handleDeleteTags = (indexToDelete: number) => {
     setTagsIds(tagsIds.filter((_, index) => index !== indexToDelete));
     setTagsNames(tagsNames.filter((_, index) => index !== indexToDelete));
   };
@@ -424,7 +424,7 @@ export default function AddConferenceInputs({
               {name}
               <TiDeleteOutline
                 className="h-5 w-5 cursor-pointer"
-                onClick={() => handleDeleteLecturers(index)}
+                onClick={() => handleDeleteTags(index)}
               />
             </span>
           ))}

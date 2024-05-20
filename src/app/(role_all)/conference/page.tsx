@@ -10,6 +10,26 @@ import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 import SignUpWarning from "@/components/conference/SignUpWarning";
 import { getCurrentUser } from "@/hooks/user";
 import { useEffect, useState } from "react";
+import ConferenceSortAndFilter from "@/components/myconference/ConferenceSortAndFilter";
+
+export interface SortAndFilterConferenceData {
+  sort?:
+    | "startDateTime"
+    | "location"
+    | "canceled"
+    | "format"
+    | "participantsFull";
+  sortDirection?: "ASC" | "DESC";
+  startDateTimeFrom?: string;
+  startDateTimeTo?: string;
+  name?: string;
+  tagsIds?: number[];
+  canceled?: boolean;
+  verified?: boolean;
+  participantsFull?: boolean;
+  organizerId?: number;
+  locationName?: string;
+}
 
 async function getRole() {
   const userData = await getCurrentUser();
@@ -22,6 +42,9 @@ async function getRole() {
 export default function ConferencePage() {
   const [userRole, setUserRole] = useState<string | null>(null);
 
+  const [sortFilterData, setSortFilterData] =
+    useState<SortAndFilterConferenceData>();
+
   useEffect(() => {
     const fetchRole = async () => {
       const role = await getRole();
@@ -32,14 +55,32 @@ export default function ConferencePage() {
 
   const { data, isLoading, isError, refetch } = useQuery(
     "AllConferences",
-    () => getAllConferences(),
+    () =>
+      getAllConferences(
+        sortFilterData?.sort,
+        sortFilterData?.sortDirection,
+        sortFilterData?.startDateTimeFrom,
+        sortFilterData?.startDateTimeTo,
+        sortFilterData?.name,
+        sortFilterData?.tagsIds,
+        sortFilterData?.canceled,
+        sortFilterData?.verified,
+        sortFilterData?.participantsFull,
+        sortFilterData?.organizerId,
+        sortFilterData?.locationName
+      ),
     {
       staleTime: Infinity,
       refetchOnMount: "always",
     }
   );
 
+  useEffect(() => {
+    refetch();
+  }, [sortFilterData, refetch]);
+
   if (isError) return <Error500 />;
+
   const [signUpWarning, setSignUpWarning] = useState<boolean>(false);
   const [tempId, setTempId] = useState<number>(-1);
   const [update, setUpdate] = useState<boolean>(false);
@@ -52,8 +93,12 @@ export default function ConferencePage() {
     <Page>
       {!isLoading && data && typeof data !== "string" ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
+          <ConferenceSortAndFilter
+            sortFilterData={sortFilterData}
+            setSortFilterData={setSortFilterData}
+          />
           <ConferenceSearch
-            numberOfConferences={data.totalElements}
+            numberOfConferences={data.numberOfElements}
             disablerole={true}
             role={"USER"}
           />

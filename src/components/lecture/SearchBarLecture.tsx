@@ -40,18 +40,15 @@ const SearchBarLecture: React.FC<SearchComponentProps> = ({
     setSearch(event.target.value);
 
     if (event.target.value.length > 0) {
-      const searchResults = items
-        .filter(
-          (item) =>
-            (item.username &&
-              item.username
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
-            (item.email &&
-              item.email
-                .toLowerCase()
-                .includes(event.target.value.toLowerCase()))
-        )
+      const searchResults = items.filter(
+        (item) =>
+          (item.username &&
+            item.username
+              .toLowerCase()
+              .includes(event.target.value.toLowerCase())) ||
+          (item.email &&
+            item.email.toLowerCase().includes(event.target.value.toLowerCase()))
+      );
 
       setResults(searchResults);
     } else {
@@ -83,7 +80,10 @@ const SearchBarLecture: React.FC<SearchComponentProps> = ({
           value={search}
           onChange={handleChange}
         />
-        <label htmlFor="searchbar" className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all">
+        <label
+          htmlFor="searchbar"
+          className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all"
+        >
           {placeholder}
         </label>
       </div>

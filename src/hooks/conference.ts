@@ -169,24 +169,54 @@ export interface GetAllConferencesData {
 }
 
 export async function getAllConferences(
-  organizerId?: number,
   sort?:
     | "startDateTime"
     | "location"
     | "canceled"
     | "format"
-    | "participantsFull"
+    | "participantsFull",
+  sortDirection?: "ASC" | "DESC",
+  startDateTimeFrom?: string,
+  startDateTimeTo?: string,
+  name?: string,
+  tagsIds?: number[],
+  canceled?: boolean,
+  verified?: boolean,
+  participantsFull?: boolean,
+  organizerId?: number,
+  locationName?: string
 ): Promise<GetAllConferencesData | string> {
   try {
     let url = `/api/conference`;
     url =
-      sort && organizerId
-        ? url.concat(`?sort=${sort}&organizerId=${organizerId.toString()}`)
-        : sort
-        ? url.concat(`?sort=${sort}`)
+      sort && sortDirection && organizerId
+        ? url.concat(
+            `?sort=${sort}&sortDirection=${sortDirection}&organizerId=${organizerId.toString()}`
+          )
+        : sort && sortDirection
+        ? url.concat(`?sort=${sort}&sortDirection=${sortDirection}`)
         : organizerId
         ? url.concat(`?organizerId=${organizerId.toString()}`)
         : url;
+    url = startDateTimeFrom
+      ? url.concat("&startDateTimeFrom=", startDateTimeFrom)
+      : url;
+    url = startDateTimeTo
+      ? url.concat("&startDateTimeTo=", startDateTimeTo)
+      : url;
+    url = name ? url.concat("&name=", name) : url;
+    tagsIds
+      ? tagsIds.forEach((id) => {
+          url = url.concat(`&tagsIds=${id.toString()}`);
+        })
+      : null;
+    url = canceled !== undefined ? url.concat(`&canceled=${canceled}`) : url;
+    url = verified !== undefined ? url.concat(`&verified=${verified}`) : url;
+    url =
+      participantsFull !== undefined
+        ? url.concat(`&participantsFull=${participantsFull}`)
+        : url;
+    url = locationName ? url.concat("&locationName=", locationName) : url;
     const response: AxiosResponse<GetAllConferencesData | string> =
       await appAPI.get(`${url}`, {
         withCredentials: true,
