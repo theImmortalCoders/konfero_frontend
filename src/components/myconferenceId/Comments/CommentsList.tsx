@@ -6,6 +6,49 @@ import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import Image from "next/image";
 import { getId, getRole } from "@/utils/userInformation";
 
+function SingleResponse({
+    response,
+    organizerId,
+    userId,
+    userRole,
+    update,
+    setUpdate,
+    removeComment
+} : {
+    response: Comment;
+    organizerId: number;
+    userId: number | null;
+    userRole: string | null;
+    update: boolean;
+    setUpdate: Dispatch<SetStateAction<boolean>>;
+    removeComment: (id:number) => void;
+}) {
+    return (
+        <div className="flex flex-col ml-8 w-4/5 py-3 space-y-2">
+            <span className="flex">
+                <span className="flex items-center space-x-3 w-full">
+                    <Image alt="image" src={response.author.photo} width={24} height={24} className="rounded-full"/>
+                    <p className="inline-flex items-center justify-center text-xs font-semibold">
+                        { response.author.username }
+                    </p>
+                    <p className="text-xs">
+                        { response.createdAt.replace('T', ' ').slice(0, 16) }
+                    </p>
+                </span>
+            </span>
+            <p className="min-h-16 text-sm">
+                { response.content }
+            </p>
+            <span className="space-x-2 font-semibold">            
+                {(userId === response.author.id || userRole === "ADMIN") && (
+                        <button onClick={()=>removeComment(response.id)} className="text-xs hover:underline text-red-600">Usuń</button>
+                 )}
+            </span>
+            <hr/>
+        </div>
+    )
+}
+
 function SingleComment({
     comment,
     organizerId,
@@ -22,9 +65,9 @@ function SingleComment({
     setUpdate: Dispatch<SetStateAction<boolean>>;
 }) {
     
-    const removeComment = async () => {
+    const removeComment = async (id : number) => {
         try {
-            const result = await deleteComment(comment.id);
+            const result = await deleteComment(id);
             if (result === 200) {
                 console.log("Usunięto komentarz.");
                 if (setUpdate)
@@ -45,6 +88,8 @@ function SingleComment({
             const result = await respondToComment(comment.id, newResponse);
             if (result === 200) {
                 console.log("Dodano odpowiedź.");
+                setIsResponse(false);
+                setNewResponse("");
                 if (setUpdate)
                     setUpdate(!update);
             } else {
@@ -76,9 +121,25 @@ function SingleComment({
                     Odpowiedz
                 </button>
                 {(userId === comment.author.id || userRole === "ADMIN") && (
-                        <button onClick={removeComment} className="text-xs hover:underline text-red-600">Usuń</button>
+                        <button onClick={()=>removeComment(comment.id)} className="text-xs hover:underline text-red-600">Usuń</button>
                  )}
             </span>
+            {comment.responses && (
+                comment?.responses.map((response) => {
+                    return (
+                        <SingleResponse
+                            key={response.id}
+                            organizerId={organizerId}
+                            response={response}
+                            userId={userId}
+                            userRole={userRole}
+                            update={update}
+                            setUpdate={setUpdate} 
+                            removeComment={removeComment}
+                        />
+                    )
+                })
+            )}
             {isResponse && (
                 <div className="ml-8">
                     <div className="w-4/5 py-2 px-4 mt-2 bg-white border border-darkblue rounded-tr-lg rounded-br-lg rounded-bl-lg">
