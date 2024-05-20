@@ -75,7 +75,7 @@ const SearchBarTag: React.FC<SearchComponentProps> = ({
             placeholder=" "
             value={search}
             onChange={handleChange}
-            className="w-full bg-close2White text-darkblue rounded-md px-1 text-center text-sm outline-none"
+            className="w-auto bg-close2White text-darkblue rounded-md px-1 text-center text-sm outline-none"
           />
         </div>
       ) : (
@@ -105,7 +105,7 @@ const SearchBarTag: React.FC<SearchComponentProps> = ({
             isFiltering
               ? "w-auto bg-darkblue opacity-100 text-close2White"
               : "w-full bg-close2White opacity-75 text-darkblue"
-          } text-sm outline-none focus:outline-none cursor-pointer`}
+          } text-sm outline-none focus:outline-none cursor-pointer text-left`}
         >
           {renderItem(item)}
         </div>

@@ -9,7 +9,7 @@ import { TiDeleteOutline } from "react-icons/ti";
 
 function SortSection({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex justify-center w-2/5 bg-darkblue rounded-xl py-[6px] gap-4">
+    <div className="flex flex-row justify-center items-center w-full xs:w-1/2 xl:w-2/5 bg-darkblue rounded-xl py-[6px] gap-[6px] sm:gap-4 px-4 xs:px-2">
       {children}
     </div>
   );
@@ -70,9 +70,13 @@ function FilterSection({
 
   return (
     <div
-      className={`flex justify-center ${
-        type === "tag" ? "w-64 items-start" : "w-auto items-center"
-      } bg-darkblue rounded-xl py-[6px] gap-3 px-4`}
+      className={`flex flex-row ${
+        type === "tag" || type === "text"
+          ? "xs:flex-row sm:flex-row"
+          : "xs:flex-col sm:flex-row"
+      } justify-center ${
+        type === "tag" ? "items-start" : "items-center"
+      } bg-darkblue rounded-xl py-[6px] gap-3 px-4 w-full sm:w-auto text-center`}
     >
       <p className="font-bold">{title}</p>
       {type !== "tag" ? (
@@ -88,7 +92,7 @@ function FilterSection({
           }}
         />
       ) : (
-        <div>
+        <div className="text-center">
           <SearchBarTag
             items={tags}
             renderItem={(tag) => `${tag.tagName}`}
@@ -131,8 +135,10 @@ function SortFilterRow({
 }) {
   return (
     <div
-      className={`flex flex-row w-full justify-center ${
-        isTagsThere ? "items-start" : "items-center"
+      className={`flex w-full justify-center ${
+        isTagsThere
+          ? "items-center 2xl:items-start flex-col 2xl:flex-row"
+          : "items-center flex-col xs:flex-row"
       } gap-4`}
     >
       {children}
@@ -203,12 +209,12 @@ export default function ConferenceSortAndFilter({
   ]);
 
   return (
-    <Box className="flex flex-col gap-4 w-full my-8 text-close2White">
+    <Box className="flex flex-col gap-4 w-full my-8 text-close2White text-sm md:text-base">
       <SortFilterRow>
         <SortSection>
-          <p className="font-bold">SORTUJ PO:</p>
+          <p className="font-bold text-center">SORTUJ:</p>
           <select
-            className="bg-darkblue px-2 border-b-[1px] border-close2White"
+            className="bg-darkblue px-1 border-b-[1px] border-close2White"
             onChange={(e) => {
               e.target.value === "startDateTime" ||
               e.target.value === "location" ||
@@ -227,7 +233,7 @@ export default function ConferenceSortAndFilter({
           </select>
         </SortSection>
         <SortSection>
-          <p className="font-bold">KOLEJNOŚĆ:</p>
+          <p className="font-bold text-center">KOLEJNOŚĆ:</p>
           <select
             className="bg-darkblue px-2 border-b-[1px] border-close2White"
             onChange={(e) => {
@@ -246,7 +252,7 @@ export default function ConferenceSortAndFilter({
         onClick={() => {
           setShowFilters(!showFilters);
         }}
-        className="text-darkblue font-bold -mt-4 w-full flex gap-1 items-center justify-end cursor-pointer"
+        className="text-darkblue font-bold -mt-2 md:-mt-4 w-full flex gap-1 items-center justify-end cursor-pointer"
       >
         {showFilters ? "- Ukryj filtry" : "+ Pokaż filtry"}
       </p>
@@ -254,12 +260,12 @@ export default function ConferenceSortAndFilter({
         <>
           <SortFilterRow>
             <FilterSection
-              title="Rozpoczyna się po:"
+              title="Rozpoczęcie po:"
               type="datetime-local"
               setState={setStartDateTimeFrom}
             ></FilterSection>
             <FilterSection
-              title="Kończy się przed:"
+              title="Koniec przed:"
               type="datetime-local"
               setState={setStartDateTimeTo}
             ></FilterSection>
@@ -299,7 +305,7 @@ export default function ConferenceSortAndFilter({
             ></FilterSection> */}
             <FilterSection
               title="Lokalizacja:"
-              type="string"
+              type="text"
               setState={setLocationName}
             ></FilterSection>
           </SortFilterRow>
