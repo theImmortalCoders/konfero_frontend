@@ -1,11 +1,10 @@
 import { Box } from "@/components/common/Box/Box";
 import TitleHeader from "@/components/common/Box/TitleHeader";
 import { GetConferenceDetailsWithRoleFilteringData, Comment } from "@/hooks/conference";
-import { addCommentToConference, deleteComment } from "@/hooks/comment";
+import { addCommentToConference, deleteComment, respondToComment } from "@/hooks/comment";
 import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import Image from "next/image";
 import { getId, getRole } from "@/utils/userInformation";
-import { FaCommentSlash } from "react-icons/fa";
 
 function SingleComment({
     comment,
@@ -38,8 +37,26 @@ function SingleComment({
         }
       }
 
+    const [isResponse, setIsResponse] = useState<boolean>(false);
+    const [newResponse, setNewResponse] = useState<string>("");
+
+    const publishResponse = async () => {
+        try {
+            const result = await respondToComment(comment.id, newResponse);
+            if (result === 200) {
+                console.log("Dodano odpowiedź.");
+                if (setUpdate)
+                    setUpdate(!update);
+            } else {
+                console.error("Błąd dodawania odpowiedzi.");
+            }
+        } catch (error) {
+          console.error("Błąd dodawania odpowiedzi.", error);
+        }
+      }
+
     return (
-        <div className="w-full py-3 space-y-2">
+        <div className="flex flex-col w-full py-3 space-y-2">
             <span className="flex">
                 <span className="flex items-center space-x-3 w-full">
                     <Image alt="image" src={comment.author.photo} width={32} height={32} className="rounded-full"/>
@@ -50,18 +67,44 @@ function SingleComment({
                         { comment.createdAt.replace('T', ' ').slice(0, 16) }
                     </p>
                 </span>
-                <span className="flex justify-end items-center w-full">
-                    { (userId === comment.author.id || userRole === "ADMIN") && (
-                        <FaCommentSlash onClick={removeComment} className="cursor-pointer"/>
-                    )}
-                </span>
             </span>
             <p className="min-h-16">
                 { comment.content }
             </p>
-            <button className="text-xs hover:underline">
-                Odpowiedz
-            </button>
+            <span className="space-x-2 font-semibold">            
+                <button onClick={() => setIsResponse(!isResponse)} className="text-xs hover:underline">
+                    Odpowiedz
+                </button>
+                {(userId === comment.author.id || userRole === "ADMIN") && (
+                        <button onClick={removeComment} className="text-xs hover:underline text-red-600">Usuń</button>
+                 )}
+            </span>
+            {isResponse && (
+                <div className="ml-8">
+                    <div className="w-4/5 py-2 px-4 mt-2 bg-white border border-darkblue rounded-tr-lg rounded-br-lg rounded-bl-lg">
+                        <textarea 
+                            rows={3} 
+                            className="px-0 w-full text-sm border-0 focus:ring-0 focus:outline-none" 
+                            placeholder="Odpowiedz..."
+                            value={newResponse}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                const maxLength = 23; // Długość najdłuższego polskiego słowa
+                                const isValid = value.split(' ').every(word => word.length <= maxLength) && /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,255}$/i.test(
+                                    value
+                                );
+
+                                if (isValid) {
+                                    setNewResponse(value);
+                                }
+                            }}
+                    />
+                    </div>
+                    <button onClick={publishResponse} className="text-xs hover:underline">
+                        Opublikuj
+                    </button>
+                </div>
+            )}
             <hr className="border-darkblue"/>
         </div>
     )

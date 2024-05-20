@@ -323,6 +323,7 @@ export interface Comment {
   content: string;
   createdAt: string;
   author: Participant;
+  responses?: Comment[];
 }
 
 export interface GetConferenceDetailsWithRoleFilteringData {
