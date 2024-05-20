@@ -53,10 +53,6 @@ export default function ConferencePage() {
     fetchRole();
   }, []);
 
-  useEffect(() => {
-    console.log(sortFilterData);
-  }, [sortFilterData]);
-
   const { data, isLoading, isError, refetch } = useQuery(
     "AllConferences",
     () =>
@@ -102,7 +98,7 @@ export default function ConferencePage() {
             setSortFilterData={setSortFilterData}
           />
           <ConferenceSearch
-            numberOfConferences={data.totalElements}
+            numberOfConferences={data.numberOfElements}
             disablerole={true}
             role={"USER"}
           />

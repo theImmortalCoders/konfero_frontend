@@ -31,7 +31,7 @@ function FilterSection({
             ? e.target.value
               ? setState(e.target.value)
               : setState(undefined)
-            : setState(e.target.checked);
+            : setState(e.target.checked ? e.target.checked : undefined);
         }}
       />
     </div>
