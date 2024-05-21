@@ -1,6 +1,5 @@
 "use client";
-import { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import {
@@ -12,28 +11,8 @@ import Link from "next/link";
 import { updateLastVisitedPage } from "@/utils/cookie";
 import { UserData, getCurrentUser } from "@/hooks/user";
 import { useQuery } from "react-query";
-import { NEXT_PUBLIC_FRONT_BASE_URL, appAPI } from "@/utils/appENV";
-
-function Navbox() {
-  return (
-    <>
-      <Link href="/aboutus">
-        <button onClick={() => updateLastVisitedPage("/aboutus")}>O nas</button>
-      </Link>
-      <Link href="/conference">
-        <button onClick={() => updateLastVisitedPage("/conference")}>
-          Konferencje
-        </button>
-      </Link>
-      <Link
-        href="/myconference"
-        onClick={() => updateLastVisitedPage("/myconference")}
-      >
-        Moje konferencje
-      </Link>
-    </>
-  );
-}
+import { appAPI } from "@/utils/appENV";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -54,11 +33,48 @@ export default function Navbar() {
     staleTime: Infinity,
   });
 
+  const pathname = usePathname();
+  const isActive = (pathname: string, target: string) => pathname === target;
+
+  function Navbox() {
+    return (
+      <>
+        <Link href="/aboutus">
+          <button
+            onClick={() => updateLastVisitedPage("/aboutus")}
+            className={isActive(pathname, "/aboutus") ? "font-bold" : ""}
+          >
+            O nas
+          </button>
+        </Link>
+        <Link href="/conference">
+          <button
+            onClick={() => updateLastVisitedPage("/conference")}
+            className={isActive(pathname, "/conference") ? "font-bold" : ""}
+          >
+            Konferencje
+          </button>
+        </Link>
+        <Link href="/myconference">
+          <button
+            onClick={() => updateLastVisitedPage("/myconference")}
+            className={isActive(pathname, "/myconference") ? "font-bold" : ""}
+          >
+            Moje konferencje
+          </button>
+        </Link>
+      </>
+    );
+  }
+
   function AdminNavbox() {
     if (currentUserData && (currentUserData as UserData).role === "ADMIN")
       return (
         <Link href="/admindashboard">
-          <button onClick={() => updateLastVisitedPage("/admindashboard")}>
+          <button
+            onClick={() => updateLastVisitedPage("/admindashboard")}
+            className={isActive(pathname, "/admindashboard") ? "font-bold" : ""}
+          >
             Panel administratora
           </button>
         </Link>
