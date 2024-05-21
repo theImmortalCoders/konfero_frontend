@@ -4,12 +4,12 @@ import ListItemImage from "../../common/List/ListItemImage";
 import { formatDate } from "@/utils/date";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import { useRouter } from "next/navigation";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import React, { Dispatch, SetStateAction } from "react";
 import { signOutFromConference } from "@/hooks/conference";
 import Verified from "@/components/status/verified";
 import Cancel from "@/components/status/cancel";
 import End from "@/components/status/end";
+import DisplayTag from "@/components/tag/displaytag";
 
 export default function ConferenceList({
   conference,
@@ -60,16 +60,6 @@ export default function ConferenceList({
     }
   };
 
-  const baseScale = useMediaQuery("(min-width:1024px)");
-  const rwd = new Array(15).fill(null).map((a, index) => {
-    return Number(
-      useMediaQuery(`(min-width:${(baseScale ? 3050 : 2700) - 150 * index}px)`),
-    );
-  });
-  const sumRwd = rwd.reduce((a, b) => {
-    return a + b;
-  }, 0);
-
   return (
     <div className="flex flex-col sm:flex-row items-center sm:items-start w-full text-black bg-close2White hover:bg-gray-200 duration-200 shadow-whiteShadow h-full z-0 rounded-3xl relative pb-4 sm:py-0">
       <ListItemImage
@@ -100,27 +90,7 @@ export default function ConferenceList({
               {conference.format === "ONLINE" && <p>Online</p>}
             </div>
           </div>
-          {conference.tags !== null ? (
-            <>
-              <div className="flex flex-wrap sm:flex-row justify-center w-full sm:pl-4 items-center sm:justify-start mt-1 mb-2 gap-1">
-                {conference.tags?.slice(0, 2 + sumRwd).map((tag) => (
-                  <p
-                    key={tag.id}
-                    className="w-20 h-fit text-xxs overflow-hidden overflow-ellipsis whitespace-nowrap text-center bg-gray-200 border-[1px] border-blue rounded-lg px-1"
-                  >
-                    {tag.tagName}
-                  </p>
-                ))}
-                {conference.tags?.length > 2 + sumRwd && (
-                  <div className="flex flex-row h-fit text-xxs overflow-hidden overflow-ellipsis whitespace-nowrap justify-center bg-gray-200 border-[1px] border-blue rounded-lg px-2">
-                    <p className="sm:hidden">+</p>
-                    {conference.tags.length - (2 + sumRwd)}
-                    <p className="hidden sm:block">&nbsp;więcej...</p>
-                  </div>
-                )}
-              </div>
-            </>
-          ) : null}
+          <DisplayTag conference={conference} />
         </div>
       </ListItemImage>
       {mode === "conference" && (
