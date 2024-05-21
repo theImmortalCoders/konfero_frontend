@@ -6,21 +6,10 @@ import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import React, { Dispatch, SetStateAction } from "react";
-import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { FcCancel } from "react-icons/fc";
 import { signOutFromConference } from "@/hooks/conference";
-import cancel from "@/components/status/cancel";
 import Verified from "@/components/status/verified";
 import Cancel from "@/components/status/cancel";
-
-function NewComponent() {
-  return (
-    <div className="flex items-center justify-center gap-x-1">
-      <RiVerifiedBadgeFill />
-      <p>Zweryfikowana</p>
-    </div>
-  );
-}
+import End from "@/components/status/end";
 
 export default function ConferenceList({
   conference,
@@ -81,6 +70,7 @@ export default function ConferenceList({
     return a + b;
   }, 0);
 
+  console.log("conference", conference);
   return (
     <div className="flex flex-col sm:flex-row items-center sm:items-start w-full text-black bg-close2White hover:bg-gray-200 duration-200 shadow-whiteShadow h-full z-0 rounded-3xl relative pb-4 sm:py-0">
       <ListItemImage
@@ -102,15 +92,14 @@ export default function ConferenceList({
                 {formatDate(conference?.startDateTime)}
                 &nbsp;- {formatDate(conference?.endDateTime)}
               </p>
-              {conference.finished && (
-                <p className="w-min font-semibold text-nowrap text-rose-800 text-sm">
-                  Zakończona
-                </p>
-              )}
+              {conference.finished && <End />}
             </div>
-            <p className="font-semibold xs:font-bold text-xs 2xs:text-base line-clamp-1">
-              {conference?.location?.name}
-            </p>
+            <div className="font-semibold xs:font-bold text-xs 2xs:text-base line-clamp-1">
+              {conference.format === "STATIONARY" && (
+                <p>{conference?.location?.name}</p>
+              )}
+              {conference.format === "ONLINE" && <p>Online</p>}
+            </div>
           </div>
           {conference.tags !== null ? (
             <>
