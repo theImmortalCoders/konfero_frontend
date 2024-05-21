@@ -103,7 +103,7 @@ export default function ConferencePage() {
             role={"USER"}
           />
           <div className="w-full flex flex-col gap-y-10">
-            {data.content?.map((conf) => {
+            {data.content?.sort((a,b)=>Number(a.canceled)-Number(b.canceled)).map((conf) => {
               return (
                 <ConferenceList
                   key={`${conf.id}`}

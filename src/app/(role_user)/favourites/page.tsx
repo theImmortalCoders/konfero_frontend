@@ -5,7 +5,6 @@ import {getFavouriteLectures, GetFavouriteLecturesData} from "@/hooks/lecture";
 import LectureList from "@/components/myconferenceId/Lectures/LectureList";
 import {Box} from "@/components/common/Box/Box";
 import Error500 from "@/components/common/Error/Error500";
-import {getConferenceDetailsWithRoleFiltering} from "@/hooks/conference";
 import TitleHeader from "@/components/common/Box/TitleHeader";
 
 const FavouriteLectures = ({lectures}: {lectures: GetFavouriteLecturesData[]}) => {
