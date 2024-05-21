@@ -56,20 +56,20 @@ export default function Navbar() {
 
   function AdminNavbox() {
     if (currentUserData && (currentUserData as UserData).role === "ADMIN")
-    return (
-      <Link href="/admindashboard">
-        <button onClick={() => updateLastVisitedPage("/admindashboard")}>
-          Panel administratora
-        </button>
-      </Link>
-    );
+      return (
+        <Link href="/admindashboard">
+          <button onClick={() => updateLastVisitedPage("/admindashboard")}>
+            Panel administratora
+          </button>
+        </Link>
+      );
   }
 
   const rolesMap = {
-    "USER": "Użytkownik",
-    "ORGANIZER": "Organizator",
-    "ADMIN": "Administrator",
-  }
+    USER: "Użytkownik",
+    ORGANIZER: "Organizator",
+    ADMIN: "Administrator",
+  };
 
   return (
     <nav className="max-w-screen h-navbar bg-close2White flex items-center justify-between px-4 md:px-8 shadow-navbarShadow sticky z-20">
@@ -89,7 +89,9 @@ export default function Navbar() {
           !currentUserData ||
           currentUserData === null ||
           isError ? (
-            <Link href="/login"><IoPersonCircleOutline className="w-8 h-8 text-darkblue" /></Link>
+            <Link href="/login">
+              <IoPersonCircleOutline className="w-8 h-8 text-darkblue" />
+            </Link>
           ) : (
             <div className="flex justify-end relative">
               <Image
@@ -100,10 +102,10 @@ export default function Navbar() {
                 alt="Avatar"
                 onClick={toggleUserMenu}
               />
-              <div className={`absolute -right-5 top-0 pt-[40px] w-44 flex-col bg-close2White rounded-b-lg ${showUserMenu ? 'flex' : 'hidden'} items-center justify-start text-sm`}>
-                <p
-                  className="font-bold text-darkblue p-2"
-                >
+              <div
+                className={`absolute -right-5 top-0 pt-[40px] w-44 flex-col bg-close2White rounded-b-lg ${showUserMenu ? "flex" : "hidden"} items-center justify-start text-sm`}
+              >
+                <p className="font-bold text-darkblue p-2">
                   {rolesMap[currentUserData.role as keyof typeof rolesMap]}
                 </p>
                 <Link
@@ -113,14 +115,15 @@ export default function Navbar() {
                 >
                   Ulubione
                 </Link>
-                {currentUserData.role === "USER" &&
-                  <Link href={`/becomeorganizer`}
-                        className="text-nowrap w-full p-2 rounded-xl text-center hover:bg-gray-300"
-                        onClick={toggleUserMenu}
+                {currentUserData.role === "USER" && (
+                  <Link
+                    href={`/becomeorganizer`}
+                    className="text-nowrap w-full p-2 rounded-xl text-center hover:bg-gray-300"
+                    onClick={toggleUserMenu}
                   >
                     Zostań organizatorem
                   </Link>
-                }
+                )}
                 <Link
                   href={`${appAPI.defaults.baseURL}/api/oauth2/logout`}
                   className="hover:bg-gray-300 h-full w-full text-center p-2 rounded-xl"

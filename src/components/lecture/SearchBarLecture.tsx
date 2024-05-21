@@ -47,7 +47,9 @@ const SearchBarLecture: React.FC<SearchComponentProps> = ({
               .toLowerCase()
               .includes(event.target.value.toLowerCase())) ||
           (item.email &&
-            item.email.toLowerCase().includes(event.target.value.toLowerCase()))
+            item.email
+              .toLowerCase()
+              .includes(event.target.value.toLowerCase())),
       );
 
       setResults(searchResults);
@@ -63,7 +65,7 @@ const SearchBarLecture: React.FC<SearchComponentProps> = ({
     setSearch(
       (item.username ? item.username + " " : "") +
         "" +
-        (item.email ? item.email : "")
+        (item.email ? item.email : ""),
     );
     setResults([]);
     onItemSelected(item);

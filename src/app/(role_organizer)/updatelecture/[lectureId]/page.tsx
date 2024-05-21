@@ -29,12 +29,12 @@ const EditLecture = () => {
     isLoading: lectureLoading,
     isError: lectureError,
   } = useQuery(`lectureId_${lectureId}`, () =>
-    getLectureDetails(parseInt(lectureId as string))
+    getLectureDetails(parseInt(lectureId as string)),
   );
 
   const getConferenceInfo = async () => {
     return await getConferenceDetailsWithRoleFiltering(
-      (lectureData as GetLectureDetailsData).conferenceId
+      (lectureData as GetLectureDetailsData).conferenceId,
     );
   };
 

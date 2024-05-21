@@ -7,7 +7,7 @@ export async function deleteComment(commentId: number) {
       `/api/comment/${commentId}`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
       return response.status;
@@ -17,7 +17,7 @@ export async function deleteComment(commentId: number) {
       return "Brak autoryzacji użytkownika";
     } else if (response.status === 403) {
       console.error(
-        "Nie masz odpowiedniej roli lub nie jesteś autorem komentarza"
+        "Nie masz odpowiedniej roli lub nie jesteś autorem komentarza",
       );
       return "Nie masz odpowiedniej roli lub nie jesteś autorem komentarza";
     } else {
@@ -31,7 +31,7 @@ export async function deleteComment(commentId: number) {
       return "Brak autoryzacji użytkownika";
     } else if (error.response.status === 403) {
       console.error(
-        "Nie masz odpowiedniej roli lub nie jesteś autorem komentarza"
+        "Nie masz odpowiedniej roli lub nie jesteś autorem komentarza",
       );
       return "Nie masz odpowiedniej roli lub nie jesteś autorem komentarza";
     } else {
@@ -43,7 +43,7 @@ export async function deleteComment(commentId: number) {
 
 export async function addCommentToConference(
   conferenceId: number,
-  value: string
+  value: string,
 ) {
   try {
     const response: AxiosResponse<void> = await appAPI.post(
@@ -51,7 +51,7 @@ export async function addCommentToConference(
       { value },
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
       console.log("Komentarz został dodany poprawnie!");
@@ -83,7 +83,7 @@ export async function respondToComment(commentId: number, value: string) {
       { value },
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
       console.log("Odpowiedź na komentarz zostaa dodana poprawnie!");

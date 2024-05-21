@@ -23,7 +23,7 @@ export default function Panel({
     (id: number) => {
       router.replace(`/updateconference/${id.toString()}`);
     },
-    [router]
+    [router],
   );
 
   const handleDelete = useCallback((id: number) => {

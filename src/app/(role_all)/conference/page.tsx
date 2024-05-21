@@ -67,12 +67,12 @@ export default function ConferencePage() {
         sortFilterData?.verified,
         sortFilterData?.participantsFull,
         sortFilterData?.organizerId,
-        sortFilterData?.locationName
+        sortFilterData?.locationName,
       ),
     {
       staleTime: Infinity,
       refetchOnMount: "always",
-    }
+    },
   );
 
   useEffect(() => {
@@ -103,20 +103,22 @@ export default function ConferencePage() {
             role={"USER"}
           />
           <div className="w-full flex flex-col gap-y-10">
-            {data.content?.sort((a,b)=>Number(a.canceled)-Number(b.canceled)).map((conf) => {
-              return (
-                <ConferenceList
-                  key={`${conf.id}`}
-                  conference={conf}
-                  role={userRole}
-                  setSignUpWarning={setSignUpWarning}
-                  setTempId={setTempId}
-                  update={update}
-                  setUpdate={setUpdate}
-                  mode={"conference"}
-                />
-              );
-            })}
+            {data.content
+              ?.sort((a, b) => Number(a.canceled) - Number(b.canceled))
+              .map((conf) => {
+                return (
+                  <ConferenceList
+                    key={`${conf.id}`}
+                    conference={conf}
+                    role={userRole}
+                    setSignUpWarning={setSignUpWarning}
+                    setTempId={setTempId}
+                    update={update}
+                    setUpdate={setUpdate}
+                    mode={"conference"}
+                  />
+                );
+              })}
           </div>
         </div>
       ) : (

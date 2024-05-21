@@ -9,7 +9,7 @@ export async function deleteConference(conferenceId: number) {
       `/api/conference/${conferenceId}`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
       console.log("Konferencja została usunięta poprawnie!");
@@ -52,7 +52,7 @@ export async function signOutFromConference(conferenceId: number) {
       `/api/conference/${conferenceId}/attend`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
       console.log("Wypisano z konferencji poprawnie!");
@@ -89,7 +89,7 @@ export async function cancelConference(conferenceId: number) {
       `/api/conference/${conferenceId}/cancel`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
       console.log("Konferencja anulowana poprawnie!");
@@ -184,20 +184,20 @@ export async function getAllConferences(
   verified?: boolean,
   participantsFull?: boolean,
   organizerId?: number,
-  locationName?: string
+  locationName?: string,
 ): Promise<GetAllConferencesData | string> {
   try {
     let url = `/api/conference`;
     url =
       sort && sortDirection && organizerId
         ? url.concat(
-            `?sort=${sort}&sortDirection=${sortDirection}&organizerId=${organizerId.toString()}`
+            `?sort=${sort}&sortDirection=${sortDirection}&organizerId=${organizerId.toString()}`,
           )
         : sort && sortDirection
-        ? url.concat(`?sort=${sort}&sortDirection=${sortDirection}`)
-        : organizerId
-        ? url.concat(`?organizerId=${organizerId.toString()}`)
-        : url;
+          ? url.concat(`?sort=${sort}&sortDirection=${sortDirection}`)
+          : organizerId
+            ? url.concat(`?organizerId=${organizerId.toString()}`)
+            : url;
     url = startDateTimeFrom
       ? url.concat("&startDateTimeFrom=", startDateTimeFrom)
       : url;
@@ -250,7 +250,7 @@ export async function getAllConferencesByLocationName(
     | "location"
     | "canceled"
     | "format"
-    | "participantsFull"
+    | "participantsFull",
 ): Promise<GetAllConferencesData | string> {
   try {
     let url = `/api/conference`;
@@ -258,10 +258,10 @@ export async function getAllConferencesByLocationName(
       sort && locationName
         ? url.concat(`?sort=${sort}&locationName=${locationName.toString()}`)
         : sort
-        ? url.concat(`?sort=${sort}`)
-        : locationName
-        ? url.concat(`?locationName=${locationName}`)
-        : url;
+          ? url.concat(`?sort=${sort}`)
+          : locationName
+            ? url.concat(`?locationName=${locationName}`)
+            : url;
     const response: AxiosResponse<GetAllConferencesData | string> =
       await appAPI.get(`${url}`, {
         withCredentials: true,
@@ -289,7 +289,7 @@ export async function getAllConferencesByLocationName(
 }
 
 export async function getNotCanceledConferences(
-  organizerId?: number
+  organizerId?: number,
 ): Promise<GetAllConferencesData | string> {
   try {
     const response: AxiosResponse<GetAllConferencesData | string> =
@@ -299,7 +299,7 @@ export async function getNotCanceledConferences(
           : `/api/conference?sort=startDateTime&sortDirection=ASC`,
         {
           withCredentials: true,
-        }
+        },
       );
     if (response.status === 200) {
       console.log("Wszystkie konferencje pobrano poprawnie!");
@@ -380,7 +380,7 @@ export interface GetConferenceDetailsWithRoleFilteringData {
 }
 
 export async function getConferenceDetailsWithRoleFiltering(
-  conferenceId: number
+  conferenceId: number,
 ): Promise<GetConferenceDetailsWithRoleFilteringData | string> {
   try {
     const response: AxiosResponse<
@@ -411,7 +411,7 @@ export async function getConferenceDetailsWithRoleFiltering(
 }
 
 export async function getConferencesIAmSignedFor(
-  conferenceStatus?: string
+  conferenceStatus?: string,
 ): Promise<Content[] | string> {
   try {
     const response: AxiosResponse<Content[] | string> = await appAPI.get(
@@ -420,7 +420,7 @@ export async function getConferencesIAmSignedFor(
         : `/api/conference/my`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
       console.log("Konferencje użytkownika pobrano poprawnie!");
@@ -463,7 +463,7 @@ export async function addNewConference(conferenceData: AddNewConferenceData) {
       conferenceData,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
       console.log("Konferencja została dodana poprawnie!");
@@ -501,7 +501,7 @@ export async function signUpForConference(conferenceId: number) {
       {},
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
       console.log("Zapisano na konferencję poprawnie!");
@@ -534,7 +534,7 @@ export async function signUpForConference(conferenceId: number) {
 
 export async function updateInfoAboutConference(
   conferenceId: number,
-  conferenceData: AddNewConferenceData
+  conferenceData: AddNewConferenceData,
 ) {
   try {
     const response: AxiosResponse<void> = await appAPI.put(
@@ -542,7 +542,7 @@ export async function updateInfoAboutConference(
       conferenceData,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
       console.log("Dane konferencji zostały zaktualizowane poprawnie!");

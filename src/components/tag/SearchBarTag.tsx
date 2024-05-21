@@ -44,7 +44,7 @@ const SearchBarTag: React.FC<SearchComponentProps> = ({
       const searchResults = items.filter(
         (item) =>
           item.tagName &&
-          item.tagName.toLowerCase().includes(event.target.value.toLowerCase())
+          item.tagName.toLowerCase().includes(event.target.value.toLowerCase()),
       );
 
       setResults(searchResults);
