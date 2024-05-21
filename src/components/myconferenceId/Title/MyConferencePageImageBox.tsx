@@ -42,6 +42,8 @@ export default function MyConferencePageImageBox({
           </div>
           <Link
             href={`https://www.google.com/maps/place/${conferenceIdData.location.locX}+${conferenceIdData.location.locY}`}
+            rel="noopener noreferrer"
+            target="_blank"
             className={"pt-2 hover:underline flex items-center gap-2 "}
           >
             <h1 className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">

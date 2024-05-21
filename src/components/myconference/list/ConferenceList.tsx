@@ -70,7 +70,6 @@ export default function ConferenceList({
     return a + b;
   }, 0);
 
-  console.log("conference", conference);
   return (
     <div className="flex flex-col sm:flex-row items-center sm:items-start w-full text-black bg-close2White hover:bg-gray-200 duration-200 shadow-whiteShadow h-full z-0 rounded-3xl relative pb-4 sm:py-0">
       <ListItemImage
