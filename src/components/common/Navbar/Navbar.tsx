@@ -67,20 +67,6 @@ export default function Navbar() {
     );
   }
 
-  function AdminNavbox() {
-    if (currentUserData && (currentUserData as UserData).role === "ADMIN")
-      return (
-        <Link href="/admindashboard">
-          <button
-            onClick={() => updateLastVisitedPage("/admindashboard")}
-            className={isActive(pathname, "/admindashboard") ? "font-bold" : ""}
-          >
-            Panel administratora
-          </button>
-        </Link>
-      );
-  }
-
   const rolesMap = {
     USER: "Użytkownik",
     ORGANIZER: "Organizator",
@@ -95,7 +81,6 @@ export default function Navbar() {
 
       <div className="text-darkblue font-sans text-md lg:text-lg md:flex md:flex-row md:gap-10 hidden">
         <Navbox />
-        <AdminNavbox />
       </div>
 
       <div className="flex flex-row gap-4 md:gap-8 items-center">
@@ -140,6 +125,16 @@ export default function Navbar() {
                     Zostań organizatorem
                   </Link>
                 )}
+                {currentUserData.role === "ADMIN" && (
+                  <Link href="/admindashboard">
+                    <button
+                      className="text-nowrap w-full p-2 rounded-xl text-center hover:bg-gray-300"
+                      onClick={toggleUserMenu}
+                    >
+                      Panel administratora
+                    </button>
+                  </Link>
+                )}
                 <Link
                   href={`${appAPI.defaults.baseURL}/api/oauth2/logout`}
                   className="hover:bg-gray-300 h-full w-full text-center p-2 rounded-xl"
@@ -166,7 +161,6 @@ export default function Navbar() {
         <div className="md:hidden absolute top-navbar left-0 w-full bg-close2White shadow-md py-4 z-50">
           <div className="flex flex-col items-center gap-4 z-50">
             <Navbox />
-            <AdminNavbox />
           </div>
         </div>
       )}
