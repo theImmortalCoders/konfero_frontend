@@ -1,6 +1,9 @@
 import { appAPI } from "@/utils/appENV";
 import { AxiosResponse } from "axios";
 import { LogoInterface } from "./imageAPI";
+import { GetLectureDetailsData } from "@/hooks/lecture";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export interface Location {
   locX: number;
@@ -16,7 +19,7 @@ export interface Organizer {
   verified: boolean;
 }
 
-interface Conference {
+export interface Conference {
   id: number;
   startDateTime: string;
   endDateTime: string;

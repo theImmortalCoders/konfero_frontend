@@ -2,13 +2,12 @@
 import EditLectureInputs from "@/components/lecture/EditLectureInputs";
 import { useParams } from "next/navigation";
 import { useQuery } from "react-query";
-import { getCurrentUser, UserData } from "@/hooks/user";
+import { getCurrentUser, isUserInLecturers, UserData } from "@/hooks/user";
 import { getLectureDetails, GetLectureDetailsData } from "@/hooks/lecture";
 import Error500 from "@/components/common/Error/Error500";
 import { Box } from "@/components/common/Box/Box";
 import Page from "@/components/common/Page/Page";
 import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
-import useAuth from "@/hooks/useAuth";
 import NotFound from "../../addlecture/[conferenceId]/not-found";
 import { useEffect, useState } from "react";
 
@@ -18,17 +17,6 @@ async function getId() {
     return userData;
   }
   return null;
-}
-
-function isUserInLecturers(
-  lectureData: undefined | GetLectureDetailsData | string,
-  user: UserData,
-) {
-  return (
-    lectureData &&
-    typeof lectureData != "string" &&
-    lectureData.lecturers.map((lecturer) => lecturer.id === user?.id).length > 0
-  );
 }
 
 const EditLecture = () => {

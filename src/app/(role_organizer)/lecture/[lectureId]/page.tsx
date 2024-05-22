@@ -10,7 +10,7 @@ import {
   addLectureToFavourites,
   removeLectureFromFavourites,
 } from "@/hooks/lecture";
-import { getCurrentUser } from "@/hooks/user";
+import { getCurrentUser, isUserInLecturers, UserData } from "@/hooks/user";
 import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
 import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrapper";
@@ -22,14 +22,6 @@ import NotFound from "../../addlecture/[conferenceId]/not-found";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-
-async function getId() {
-  const userData = await getCurrentUser();
-  if (userData && typeof userData === "object" && "id" in userData) {
-    return userData.id;
-  }
-  return null;
-}
 
 const RedirectToConference = ({ conferenceId }: { conferenceId: number }) => {
   const router = useRouter();
@@ -47,6 +39,14 @@ const RedirectToConference = ({ conferenceId }: { conferenceId: number }) => {
   );
 };
 
+async function getId() {
+  const userData = await getCurrentUser();
+  if (userData && typeof userData === "object" && "id" in userData) {
+    return userData;
+  }
+  return null;
+}
+
 export default function LecturePage({
   params,
 }: {
@@ -55,6 +55,14 @@ export default function LecturePage({
   const [lectureIdData, setLectureIdData] = useState<
     string | GetLectureDetailsData
   >();
+  const [user, setUser] = useState<UserData | null | undefined>(undefined);
+  useEffect(() => {
+    const fetchId = async () => {
+      const data = await getId();
+      setUser(data);
+    };
+    fetchId();
+  }, []);
   const [participant, setParticipant] = useState<boolean>(false);
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
@@ -195,19 +203,20 @@ export default function LecturePage({
                 </div>
               </>
             ) : null}
+
             {(lectureIdData.materials.length === 0 ||
               lectureIdData.materials === null) &&
-              userRole !== "ORGANIZER" &&
-              userRole !== "ADMIN" &&
-              !lectureIdData.lecturers.some(
-                (lecturer) => lecturer.id === userId,
-              ) && (
+              user &&
+              (user.role !== null ||
+                (user.role === "ADMIN" &&
+                  user.role === "ORGANIZER" &&
+                  isUserInLecturers(lectureIdData, user))) && (
                 <>
                   <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
                   <TitleHeader title={"Materiały"} />
                   <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
-                    {(userRole === "ORGANIZER" ||
-                      userRole === "ADMIN" ||
+                    {(user.role === "ORGANIZER" ||
+                      user.role === "ADMIN" ||
                       lectureIdData.lecturers.map(
                         (lecturer) => lecturer.id === userId,
                       )) && (
