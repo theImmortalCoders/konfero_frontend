@@ -2,7 +2,7 @@
 import EditLectureInputs from "@/components/lecture/EditLectureInputs";
 import { useParams } from "next/navigation";
 import { useQuery } from "react-query";
-import { getCurrentUser, isUserInLecturers, UserData } from "@/hooks/user";
+import { getCurrentUser, UserData } from "@/hooks/user";
 import { getLectureDetails, GetLectureDetailsData } from "@/hooks/lecture";
 import Error500 from "@/components/common/Error/Error500";
 import { Box } from "@/components/common/Box/Box";
@@ -10,6 +10,8 @@ import Page from "@/components/common/Page/Page";
 import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
 import NotFound from "../../addlecture/[conferenceId]/not-found";
 import { useEffect, useState } from "react";
+import isAuthorise from "@/hooks/authorise/isAuthorise";
+import { isUserInLecturers } from "@/hooks/authorise/authorization";
 
 async function getId() {
   const userData = await getCurrentUser();
@@ -59,13 +61,17 @@ const EditLecture = () => {
   } = useQuery("conference", getConferenceInfo, { enabled: !lectureLoading });
 
   if (lectureError || userError || conferenceError) return <Error500 />;
+  if (user && lectureData) {
+    const isAuthorised = isAuthorise(user, true, lectureData);
+    console.log("isAuthorised", isAuthorised);
+  }
 
   if (
     user &&
     (user.role === null ||
       (user.role !== "ADMIN" &&
         user.role !== "ORGANIZER" &&
-        !isUserInLecturers(lectureData, user)))
+        !isUserInLecturers(user, lectureData)))
   )
     return <NotFound />;
 

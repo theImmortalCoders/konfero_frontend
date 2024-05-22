@@ -1,5 +1,3 @@
-"use server";
-
 import {
   isUserInLecturers,
   isUserInOrganizers,
@@ -8,14 +6,14 @@ import {
 import { GetLectureDetailsData } from "@/hooks/lecture";
 import { Conference, UserData } from "@/hooks/user";
 
-const isAuthorise = (
+export default function isAuthorise(
+  user: UserData,
   isUserInLecturersRun?: boolean,
   isUserInOrganizersRun?: boolean,
   isUserLoggedInRun?: boolean,
   lectureData?: undefined | GetLectureDetailsData | string,
   conferenceData?: undefined | Conference | string,
-  user: UserData,
-) => {
+) {
   let isAuthorized = false;
   if (user) {
     if (isUserInLecturersRun) {
@@ -40,6 +38,4 @@ const isAuthorise = (
     throw new Error("Brak user");
   }
   return isAuthorized;
-};
-
-export default isAuthorise;
+}
