@@ -70,7 +70,8 @@ export default function MyConferencePage({
       conferenceIdData &&
       typeof conferenceIdData !== "string" ? (
         <>
-          {userRole === "ORGANIZER" || userRole === "ADMIN" ? (
+          {(userRole === "ORGANIZER" || userRole === "ADMIN") &&
+          !conferenceIdData.canceled ? (
             <Panel conferenceIdData={conferenceIdData} />
           ) : null}
           <Title conferenceIdData={conferenceIdData}>
