@@ -23,6 +23,7 @@ import NotFound from "../../addlecture/[conferenceId]/not-found";
 import { useEffect, useState } from "react";
 import SignUpWarning from "@/components/conference/SignUpWarning";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
+import CommentsList from "@/components/myconferenceId/Comments/CommentsList";
 
 export default function MyConferencePage({
   params,
@@ -108,6 +109,7 @@ export default function MyConferencePage({
           {conferenceIdData.photos.length !== 0 ? (
             <Photos photos={conferenceIdData.photos} />
           ) : null}
+          <CommentsList conference={conferenceIdData} update={update} setUpdate={setUpdate}/>
           {signUpWarning && (
             <SignUpWarning setSignUpWarning={setSignUpWarning} tempId={conferenceIdData.id} update={update} setUpdate={setUpdate}/>
           )}
