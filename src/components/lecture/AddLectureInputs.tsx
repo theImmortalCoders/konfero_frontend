@@ -22,7 +22,7 @@ export default function AddLectureInputs({
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [startDateTime, setStartDateTime] = useState<string>(
-    `${conferenceData.startDateTime}`,
+    `${conferenceData.endDateTime}`,
   );
   const [durationMinutes, setDurationMinutes] = useState<string>("");
   const [imageId, setImageId] = useState<number>(0);
@@ -122,14 +122,20 @@ export default function AddLectureInputs({
       imageId === 0 ||
       !place
     ) {
-      console.error("Wszystkie pola muszą być wypełnione");
-      setStatusError(true);
+      setStatusError(false);
+      setMessage("Wszystkie pola muszą być wypełnione");
+      setTimeout(() => {
+        setMessage("");
+      }, 4 * 1000);
       return;
     }
 
     if (startDateTime < conferenceData.startDateTime) {
       setStatusError(false);
       setMessage("Wykład musi odbyć się w czasie konferencji!");
+      setTimeout(() => {
+        setMessage("");
+      }, 4 * 1000);
       return;
     }
 

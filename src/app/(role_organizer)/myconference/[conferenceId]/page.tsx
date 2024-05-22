@@ -74,38 +74,41 @@ export default function MyConferencePage({
             <Panel conferenceIdData={conferenceIdData} />
           ) : null}
           <Title conferenceIdData={conferenceIdData}>
-            <span className="flex justify-center w-full">
-              <span
-                onClick={() => {
-                  if (conferenceIdData.amISignedUp) {
-                    signOut(conferenceIdData.id);
-                  } else if (
-                    !conferenceIdData.participantsFull &&
+            {!conferenceIdData.canceled && (
+              <span className="flex justify-center w-full">
+                <span
+                  onClick={() => {
+                    if (conferenceIdData.amISignedUp) {
+                      signOut(conferenceIdData.id);
+                    } else if (
+                      !conferenceIdData.participantsFull &&
+                      !conferenceIdData.amISignedUp
+                    ) {
+                      setSignUpWarning(true);
+                    }
+                  }}
+                  className="flex items-center bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2"
+                >
+                  <p className="text-black font-semibold">
+                    {conferenceIdData.participantsFull &&
                     !conferenceIdData.amISignedUp
-                  ) {
-                    setSignUpWarning(true);
-                  }
-                }}
-                className="flex items-center bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2"
-              >
-                <p className="text-black font-semibold">
+                      ? "Brak miejsc"
+                      : conferenceIdData.amISignedUp
+                        ? "Wypisz się"
+                        : "Zapisz się"}
+                  </p>
+
                   {conferenceIdData.participantsFull &&
-                  !conferenceIdData.amISignedUp
-                    ? "Brak miejsc"
-                    : conferenceIdData.amISignedUp
-                      ? "Wypisz się"
-                      : "Zapisz się"}
-                </p>
-                {conferenceIdData.participantsFull &&
-                !conferenceIdData.amISignedUp ? (
-                  <CiCirclePlus className="text-4xl text-darkblue opacity-50" />
-                ) : conferenceIdData.amISignedUp ? (
-                  <CiCircleMinus className="text-4xl text-darkblue" />
-                ) : (
-                  <CiCirclePlus className="text-4xl text-darkblue" />
-                )}
+                  !conferenceIdData.amISignedUp ? (
+                    <CiCirclePlus className="text-4xl text-darkblue opacity-50" />
+                  ) : conferenceIdData.amISignedUp ? (
+                    <CiCircleMinus className="text-4xl text-darkblue" />
+                  ) : (
+                    <CiCirclePlus className="text-4xl text-darkblue" />
+                  )}
+                </span>
               </span>
-            </span>
+            )}
           </Title>
           <Organizers organizer={conferenceIdData.organizer} />
           <Lectures
