@@ -11,7 +11,6 @@ export async function deleteLecture(lectureId: number) {
       },
     );
     if (response.status === 200) {
-      console.log("Prelekcja została usunięta poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -48,7 +47,6 @@ export async function removeLectureFromFavourites(lectureId: number) {
       },
     );
     if (response.status === 200) {
-      console.log("Prelekcja została usunięta z ulubionych!");
       return response.status;
     } else if (response.status === 400) {
       console.error("Prelekcja nie była dodana do ulubionych");
@@ -121,7 +119,6 @@ export async function getLectureDetails(
         withCredentials: true,
       });
     if (response.status === 200) {
-      console.log("Szczegóły prelekcji pobrano poprawnie!");
       return response.data;
     }
     if (response.status === 401) {
@@ -168,7 +165,6 @@ export async function getFavouriteLectures(
         },
       );
     if (response.status === 200) {
-      console.log("Ulubione prelekcje pobrano poprawnie!");
       return response.data;
     }
     if (response.status === 401) {
@@ -212,7 +208,6 @@ export async function modifyLectureInfoByOrganizer(
       },
     );
     if (response.status === 200) {
-      console.log("Dane prelekcji zmodyfikowano poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -258,7 +253,6 @@ export async function modifyLectureInfoByLecturer(
       },
     );
     if (response.status === 200) {
-      console.log("Dane prelekcji zmodyfikowano poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -296,7 +290,6 @@ export async function addLectureToFavourites(lectureId: number) {
       },
     );
     if (response.status === 200) {
-      console.log("Prelekcja została dodana do ulubionych!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -347,7 +340,6 @@ export async function addLectureToConference(
       },
     );
     if (response.status === 200) {
-      console.log("Prelekcja została dodana do konferencji!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");

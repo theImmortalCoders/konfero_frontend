@@ -10,7 +10,6 @@ export async function deleteFileById(fileId: number) {
       },
     );
     if (response.status === 200) {
-      console.log("Plik został usunięty poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -49,7 +48,6 @@ export async function getAllFilesByAuthorId(authorId: number) {
       },
     );
     if (response.status === 200) {
-      console.log("Pliki danego autora pobrano poprawnie!");
       return response.data;
     } else {
       console.error("Wystąpił błąd podczas pobierania plików danego autora");
@@ -70,7 +68,6 @@ export async function downloadFileById(fileId: string) {
       },
     );
     if (response.status === 200) {
-      console.log("Plik pobrano poprawnie!");
       return response.data;
     } else {
       console.error("Wystąpił błąd podczas pobierania pliku");
@@ -98,7 +95,6 @@ export async function uploadFile(uploadedFile: File, description: string) {
     );
 
     if (response.status === 200) {
-      console.log("Plik został przesłany poprawnie!");
       return response.data;
     } else if (response.status === 401) {
       window.location.replace("/login");

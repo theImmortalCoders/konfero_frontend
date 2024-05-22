@@ -11,7 +11,6 @@ export async function deleteTag(tagId: number) {
       },
     );
     if (response.status === 200) {
-      console.log("Tag został usunięty poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -48,7 +47,6 @@ export async function getAllTags(): Promise<Tag[] | string> {
       },
     );
     if (response.status === 200) {
-      console.log("Wszystkie tagi pobrano poprawnie!");
       return response.data;
     }
     if (response.status === 401) {
@@ -81,7 +79,6 @@ export async function addNewTag(value: string) {
       },
     );
     if (response.status === 200) {
-      console.log("Tag został dodany!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");

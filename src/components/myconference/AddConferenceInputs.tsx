@@ -226,9 +226,9 @@ export default function AddConferenceInputs({
       imageId === 0 ||
       (format === "STATIONARY" && !place)
     ) {
-      console.error("Wszystkie pola muszą być wypełnione");
       setStatusError(true);
       setMessage("Wszystkie pola muszą być wypełnione");
+      setTimeout(() => setMessage(""), 4 * 1000);
       return;
     }
 
@@ -263,9 +263,9 @@ export default function AddConferenceInputs({
           setMessage("Dodano konferencję");
           window.location.replace(`/myconference`);
         } else {
-          console.error("Błąd dodawania konferencji");
           setStatusError(true);
-          setMessage("Wystąpił błąd podczas dodawania konferencji");
+          setMessage("Błąd: " + result);
+          setTimeout(() => setMessage(""), 4 * 1000);
         }
       } else {
         const conferenceId = Number(conferenceid);
@@ -278,9 +278,9 @@ export default function AddConferenceInputs({
           setMessage("Zaktualizowano konferencję");
           window.location.replace(`/myconference`);
         } else {
-          console.error("Błąd aktualizowania konferencji");
           setStatusError(true);
           setMessage("Wystąpił błąd podczas aktualizowania konferencji");
+          setTimeout(() => setMessage(""), 4 * 1000);
         }
       }
     } catch (error) {
@@ -294,6 +294,7 @@ export default function AddConferenceInputs({
           ? "Błąd aktualizowania konferencji"
           : "Błąd dodawania konferencji",
       );
+      setTimeout(() => setMessage(""), 4 * 1000);
     }
   };
 

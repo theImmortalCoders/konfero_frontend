@@ -13,7 +13,6 @@ export async function deleteMaterialFromLecture(
       },
     );
     if (response.status === 200) {
-      console.log("Materiał został usunięty poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -54,7 +53,6 @@ export async function addMaterialToLecture(
       },
     );
     if (response.status === 200) {
-      console.log("Materiał został dodany do prelekcji!");
       return response.status;
     } else if (response.status === 400) {
       console.error("Nie jesteś właścicielem materiału");

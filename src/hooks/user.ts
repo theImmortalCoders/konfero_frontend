@@ -65,7 +65,6 @@ export async function getAllPendingBecomeOrganizerRequest(): Promise<
       withCredentials: true,
     });
     if (response.status === 200) {
-      console.log("Prośby o zostanie organizatorem pobrano poprawnie!");
       return response.data;
     }
     if (response.status === 401) {
@@ -104,7 +103,6 @@ export async function getCurrentUser(): Promise<UserData | null> {
       withCredentials: true,
     });
     if (response.status === 200) {
-      console.log("Dane użytkownika pobrano poprawnie!");
       return response.data;
     }
     if (response.status === 401) {
@@ -138,7 +136,6 @@ export async function getAllUsers(): Promise<GetAllUsersData[] | string> {
         withCredentials: true,
       });
     if (response.status === 200) {
-      console.log("Pobrano dane wszystkich użytkowników");
       return response.data;
     }
     if (response.status === 401) {
@@ -181,7 +178,6 @@ export async function verifyUser(userId: number) {
       },
     );
     if (response.status === 200) {
-      console.log("Użytkownik został zweryfikowany poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -219,7 +215,6 @@ export async function changeUserRole(userId: number, newRole: string) {
       },
     );
     if (response.status === 200) {
-      console.log("Rola użytkownika została zmieniona poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -257,7 +252,6 @@ export async function banUser(userId: number) {
       },
     );
     if (response.status === 200) {
-      console.log("Użytkownik został zablokowany poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -301,7 +295,6 @@ export async function updateProfileWithAdditionalData(
       },
     );
     if (response.status === 200) {
-      console.log("Dane użytkownika zaktualizowane poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -342,7 +335,6 @@ export async function becomeOrganizerWithUpdateData(
       },
     );
     if (response.status === 200) {
-      console.log("Użytkownik wysłał zapytanie o zostanie organizatorem!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -381,7 +373,6 @@ export async function reviewOrganizerRequest(
       },
     );
     if (response.status === 200) {
-      console.log("Prośba o zostanie organizatorem rozpatrzona");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
