@@ -61,8 +61,21 @@ const EditLecture = () => {
   } = useQuery("conference", getConferenceInfo, { enabled: !lectureLoading });
 
   if (lectureError || userError || conferenceError) return <Error500 />;
-  if (user && lectureData) {
-    const isAuthorised = isAuthorise(user, true, lectureData);
+  if (
+    user &&
+    lectureData &&
+    typeof lectureData !== "string" &&
+    conferenceData &&
+    typeof conferenceData !== "string"
+  ) {
+    const isAuthorised = isAuthorise(
+      user,
+      true,
+      true,
+      true,
+      lectureData,
+      conferenceData,
+    );
     console.log("isAuthorised", isAuthorised);
   }
 

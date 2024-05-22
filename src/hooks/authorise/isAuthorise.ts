@@ -5,37 +5,51 @@ import {
 } from "@/hooks/authorise/authorization";
 import { GetLectureDetailsData } from "@/hooks/lecture";
 import { Conference, UserData } from "@/hooks/user";
+import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
+
+export interface AuthoriseAuthorise {
+  isUserInLecturers: boolean | undefined;
+  isUserInOrganizers: boolean | undefined;
+  isUserLoggedIn: boolean | undefined;
+}
 
 export default function isAuthorise(
   user: UserData,
   isUserInLecturersRun?: boolean,
   isUserInOrganizersRun?: boolean,
   isUserLoggedInRun?: boolean,
-  lectureData?: undefined | GetLectureDetailsData | string,
-  conferenceData?: undefined | Conference | string,
+  lectureData?: string | GetLectureDetailsData,
+  conferenceData?:
+    | string
+    | Conference
+    | GetConferenceDetailsWithRoleFilteringData,
 ) {
-  let isAuthorized = false;
-  if (user) {
-    if (isUserInLecturersRun) {
-      if (lectureData === undefined) {
-        console.error("Brak lectureData");
-        throw new Error("Brak lectureData");
-      }
-      isAuthorized = isUserInLecturers(user, lectureData);
+  let isUserInLecturersAuthorized: boolean | undefined;
+  if (user && isUserInLecturersRun) {
+    if (lectureData === undefined || typeof lectureData === "string") {
+      console.error("Brak lectureData");
+      throw new Error("Brak lectureData");
     }
-    if (isUserInOrganizersRun) {
-      if (conferenceData === undefined) {
-        console.error("Brak conferenceData");
-        throw new Error("Brak conferenceData");
-      }
-      isAuthorized = isUserInOrganizers(user, conferenceData);
-    }
-    if (isUserLoggedInRun) {
-      isAuthorized = isUserLoggedIn(user);
-    }
-  } else {
-    console.error("Brak user");
-    throw new Error("Brak user");
+    isUserInLecturersAuthorized = isUserInLecturers(user, lectureData);
   }
-  return isAuthorized;
+
+  let isUserInOrganizersAuthorized: boolean | undefined;
+  if (user && isUserInOrganizersRun) {
+    if (conferenceData === undefined || typeof conferenceData === "string") {
+      console.error("Brak conferenceData");
+      throw new Error("Brak conferenceData");
+    }
+    isUserInOrganizersAuthorized = isUserInOrganizers(user, conferenceData);
+  }
+
+  let isUserLoggedInAuthorized: boolean | undefined;
+  if (user && isUserLoggedInRun) {
+    isUserLoggedInAuthorized = isUserLoggedIn(user);
+  }
+  const isAuth: AuthoriseAuthorise = {
+    isUserInLecturers: isUserInLecturersAuthorized,
+    isUserInOrganizers: isUserInLecturersAuthorized,
+    isUserLoggedIn: isUserInLecturersAuthorized,
+  };
+  return isAuth;
 }
