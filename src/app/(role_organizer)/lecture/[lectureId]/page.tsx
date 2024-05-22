@@ -195,16 +195,30 @@ export default function LecturePage({
                 </div>
               </>
             ) : null}
-            <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
-            <TitleHeader title={"Materiały"} />
-            <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
-              {userRole === "ORGANIZER" || userRole === "ADMIN" ? (
-                <AddLectureMaterials
-                  lectureId={params.lectureId}
-                  handleRefetch={handleLectureDataRefetch}
-                />
-              ) : null}
-            </div>
+            {(lectureIdData.materials.length === 0 ||
+              lectureIdData.materials === null) &&
+              userRole !== "ORGANIZER" &&
+              userRole !== "ADMIN" &&
+              !lectureIdData.lecturers.some(
+                (lecturer) => lecturer.id === userId,
+              ) && (
+                <>
+                  <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
+                  <TitleHeader title={"Materiały"} />
+                  <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
+                    {(userRole === "ORGANIZER" ||
+                      userRole === "ADMIN" ||
+                      lectureIdData.lecturers.map(
+                        (lecturer) => lecturer.id === userId,
+                      )) && (
+                      <AddLectureMaterials
+                        lectureId={params.lectureId}
+                        handleRefetch={handleLectureDataRefetch}
+                      />
+                    )}
+                  </div>
+                </>
+              )}
             {lectureIdData.materials.length !== 0 ? (
               <>
                 <MaterialTableWrapper

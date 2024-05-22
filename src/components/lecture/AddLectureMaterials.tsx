@@ -44,7 +44,7 @@ const AddLectureMaterials = ({
   }, [files]);
 
   return (
-    <div className="mr-0 md:mr-2 mt-2 w-min hover:bg-darkblue hover:text-close2White rounded-2xl border-2 border-darkblue overflow-hidden">
+    <div className="mr-0 md:mr-2 mt-2 mb-2 w-min hover:bg-darkblue hover:text-close2White rounded-2xl border-2 border-darkblue overflow-hidden">
       <input
         type={"file"}
         className="hidden"

@@ -233,34 +233,29 @@ export default function EditLectureInputs({
 
   return (
     <div className="flex flex-col space-y-6 text-darkblue">
-      {currentUserData.role === "ADMIN" ||
-        (currentUserData.role === "ORGANIZER" && (
-          <div className="relative">
-            <SingleFormInput
-              type="text"
-              id="name"
-              name="name"
-              placeholder=" "
-              value={name}
-              onChange={(e) => {
-                const value = e.target.value;
-                const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,40}$/i.test(
-                  value,
-                );
+      <div className="relative">
+        <SingleFormInput
+          type="text"
+          id="name"
+          name="name"
+          placeholder=" "
+          value={name}
+          onChange={(e) => {
+            const value = e.target.value;
+            const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,40}$/i.test(value);
 
-                if (isValid) {
-                  setName(value);
-                }
-              }}
-            />
-            <label
-              htmlFor="name"
-              className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all"
-            >
-              Nazwa [3-40 znaków]
-            </label>
-          </div>
-        ))}
+            if (isValid) {
+              setName(value);
+            }
+          }}
+        />
+        <label
+          htmlFor="name"
+          className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all"
+        >
+          Nazwa [3-40 znaków]
+        </label>
+      </div>
       <div className="relative">
         <SingleFormInput
           type="text"
@@ -286,52 +281,47 @@ export default function EditLectureInputs({
           Opis [10-200 znaków]
         </label>
       </div>
-      {currentUserData.role === "ADMIN" ||
-        (currentUserData.role === "ORGANIZER" && (
-          <>
-            <div className="relative">
-              <SingleFormInput
-                type="datetime-local"
-                id="startDateTime"
-                name="startDateTime"
-                placeholder=" "
-                value={startDateTime}
-                onChange={(e) => {
-                  setStartDateTime(e.target.value);
-                }}
-              />
-              <label
-                htmlFor="startDateTime"
-                className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all"
-              >
-                Termin rozpoczęcia
-              </label>
-            </div>
-            <div className="relative">
-              <SingleFormInput
-                type="text"
-                id="durationMinutes"
-                name="durationMinutes"
-                placeholder=" "
-                value={durationMinutes}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  const isValidNumber = /^\d*$/.test(value);
+      <div className="relative">
+        <SingleFormInput
+          type="datetime-local"
+          id="startDateTime"
+          name="startDateTime"
+          placeholder=" "
+          value={startDateTime}
+          onChange={(e) => {
+            setStartDateTime(e.target.value);
+          }}
+        />
+        <label
+          htmlFor="startDateTime"
+          className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all"
+        >
+          Termin rozpoczęcia
+        </label>
+      </div>
+      <div className="relative">
+        <SingleFormInput
+          type="text"
+          id="durationMinutes"
+          name="durationMinutes"
+          placeholder=" "
+          value={durationMinutes}
+          onChange={(e) => {
+            const value = e.target.value;
+            const isValidNumber = /^\d*$/.test(value);
 
-                  if (isValidNumber) {
-                    setDurationMinutes(value);
-                  }
-                }}
-              />
-              <label
-                htmlFor="durationMinutes"
-                className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all"
-              >
-                Czas trwania [min.]
-              </label>
-            </div>
-          </>
-        ))}
+            if (isValidNumber) {
+              setDurationMinutes(value);
+            }
+          }}
+        />
+        <label
+          htmlFor="durationMinutes"
+          className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all"
+        >
+          Czas trwania [min.]
+        </label>
+      </div>
       <div className="flex flex-col sm:flex-row">
         <ImageCropFrame
           formName="imageInput"
@@ -350,60 +340,53 @@ export default function EditLectureInputs({
           />
         </div>
       </div>
-      {currentUserData.role === "ADMIN" ||
-        (currentUserData.role === "ORGANIZER" && (
-          <>
-            <div className="flex flex-col">
-              <SearchBarLecture
-                items={users}
-                renderItem={(user) => `${user.username} ${user.email}`}
-                onItemSelected={handleLecturerSelected}
-                placeholder="Dodaj wykładowców"
-                handleReset={cleanSearchBar}
-                pt={-1}
+      <div className="flex flex-col">
+        <SearchBarLecture
+          items={users}
+          renderItem={(user) => `${user.username} ${user.email}`}
+          onItemSelected={handleLecturerSelected}
+          placeholder="Dodaj wykładowców"
+          handleReset={cleanSearchBar}
+          pt={-1}
+        />
+        <div className="grid grid-cols-2 gap-2 w-full text-blue pt-2">
+          {lecturersUsernames.map((name, index) => (
+            <span
+              key={index}
+              className="flex flex-row items-center justify-between p-1 border border-blue rounded-lg"
+            >
+              {name}
+              <TiDeleteOutline
+                className="h-5 w-5 cursor-pointer"
+                onClick={() => handleDeleteLecturers(index)}
               />
-              <div className="grid grid-cols-2 gap-2 w-full text-blue pt-2">
-                {lecturersUsernames.map((name, index) => (
-                  <span
-                    key={index}
-                    className="flex flex-row items-center justify-between p-1 border border-blue rounded-lg"
-                  >
-                    {name}
-                    <TiDeleteOutline
-                      className="h-5 w-5 cursor-pointer"
-                      onClick={() => handleDeleteLecturers(index)}
-                    />
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="relative">
-              <SingleFormInput
-                type="text"
-                id="place"
-                name="place"
-                placeholder=" "
-                value={place}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,20}$/i.test(
-                    value,
-                  );
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="relative">
+        <SingleFormInput
+          type="text"
+          id="place"
+          name="place"
+          placeholder=" "
+          value={place}
+          onChange={(e) => {
+            const value = e.target.value;
+            const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,20}$/i.test(value);
 
-                  if (isValid) {
-                    setPlace(value);
-                  }
-                }}
-              />
-              <label
-                htmlFor="place"
-                className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all"
-              >
-                Miejsce odbycia wykładu [3-20 znaków]
-              </label>
-            </div>
-          </>
-        ))}
+            if (isValid) {
+              setPlace(value);
+            }
+          }}
+        />
+        <label
+          htmlFor="place"
+          className="absolute left-0 -top-4 text-xs text-darkblue font-bold cursor-text peer-placeholder-shown:top-1 peer-placeholder-shown:text-base  peer-placeholder-shown:font-normal peer-placeholder-shown:text-blue peer-focus:text-xs peer-focus:-top-4 peer-focus:text-darkblue font-sans peer-focus:font-bold transition-all"
+        >
+          Miejsce odbycia wykładu [3-20 znaków]
+        </label>
+      </div>
       <div className="flex flex-col items-center justify-center w-full">
         <button
           onClick={
