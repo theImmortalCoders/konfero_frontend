@@ -164,13 +164,11 @@ export default function BecomeOrganiserForm({
 
   const submitForm = async () => {
     if (!companyName || !address || !city || !phone) {
-      console.error("Wszystkie pola muszą być wypełnione");
       setMessage("Wszystkie pola muszą być wypełnione");
       return;
     }
 
     if (phone.length !== 9) {
-      console.error("Numer telefonu musi mieć dokładnie 9 cyfr!");
       setMessage("Numer telefonu musi mieć dokładnie 9 cyfr!");
       return;
     }
@@ -195,11 +193,9 @@ export default function BecomeOrganiserForm({
         setPhone("");
         setMessage("Zgłoszenie zostało wysłane pomyślnie!");
       } else {
-        console.error("Błąd wysyłania zgłoszenia");
         setMessage("Błąd wysyłania zgłoszenia");
       }
     } catch (error) {
-      console.error("Błąd wysyłania zgłoszenia", error);
       setMessage("Błąd wysyłania zgłoszenia");
     }
   };
