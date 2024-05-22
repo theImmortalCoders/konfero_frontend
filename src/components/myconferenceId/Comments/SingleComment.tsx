@@ -27,7 +27,7 @@ export default function SingleComment({
         console.log("Usunięto komentarz.");
         if (setUpdate) setUpdate(!update);
       } else {
-        console.error("Błąd usuwania komentarza.");
+        console.error(result);
       }
     } catch (error) {
       console.error("Błąd usuwanoa komentarza.", error);
@@ -46,7 +46,7 @@ export default function SingleComment({
         setNewResponse("");
         if (setUpdate) setUpdate(!update);
       } else {
-        console.error("Błąd dodawania odpowiedzi.");
+        console.error(result);
       }
     } catch (error) {
       console.error("Błąd dodawania odpowiedzi.", error);
