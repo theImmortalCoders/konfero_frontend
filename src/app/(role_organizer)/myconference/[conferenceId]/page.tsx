@@ -3,9 +3,7 @@ import Page from "@/components/common/Page/Page";
 import { Box } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
 import {
-  deleteConference,
   getConferenceDetailsWithRoleFiltering,
-  GetConferenceDetailsWithRoleFilteringData,
   signOutFromConference,
 } from "@/hooks/conference";
 import Error500 from "@/components/common/Error/Error500";

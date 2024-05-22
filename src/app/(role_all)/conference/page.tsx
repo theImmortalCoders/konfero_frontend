@@ -1,7 +1,7 @@
 "use client";
 
 import Page from "@/components/common/Page/Page";
-import { getAllConferences, GetAllConferencesData } from "@/hooks/conference";
+import { getAllConferences } from "@/hooks/conference";
 import { useQuery } from "react-query";
 import ConferenceList from "@/components/myconference/list/ConferenceList";
 import Error500 from "@/components/common/Error/Error500";

@@ -93,7 +93,7 @@ export default function ConferenceList({
           <DisplayTag conference={conference} />
         </div>
       </ListItemImage>
-      {mode === "conference" && (
+      {mode === "conference" && !conference.canceled && (
         <div className="flex flex-col items-center space-y-2 sm:space-y-0">
           <div
             className="w-auto h-min flex justify-center items-center sm:h-min gap-x-2 sm:mr-4 sm:mt-4 2xs:px-2 sm:px-0 2xs:bg-gray-300 sm:bg-transparent rounded-full cursor-pointer"

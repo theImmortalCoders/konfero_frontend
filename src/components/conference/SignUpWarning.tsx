@@ -19,17 +19,16 @@ export default function SignUpWarning({
   const confirmSignUp = async () => {
     try {
       const result = await signUpForConference(tempId);
-      if (result === 200) {
+      if (result === "Zapisano na konferencję poprawnie!") {
         setSignUpWarning(false);
+        setMessage(result);
         if (setTempId) setTempId(-1);
         setUpdate(!update);
       } else {
-        console.error("Błąd zapisywania na konferencję");
-        setMessage("Błąd zapisywania na konferencję");
+        setMessage("Błąd: " + result);
       }
     } catch (error) {
-      console.error("Błąd zapisywania na konferencję", error);
-      setMessage("Błąd zapisywania na konferencję");
+      setMessage("Błąd: " + error);
     }
   };
 

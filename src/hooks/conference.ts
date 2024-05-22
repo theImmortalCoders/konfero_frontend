@@ -504,29 +504,22 @@ export async function signUpForConference(conferenceId: number) {
       },
     );
     if (response.status === 200) {
-      console.log("Zapisano na konferencję poprawnie!");
-      return response.status;
+      return "Zapisano na konferencję poprawnie!";
     } else if (response.status === 400) {
-      console.error("Jesteś już zapisany na tę konferencję");
       return "Jesteś już zapisany na te konferencję";
     } else if (response.status === 401) {
       window.location.replace("/login");
-      console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else {
-      console.error("Wystąpił błąd podczas zapisywania na konferencję");
       return "Wystąpił błąd podczas zapisywania na konferencję";
     }
   } catch (error: any) {
     if (error.response.status === 401) {
       window.location.replace("/login");
-      console.error("Brak autoryzacji użytkownika");
       return "Brak autoryzacji użytkownika";
     } else if (error.response.status === 400) {
-      console.error("Jesteś już zapisany na tę konferencję");
       return "Jesteś już zapisany na te konferencję";
     } else {
-      console.error("Wystąpił błąd podczas zapisywania na konferencję");
       return "Wystąpił błąd podczas zapisywania na konferencję";
     }
   }
