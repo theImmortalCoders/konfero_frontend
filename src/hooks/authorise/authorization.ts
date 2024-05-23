@@ -2,22 +2,26 @@ import { GetLectureDetailsData } from "@/hooks/lecture";
 import { Conference, UserData } from "@/hooks/user";
 import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
 
-export function isUserInLecturers(
+export async function isUserInLecturers(
   user: UserData,
   lectureData: GetLectureDetailsData,
-) {
-  return (lectureData &&
-    lectureData.lecturers.map((lecturer) => lecturer.id === user?.id).length >
-      0) as boolean;
+): Promise<boolean> {
+  return (
+    lectureData?.lecturers.some((lecturer) => lecturer.id === user?.id) || false
+  );
 }
 
-export function isUserInOrganizers(
+export async function isUserInOrganizers(
   user: UserData,
   conferenceData: Conference | GetConferenceDetailsWithRoleFilteringData,
-) {
-  return (conferenceData && conferenceData.organizer.id === user.id) as boolean;
+): Promise<boolean> {
+  return conferenceData?.organizer.id === user.id || false;
 }
 
-export function isUserLoggedIn(user: UserData) {
-  return (user !== null) as boolean;
+export async function isUserLoggedIn(user: UserData): Promise<boolean> {
+  return user !== null;
+}
+
+export async function isUserAnAdmin(user: UserData): Promise<boolean> {
+  return user.role === "ADMIN";
 }

@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import SingleFormInput from "@/components/common/Input/SingleFormInput";
 import APIImageComponent from "@/hooks/imageAPI";
