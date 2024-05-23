@@ -11,7 +11,7 @@ export default function Lectures({
   userRole,
 }: {
   lectures: Lecture[];
-  conference:  GetConferenceDetailsWithRoleFilteringData;
+  conference: GetConferenceDetailsWithRoleFilteringData;
   userRole: string;
 }) {
   return (
@@ -26,7 +26,11 @@ export default function Lectures({
         <div className="w-full">
           {lectures.map((lecture, index) => (
             <div className="py-3" key={index}>
-              <LectureList key={index} lecture={lecture} conference={conference} />
+              <LectureList
+                key={index}
+                lecture={lecture}
+                conference={conference}
+              />
             </div>
           ))}
         </div>

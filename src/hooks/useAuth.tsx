@@ -25,7 +25,7 @@ const useAuth = (allowedRoles: string[]) => {
         setIsAuthorise(false);
       }
     },
-    [allowedRoles]
+    [allowedRoles],
   );
 
   useEffect(() => {

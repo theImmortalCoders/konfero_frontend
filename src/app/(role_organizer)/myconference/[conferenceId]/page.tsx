@@ -3,10 +3,8 @@ import Page from "@/components/common/Page/Page";
 import { Box } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
 import {
-  deleteConference,
   getConferenceDetailsWithRoleFiltering,
-  GetConferenceDetailsWithRoleFilteringData,
-  signOutFromConference
+  signOutFromConference,
 } from "@/hooks/conference";
 import Error500 from "@/components/common/Error/Error500";
 import People from "@/components/myconferenceId/Participants/People";
@@ -36,9 +34,9 @@ export default function MyConferencePage({
     data: conferenceIdData,
     isLoading,
     isError,
-    refetch
+    refetch,
   } = useQuery(`conferenceId${parseInt(params.conferenceId)}`, () =>
-    getConferenceDetailsWithRoleFiltering(parseInt(params.conferenceId))
+    getConferenceDetailsWithRoleFiltering(parseInt(params.conferenceId)),
   );
 
   if (isError) return <Error500 />;
@@ -47,20 +45,19 @@ export default function MyConferencePage({
   const [signUpWarning, setSignUpWarning] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
 
-  const signOut = async (id : number) => {
+  const signOut = async (id: number) => {
     try {
       const result = await signOutFromConference(id);
       if (result === 200) {
         console.log("Wypisano z konferencji.");
-        if (setUpdate)
-          setUpdate(!update);
+        if (setUpdate) setUpdate(!update);
       } else {
         console.error("Błąd wypisywania z konferencji.");
       }
     } catch (error) {
       console.error("Błąd wypisywania z konferencji.", error);
     }
-  }
+  };
 
   useEffect(() => {
     refetch();
@@ -74,28 +71,46 @@ export default function MyConferencePage({
       conferenceIdData &&
       typeof conferenceIdData !== "string" ? (
         <>
-          {userRole === "ORGANIZER" || userRole === "ADMIN" ? (
+          {(userRole === "ORGANIZER" || userRole === "ADMIN") &&
+          !conferenceIdData.canceled ? (
             <Panel conferenceIdData={conferenceIdData} />
           ) : null}
           <Title conferenceIdData={conferenceIdData}>
-            <span className="flex justify-center w-full">
-              <span onClick={() => {
-                  if(conferenceIdData.amISignedUp) {
-                    signOut(conferenceIdData.id);
-                  }
-                  else if (!conferenceIdData.participantsFull && !conferenceIdData.amISignedUp) {
-                    setSignUpWarning(true);
-                  }
-                }}
-              className="flex items-center bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2">
-                <p className="text-black font-semibold">
-                  {conferenceIdData.participantsFull && !conferenceIdData.amISignedUp ? "Brak miejsc" : conferenceIdData.amISignedUp ? "Wypisz się" : "Zapisz się"}
-                </p>  
-                {conferenceIdData.participantsFull && !conferenceIdData.amISignedUp ? 
-                  <CiCirclePlus className="text-4xl text-darkblue opacity-50"/> : conferenceIdData.amISignedUp ? 
-                    <CiCircleMinus className="text-4xl text-darkblue" /> : <CiCirclePlus className="text-4xl text-darkblue" />}
+            {!conferenceIdData.canceled && (
+              <span className="flex justify-center w-full">
+                <span
+                  onClick={() => {
+                    if (conferenceIdData.amISignedUp) {
+                      signOut(conferenceIdData.id);
+                    } else if (
+                      !conferenceIdData.participantsFull &&
+                      !conferenceIdData.amISignedUp
+                    ) {
+                      setSignUpWarning(true);
+                    }
+                  }}
+                  className="flex items-center bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2"
+                >
+                  <p className="text-black font-semibold">
+                    {conferenceIdData.participantsFull &&
+                    !conferenceIdData.amISignedUp
+                      ? "Brak miejsc"
+                      : conferenceIdData.amISignedUp
+                        ? "Wypisz się"
+                        : "Zapisz się"}
+                  </p>
+
+                  {conferenceIdData.participantsFull &&
+                  !conferenceIdData.amISignedUp ? (
+                    <CiCirclePlus className="text-4xl text-darkblue opacity-50" />
+                  ) : conferenceIdData.amISignedUp ? (
+                    <CiCircleMinus className="text-4xl text-darkblue" />
+                  ) : (
+                    <CiCirclePlus className="text-4xl text-darkblue" />
+                  )}
+                </span>
               </span>
-            </span>
+            )}
           </Title>
           <Organizers organizer={conferenceIdData.organizer} />
           <Lectures
@@ -111,7 +126,12 @@ export default function MyConferencePage({
           ) : null}
           <CommentsList conference={conferenceIdData} update={update} setUpdate={setUpdate}/>
           {signUpWarning && (
-            <SignUpWarning setSignUpWarning={setSignUpWarning} tempId={conferenceIdData.id} update={update} setUpdate={setUpdate}/>
+            <SignUpWarning
+              setSignUpWarning={setSignUpWarning}
+              tempId={conferenceIdData.id}
+              update={update}
+              setUpdate={setUpdate}
+            />
           )}
         </>
       ) : (

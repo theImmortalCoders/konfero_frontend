@@ -7,10 +7,9 @@ export async function deleteFileById(fileId: number) {
       `/api/file/${fileId}`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Plik został usunięty poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -46,10 +45,9 @@ export async function getAllFilesByAuthorId(authorId: number) {
       `/api/file?authorId=${authorId}`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Pliki danego autora pobrano poprawnie!");
       return response.data;
     } else {
       console.error("Wystąpił błąd podczas pobierania plików danego autora");
@@ -67,25 +65,21 @@ export async function downloadFileById(fileId: string) {
       `/api/file/${fileId}`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Plik pobrano poprawnie!");
       return response.data;
     } else {
       console.error("Wystąpił błąd podczas pobierania pliku");
       return "Wystąpił błąd podczas pobierania pliku";
     }
   } catch (error: any) {
-      console.error("Wystąpił błąd podczas pobierania pliku");
-      return "Wystąpił błąd podczas pobierania pliku";
+    console.error("Wystąpił błąd podczas pobierania pliku");
+    return "Wystąpił błąd podczas pobierania pliku";
   }
 }
 
-export async function uploadFile(
-  uploadedFile: File,
-  description: string,
-) {
+export async function uploadFile(uploadedFile: File, description: string) {
   try {
     const formData = new FormData();
     formData.append("uploadedFile", uploadedFile);
@@ -97,11 +91,10 @@ export async function uploadFile(
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
 
     if (response.status === 200) {
-      console.log("Plik został przesłany poprawnie!");
       return response.data;
     } else if (response.status === 401) {
       window.location.replace("/login");

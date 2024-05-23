@@ -22,7 +22,7 @@ export default function AddLectureInputs({
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [startDateTime, setStartDateTime] = useState<string>(
-    `${conferenceData.startDateTime}`
+    `${conferenceData.endDateTime}`,
   );
   const [durationMinutes, setDurationMinutes] = useState<string>("");
   const [imageId, setImageId] = useState<number>(0);
@@ -35,7 +35,7 @@ export default function AddLectureInputs({
   const [cleanSearchBar, setCleanSearchBar] = useState(false);
 
   const [statusError, setStatusError] = useState<boolean | undefined>(
-    undefined
+    undefined,
   );
   const [message, setMessage] = useState<string | undefined>(undefined);
 
@@ -99,7 +99,7 @@ export default function AddLectureInputs({
   const handleDeleteLecturers = (indexToDelete: number) => {
     setLecturersIds(lecturersIds.filter((_, index) => index !== indexToDelete));
     setLecturersUserames(
-      lecturersUserames.filter((_, index) => index !== indexToDelete)
+      lecturersUserames.filter((_, index) => index !== indexToDelete),
     );
   };
 
@@ -122,21 +122,27 @@ export default function AddLectureInputs({
       imageId === 0 ||
       !place
     ) {
-      console.error("Wszystkie pola muszą być wypełnione");
-      setStatusError(true);
+      setStatusError(false);
+      setMessage("Wszystkie pola muszą być wypełnione");
+      setTimeout(() => {
+        setMessage("");
+      }, 4 * 1000);
       return;
     }
 
     if (startDateTime < conferenceData.startDateTime) {
       setStatusError(false);
       setMessage("Wykład musi odbyć się w czasie konferencji!");
+      setTimeout(() => {
+        setMessage("");
+      }, 4 * 1000);
       return;
     }
 
     try {
       const result = await addLectureToConference(
         conferenceData.id,
-        newLecture
+        newLecture,
       );
       if (
         result !== "Brak autoryzacji użytkownika" &&
@@ -201,7 +207,7 @@ export default function AddLectureInputs({
           onChange={(e) => {
             const value = e.target.value;
             const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,200}$/i.test(
-              value
+              value,
             );
 
             if (isValid) {
@@ -310,7 +316,7 @@ export default function AddLectureInputs({
             onChange={(e) => {
               const value = e.target.value;
               const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,20}$/i.test(
-                value
+                value,
               );
 
               if (isValid) {
@@ -345,8 +351,8 @@ export default function AddLectureInputs({
             {statusError
               ? "Wystąpił błąd podczas dodawania wykładu."
               : message === undefined
-              ? "Wykład został dodany poprawnie."
-              : message}
+                ? "Wykład został dodany poprawnie."
+                : message}
           </p>
         )}
       </div>

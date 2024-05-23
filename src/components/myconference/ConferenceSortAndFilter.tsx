@@ -166,18 +166,18 @@ export default function ConferenceSortAndFilter({
     string | undefined
   >(undefined);
   const [startDateTimeTo, setStartDateTimeTo] = useState<string | undefined>(
-    undefined
+    undefined,
   );
   const [name, setName] = useState<string | undefined>(undefined);
   const [tagsIds, setTagsIds] = useState<number[] | undefined>(undefined);
   const [canceled, setCanceled] = useState<boolean | undefined>(undefined);
   const [verified, setVerified] = useState<boolean | undefined>(undefined);
   const [participantsFull, setParticipantsFull] = useState<boolean | undefined>(
-    undefined
+    undefined,
   );
   const [organizerId, setOrganizerId] = useState<number | undefined>(undefined);
   const [locationName, setLocationName] = useState<string | undefined>(
-    undefined
+    undefined,
   );
 
   useEffect(() => {

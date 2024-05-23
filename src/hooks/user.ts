@@ -1,6 +1,9 @@
 import { appAPI } from "@/utils/appENV";
 import { AxiosResponse } from "axios";
 import { LogoInterface } from "./imageAPI";
+import { GetLectureDetailsData } from "@/hooks/lecture";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export interface Location {
   locX: number;
@@ -16,7 +19,7 @@ export interface Organizer {
   verified: boolean;
 }
 
-interface Conference {
+export interface Conference {
   id: number;
   startDateTime: string;
   endDateTime: string;
@@ -65,7 +68,6 @@ export async function getAllPendingBecomeOrganizerRequest(): Promise<
       withCredentials: true,
     });
     if (response.status === 200) {
-      console.log("Prośby o zostanie organizatorem pobrano poprawnie!");
       return response.data;
     }
     if (response.status === 401) {
@@ -77,7 +79,7 @@ export async function getAllPendingBecomeOrganizerRequest(): Promise<
       return "Nie jesteś administratorem!";
     } else {
       console.error(
-        "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem"
+        "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem",
       );
       return "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem";
     }
@@ -91,7 +93,7 @@ export async function getAllPendingBecomeOrganizerRequest(): Promise<
       return "Nie jesteś administratorem!";
     } else {
       console.error(
-        "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem"
+        "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem",
       );
       return "Wystąpił błąd podczas pobierania próśb o zostanie organizatorem";
     }
@@ -104,7 +106,6 @@ export async function getCurrentUser(): Promise<UserData | null> {
       withCredentials: true,
     });
     if (response.status === 200) {
-      console.log("Dane użytkownika pobrano poprawnie!");
       return response.data;
     }
     if (response.status === 401) {
@@ -124,24 +125,20 @@ export async function getCurrentUser(): Promise<UserData | null> {
 }
 
 export interface GetAllUsersData {
-    id: number;
-    username: string;
-    email: string;
-    photo: string;
-    verified: boolean;
+  id: number;
+  username: string;
+  email: string;
+  photo: string;
+  verified: boolean;
 }
 
-export async function getAllUsers(): Promise<
-  GetAllUsersData[] | string
-> {
+export async function getAllUsers(): Promise<GetAllUsersData[] | string> {
   try {
-    const response: AxiosResponse<
-    GetAllUsersData[] | string
-    > = await appAPI.get(`/api/user/all`, {
-      withCredentials: true,
-    });
+    const response: AxiosResponse<GetAllUsersData[] | string> =
+      await appAPI.get(`/api/user/all`, {
+        withCredentials: true,
+      });
     if (response.status === 200) {
-      console.log("Pobrano dane wszystkich użytkowników");
       return response.data;
     }
     if (response.status === 401) {
@@ -153,7 +150,7 @@ export async function getAllUsers(): Promise<
       return "Nie jesteś administratorem!";
     } else {
       console.error(
-        "Wystąpił błąd podczas pobierania danych wszystkich użytkowników"
+        "Wystąpił błąd podczas pobierania danych wszystkich użytkowników",
       );
       return "Wystąpił błąd podczas pobierania danych wszystkich użytkowników";
     }
@@ -167,7 +164,7 @@ export async function getAllUsers(): Promise<
       return "Nie jesteś administratorem!";
     } else {
       console.error(
-        "Wystąpił błąd podczas pobierania danych wszystkich użytkowników"
+        "Wystąpił błąd podczas pobierania danych wszystkich użytkowników",
       );
       return "Wystąpił błąd podczas pobierania danych wszystkich użytkowników";
     }
@@ -181,10 +178,9 @@ export async function verifyUser(userId: number) {
       {},
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Użytkownik został zweryfikowany poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -219,10 +215,9 @@ export async function changeUserRole(userId: number, newRole: string) {
       {},
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Rola użytkownika została zmieniona poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -257,10 +252,9 @@ export async function banUser(userId: number) {
       {},
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Użytkownik został zablokowany poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -290,7 +284,7 @@ export async function banUser(userId: number) {
 
 export async function updateProfileWithAdditionalData(
   phone: string,
-  city: string
+  city: string,
 ) {
   try {
     const response: AxiosResponse<void> = await appAPI.post(
@@ -301,10 +295,9 @@ export async function updateProfileWithAdditionalData(
       },
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Dane użytkownika zaktualizowane poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -334,7 +327,7 @@ export interface BecomeOrganizerData {
 }
 
 export async function becomeOrganizerWithUpdateData(
-  organizerData: BecomeOrganizerData
+  organizerData: BecomeOrganizerData,
 ) {
   try {
     const response: AxiosResponse<void> = await appAPI.post(
@@ -342,10 +335,9 @@ export async function becomeOrganizerWithUpdateData(
       organizerData,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Użytkownik wysłał zapytanie o zostanie organizatorem!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -353,7 +345,7 @@ export async function becomeOrganizerWithUpdateData(
       return "Brak autoryzacji użytkownika";
     } else {
       console.error(
-        "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora"
+        "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora",
       );
       return "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora";
     }
@@ -364,7 +356,7 @@ export async function becomeOrganizerWithUpdateData(
       return "Brak autoryzacji użytkownika";
     } else {
       console.error(
-        "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora"
+        "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora",
       );
       return "Wystąpił błąd podczas dodawania wysyłania zapytania o otrzymania roli organizatora";
     }
@@ -373,7 +365,7 @@ export async function becomeOrganizerWithUpdateData(
 
 export async function reviewOrganizerRequest(
   requestId: number,
-  approve: boolean
+  approve: boolean,
 ) {
   try {
     const response: AxiosResponse<void> = await appAPI.put(
@@ -381,10 +373,9 @@ export async function reviewOrganizerRequest(
       {},
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Prośba o zostanie organizatorem rozpatrzona");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -395,7 +386,7 @@ export async function reviewOrganizerRequest(
       return "Nie jesteś administratorem!";
     } else {
       console.error(
-        "Wystąpił błąd podczas rozpatrywania prośby o zostanie organizatorem"
+        "Wystąpił błąd podczas rozpatrywania prośby o zostanie organizatorem",
       );
       return "Wystąpił błąd podczas rozpatrywania prośby o zostanie organizatorem";
     }
@@ -409,7 +400,7 @@ export async function reviewOrganizerRequest(
       return "Nie jesteś administratorem!";
     } else {
       console.error(
-        "Wystąpił błąd podczas rozpatrywania prośby o zostanie organizatorem"
+        "Wystąpił błąd podczas rozpatrywania prośby o zostanie organizatorem",
       );
       return "Wystąpił błąd podczas rozpatrywania prośby o zostanie organizatorem";
     }

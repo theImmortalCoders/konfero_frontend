@@ -8,10 +8,9 @@ export async function deleteLecture(lectureId: number) {
       `/api/lecture/${lectureId}`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Prelekcja została usunięta poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -45,10 +44,9 @@ export async function removeLectureFromFavourites(lectureId: number) {
       `/api/lecture/${lectureId}/interested`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Prelekcja została usunięta z ulubionych!");
       return response.status;
     } else if (response.status === 400) {
       console.error("Prelekcja nie była dodana do ulubionych");
@@ -113,7 +111,7 @@ export interface GetLectureDetailsData {
 }
 
 export async function getLectureDetails(
-  lectureId: number
+  lectureId: number,
 ): Promise<GetLectureDetailsData | string> {
   try {
     const response: AxiosResponse<GetLectureDetailsData | string> =
@@ -121,7 +119,6 @@ export async function getLectureDetails(
         withCredentials: true,
       });
     if (response.status === 200) {
-      console.log("Szczegóły prelekcji pobrano poprawnie!");
       return response.data;
     }
     if (response.status === 401) {
@@ -154,14 +151,20 @@ export interface GetFavouriteLecturesData {
   conferenceName: string;
 }
 
-export async function getFavouriteLectures(lectureStatus?: string): Promise<GetFavouriteLecturesData[] | string> {
+export async function getFavouriteLectures(
+  lectureStatus?: string,
+): Promise<GetFavouriteLecturesData[] | string> {
   try {
     const response: AxiosResponse<GetFavouriteLecturesData[] | string> =
-      await appAPI.get(lectureStatus ? `/api/lecture/favourite?lectureStatus=${lectureStatus}` : `/api/lecture/favourite`, {
-        withCredentials: true,
-      });
+      await appAPI.get(
+        lectureStatus
+          ? `/api/lecture/favourite?lectureStatus=${lectureStatus}`
+          : `/api/lecture/favourite`,
+        {
+          withCredentials: true,
+        },
+      );
     if (response.status === 200) {
-      console.log("Ulubione prelekcje pobrano poprawnie!");
       return response.data;
     }
     if (response.status === 401) {
@@ -182,7 +185,6 @@ export async function getFavouriteLectures(lectureStatus?: string): Promise<GetF
   }
 }
 
-
 export interface ModifyLectureInfoByOrganizerData {
   name: string;
   description: string;
@@ -195,7 +197,7 @@ export interface ModifyLectureInfoByOrganizerData {
 
 export async function modifyLectureInfoByOrganizer(
   lectureId: number,
-  modifyLectureInfoData: ModifyLectureInfoByOrganizerData
+  modifyLectureInfoData: ModifyLectureInfoByOrganizerData,
 ) {
   try {
     const response: AxiosResponse<void> = await appAPI.patch(
@@ -203,10 +205,9 @@ export async function modifyLectureInfoByOrganizer(
       modifyLectureInfoData,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Dane prelekcji zmodyfikowano poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -241,7 +242,7 @@ export interface ModifyLectureInfoByLecturerData {
 
 export async function modifyLectureInfoByLecturer(
   lectureId: number,
-  modifyLectureInfoData: ModifyLectureInfoByLecturerData
+  modifyLectureInfoData: ModifyLectureInfoByLecturerData,
 ) {
   try {
     const response: AxiosResponse<void> = await appAPI.patch(
@@ -249,10 +250,9 @@ export async function modifyLectureInfoByLecturer(
       modifyLectureInfoData,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Dane prelekcji zmodyfikowano poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -280,19 +280,16 @@ export async function modifyLectureInfoByLecturer(
   }
 }
 
-export async function addLectureToFavourites(
-  lectureId: number,
-) {
+export async function addLectureToFavourites(lectureId: number) {
   try {
     const response: AxiosResponse<void> = await appAPI.post(
       `/api/lecture/${lectureId}/interested`,
       {},
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Prelekcja została dodana do ulubionych!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -332,7 +329,7 @@ export interface AddLectureToConferenceData {
 
 export async function addLectureToConference(
   conferenceId: number,
-  conferendeData: AddLectureToConferenceData
+  conferendeData: AddLectureToConferenceData,
 ) {
   try {
     const response: AxiosResponse<void> = await appAPI.post(
@@ -340,10 +337,9 @@ export async function addLectureToConference(
       conferendeData,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Prelekcja została dodana do konferencji!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");

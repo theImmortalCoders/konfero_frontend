@@ -4,8 +4,13 @@ import { BoxWithImage } from "@/components/common/Box/Box";
 import Error500 from "@/components/common/Error/Error500";
 import People from "@/components/myconferenceId/Participants/People";
 import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
-import { getLectureDetails, GetLectureDetailsData, addLectureToFavourites, removeLectureFromFavourites } from "@/hooks/lecture";
-import { getCurrentUser } from "@/hooks/user";
+import {
+  getLectureDetails,
+  GetLectureDetailsData,
+  addLectureToFavourites,
+  removeLectureFromFavourites,
+} from "@/hooks/lecture";
+import { getCurrentUser, isUserInLecturers, UserData } from "@/hooks/user";
 import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
 import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrapper";
@@ -16,17 +21,9 @@ import useAuth from "@/hooks/useAuth";
 import NotFound from "../../addlecture/[conferenceId]/not-found";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { IoArrowBackCircle } from "react-icons/io5";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 
-async function getId() {
-  const userData = await getCurrentUser();
-  if (userData && typeof userData === 'object' && 'id' in userData) {
-    return userData.id;
-  }
-  return null;
-}
-
-const RedirectToConference = ({conferenceId} : {conferenceId: number}) => {
+const RedirectToConference = ({ conferenceId }: { conferenceId: number }) => {
   const router = useRouter();
 
   return (
@@ -35,11 +32,19 @@ const RedirectToConference = ({conferenceId} : {conferenceId: number}) => {
       onClick={() => router.push(`/myconference/${conferenceId}`)}
     >
       <div className="flex justify-center items-center gap-x-2">
-        <IoArrowBackCircle className="size-5 md:size-7 hidden xs:block"/>
+        <IoArrowBackCircle className="size-5 md:size-7 hidden xs:block" />
         <p className="text-xs md:text-base">Przejdź do konferencji</p>
       </div>
     </div>
-  )
+  );
+};
+
+async function getId() {
+  const userData = await getCurrentUser();
+  if (userData && typeof userData === "object" && "id" in userData) {
+    return userData;
+  }
+  return null;
 }
 
 export default function LecturePage({
@@ -50,6 +55,14 @@ export default function LecturePage({
   const [lectureIdData, setLectureIdData] = useState<
     string | GetLectureDetailsData
   >();
+  const [user, setUser] = useState<UserData | null | undefined>(undefined);
+  useEffect(() => {
+    const fetchId = async () => {
+      const data = await getId();
+      setUser(data);
+    };
+    fetchId();
+  }, []);
   const [participant, setParticipant] = useState<boolean>(false);
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
@@ -59,7 +72,6 @@ export default function LecturePage({
   const [userId, setUserId] = useState<number | null>(null);
   const [update, setUpdate] = useState<boolean>(false);
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
-
 
   useEffect(() => {
     const fetchId = async () => {
@@ -76,12 +88,14 @@ export default function LecturePage({
         const data = await getLectureDetails(parseInt(params.lectureId));
         setLectureIdData(data);
         setLoading(false);
-        if (typeof data !== 'string') {
-          const conference = await getConferenceDetailsWithRoleFiltering(data.conferenceId);
-          if (typeof conference !== 'string') {
+        if (typeof data !== "string") {
+          const conference = await getConferenceDetailsWithRoleFiltering(
+            data.conferenceId,
+          );
+          if (typeof conference !== "string") {
             setParticipant(conference.amISignedUp);
           }
-          setIsFavourite(data.interested.some(user => user.id === userId));
+          setIsFavourite(data.interested.some((user) => user.id === userId));
         }
       } catch (error: any) {
         setError(error.message);
@@ -98,35 +112,33 @@ export default function LecturePage({
   if (isError) return <Error500 />;
   if (isAuthorise === false) return <NotFound />;
 
-  const handleAddToFavourites  = async () => {
+  const handleAddToFavourites = async () => {
     try {
       const result = await addLectureToFavourites(parseInt(params.lectureId));
       if (result === 200) {
-        if (setUpdate)
-          setUpdate(!update);
+        if (setUpdate) setUpdate(!update);
       } else {
         console.error("Błąd dodawania wykładu do ulubionych.");
       }
     } catch (error) {
       console.error("Błąd dodawania wykładu do ulubionych.", error);
     }
-  }
+  };
 
-  const handleRemoveFromFavourites = async() => {
+  const handleRemoveFromFavourites = async () => {
     try {
-      const result = await removeLectureFromFavourites(parseInt(params.lectureId));
+      const result = await removeLectureFromFavourites(
+        parseInt(params.lectureId),
+      );
       if (result === 200) {
-        if (setUpdate)
-          setUpdate(!update);
+        if (setUpdate) setUpdate(!update);
       } else {
         console.error("Błąd usuwania wykładu z ulubionych.");
       }
     } catch (error) {
       console.error("Błąd usuwania wykładu z ulubionych.", error);
     }
-  }
-
-
+  };
 
   return (
     <Page>
@@ -136,7 +148,7 @@ export default function LecturePage({
       lectureIdData &&
       typeof lectureIdData !== "string" ? (
         <div className="w-[90%] lg:w-[60%]">
-          <RedirectToConference conferenceId={lectureIdData.conferenceId}/>
+          <RedirectToConference conferenceId={lectureIdData.conferenceId} />
           <BoxWithImage
             className="text-darkblue mb-5 rounded-tl-none"
             src={lectureIdData.image.id}
@@ -155,13 +167,21 @@ export default function LecturePage({
                 <span className="w-full flex justify-center md:justify-end">
                   <span
                     onClick={() => {
-                      isFavourite ? handleRemoveFromFavourites() : handleAddToFavourites();
+                      isFavourite
+                        ? handleRemoveFromFavourites()
+                        : handleAddToFavourites();
                     }}
                     className="w-fit h-min flex justify-center items-center gap-x-2 cursor-pointer text-darkblue px-3"
                   >
-                    {isFavourite ? <FaStar className="text-xl" /> :  <FaRegStar className="text-xl" />}
+                    {isFavourite ? (
+                      <FaStar className="text-xl" />
+                    ) : (
+                      <FaRegStar className="text-xl" />
+                    )}
                     <p className="text-sm md:text-lg font-medium">
-                      {isFavourite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+                      {isFavourite
+                        ? "Usuń z ulubionych"
+                        : "Dodaj do ulubionych"}
                     </p>
                   </span>
                 </span>
@@ -183,16 +203,31 @@ export default function LecturePage({
                 </div>
               </>
             ) : null}
-            <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
-            <TitleHeader title={"Materiały"} />
-            <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
-              {userRole === "ORGANIZER" || userRole === "ADMIN" ? (
-                <AddLectureMaterials
-                  lectureId={params.lectureId}
-                  handleRefetch={handleLectureDataRefetch}
-                />
-              ) : null}
-            </div>
+
+            {(lectureIdData.materials.length === 0 ||
+              lectureIdData.materials === null) &&
+              user &&
+              (user.role !== null ||
+                (user.role === "ADMIN" &&
+                  user.role === "ORGANIZER" &&
+                  isUserInLecturers(lectureIdData, user))) && (
+                <>
+                  <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
+                  <TitleHeader title={"Materiały"} />
+                  <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
+                    {(user.role === "ORGANIZER" ||
+                      user.role === "ADMIN" ||
+                      lectureIdData.lecturers.map(
+                        (lecturer) => lecturer.id === userId,
+                      )) && (
+                      <AddLectureMaterials
+                        lectureId={params.lectureId}
+                        handleRefetch={handleLectureDataRefetch}
+                      />
+                    )}
+                  </div>
+                </>
+              )}
             {lectureIdData.materials.length !== 0 ? (
               <>
                 <MaterialTableWrapper
@@ -217,7 +252,6 @@ export default function LecturePage({
                 </div>
               </>
             ) : null}
-
           </BoxWithImage>
         </div>
       ) : (

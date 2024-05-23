@@ -1,4 +1,5 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import EditLectureInputs from "@/components/lecture/EditLectureInputs";
 import { useParams } from "next/navigation";
 import { useQuery } from "react-query";
@@ -8,13 +9,18 @@ import Error500 from "@/components/common/Error/Error500";
 import { Box } from "@/components/common/Box/Box";
 import Page from "@/components/common/Page/Page";
 import { getConferenceDetailsWithRoleFiltering } from "@/hooks/conference";
-import useAuth from "@/hooks/useAuth";
 import NotFound from "../../addlecture/[conferenceId]/not-found";
+import {
+  isUserAnAdmin,
+  isUserInLecturers,
+  isUserInOrganizers,
+} from "@/hooks/authorise/authorization";
 
-const EditLecture = () => {
-  const { isAuthorise } = useAuth(["ORGANIZER", "ADMIN"]);
-
+export default function EditLecture() {
   const { lectureId } = useParams<{ lectureId: string }>();
+  const [userHasPermission, setUserHasPermission] = useState<boolean | null>(
+    null,
+  );
 
   const {
     data: currentUserData,
@@ -29,37 +35,84 @@ const EditLecture = () => {
     isLoading: lectureLoading,
     isError: lectureError,
   } = useQuery(`lectureId_${lectureId}`, () =>
-    getLectureDetails(parseInt(lectureId as string))
+    getLectureDetails(parseInt(lectureId as string)),
   );
-
-  const getConferenceInfo = async () => {
-    return await getConferenceDetailsWithRoleFiltering(
-      (lectureData as GetLectureDetailsData).conferenceId
-    );
-  };
 
   const {
     data: conferenceData,
     isLoading: conferenceLoading,
     isError: conferenceError,
-  } = useQuery("conference", getConferenceInfo, { enabled: !lectureLoading });
+  } = useQuery(
+    "conference",
+    async () => {
+      if (!lectureLoading && lectureData) {
+        return await getConferenceDetailsWithRoleFiltering(
+          (lectureData as GetLectureDetailsData).conferenceId,
+        );
+      }
+    },
+    { enabled: !lectureLoading },
+  );
+
+  useEffect(() => {
+    const checkPermissions = async () => {
+      if (
+        currentUserData &&
+        lectureData &&
+        typeof lectureData !== "string" &&
+        conferenceData &&
+        typeof conferenceData !== "string"
+      ) {
+        const [inLecturers, inOrganizers, isAdmin] = await Promise.all([
+          isUserInLecturers(currentUserData, lectureData),
+          isUserInOrganizers(currentUserData, conferenceData),
+          isUserAnAdmin(currentUserData),
+        ]);
+
+        setUserHasPermission(inLecturers || inOrganizers || isAdmin);
+      } else {
+        setUserHasPermission(false);
+      }
+    };
+
+    if (!userLoading && !lectureLoading && !conferenceLoading) {
+      checkPermissions();
+    }
+  }, [
+    userLoading,
+    lectureLoading,
+    conferenceLoading,
+    currentUserData,
+    lectureData,
+    conferenceData,
+  ]);
 
   if (lectureError || userError || conferenceError) return <Error500 />;
 
-  if (isAuthorise === false) return <NotFound />;
+  if (
+    userLoading ||
+    lectureLoading ||
+    conferenceLoading ||
+    userHasPermission === null
+  ) {
+    return (
+      <Page className="justify-start py-20">
+        <p className="w-full mt-20 text-xl h-max flex justify-center items-center text-close2White">
+          Trwa ładowanie danych...
+        </p>
+      </Page>
+    );
+  }
 
   return (
-    <Page className="justify-start py-20">
-      {isAuthorise === true &&
-      !userLoading &&
-      !lectureLoading &&
-      !conferenceLoading &&
+    <>
+      {userHasPermission &&
       lectureData &&
-      conferenceData &&
-      currentUserData &&
       typeof lectureData !== "string" &&
-      typeof conferenceData !== "string" ? (
-        <>
+      conferenceData &&
+      typeof conferenceData !== "string" &&
+      currentUserData ? (
+        <Page className="justify-start py-20">
           <h1 className="w-full flex justify-center pb-8 text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">
             Edycja wykładu
           </h1>
@@ -70,14 +123,10 @@ const EditLecture = () => {
               currentUserData={currentUserData}
             />
           </Box>
-        </>
+        </Page>
       ) : (
-        <p className="w-full mt-20 text-xl h-max flex justify-center items-center text-close2White">
-          Trwa ładowanie danych...
-        </p>
+        <NotFound />
       )}
-    </Page>
+    </>
   );
-};
-
-export default EditLecture;
+}

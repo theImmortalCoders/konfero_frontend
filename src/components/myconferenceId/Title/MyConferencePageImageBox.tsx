@@ -7,6 +7,8 @@ import {
   FaRegCalendarXmark,
 } from "react-icons/fa6";
 import { IoMdPin } from "react-icons/io";
+import DisplayTag from "@/components/tag/displaytag";
+import React from "react";
 
 export default function MyConferencePageImageBox({
   conferenceIdData,
@@ -42,6 +44,8 @@ export default function MyConferencePageImageBox({
           </div>
           <Link
             href={`https://www.google.com/maps/place/${conferenceIdData.location.locX}+${conferenceIdData.location.locY}`}
+            rel="noopener noreferrer"
+            target="_blank"
             className={"pt-2 hover:underline flex items-center gap-2 "}
           >
             <h1 className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
@@ -51,6 +55,9 @@ export default function MyConferencePageImageBox({
           </Link>
         </div>
       ) : null}
+      <div className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg w-full h-full flex justify-center items-center text-darkblue">
+        <DisplayTag conference={conferenceIdData} />
+      </div>
     </div>
   );
 }

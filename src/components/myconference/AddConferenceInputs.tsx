@@ -48,7 +48,7 @@ export default function AddConferenceInputs({
   const [cleanSearchBar, setCleanSearchBar] = useState(false);
 
   const [statusError, setStatusError] = useState<boolean | undefined>(
-    undefined
+    undefined,
   );
   const [message, setMessage] = useState<string | undefined>(undefined);
 
@@ -98,7 +98,7 @@ export default function AddConferenceInputs({
       isError: conferenceDetailsError,
       refetch: refetchClub,
     } = useQuery("conferenceDetails", () =>
-      getConferenceDetailsWithRoleFiltering(Number(conferenceid))
+      getConferenceDetailsWithRoleFiltering(Number(conferenceid)),
     );
 
     useEffect(() => {
@@ -117,14 +117,14 @@ export default function AddConferenceInputs({
             setLocY(conferenceDetailsData.location.locY);
             setPlace(conferenceDetailsData.location.name);
             setParticipantsLimit(
-              conferenceDetailsData.participantsLimit.toString()
+              conferenceDetailsData.participantsLimit.toString(),
             );
             setFormat(conferenceDetailsData.format);
             setImageId(conferenceDetailsData.logo.id);
             setTagsIds(conferenceDetailsData.tags.map((tag) => tag.id));
             setTagsNames(conferenceDetailsData.tags.map((tag) => tag.tagName));
             setGalleryPhotosIds(
-              conferenceDetailsData.photos.map((photo) => photo.id)
+              conferenceDetailsData.photos.map((photo) => photo.id),
             );
           } else {
             setName("");
@@ -168,15 +168,15 @@ export default function AddConferenceInputs({
         const results = await Promise.all(
           imageGalleryFiles.map((file) => {
             return uploadFile(file, description);
-          })
+          }),
         );
         const validResults = results.filter(
-          (result) => result !== undefined
+          (result) => result !== undefined,
         ) as FileResponseData[];
         setGalleryPhotosIds(
           validResults.map((img) => {
             return img.id;
-          })
+          }),
         );
       } catch (error) {
         console.error("Images adding failed:", error);
@@ -226,9 +226,9 @@ export default function AddConferenceInputs({
       imageId === 0 ||
       (format === "STATIONARY" && !place)
     ) {
-      console.error("Wszystkie pola muszą być wypełnione");
       setStatusError(true);
       setMessage("Wszystkie pola muszą być wypełnione");
+      setTimeout(() => setMessage(""), 4 * 1000);
       return;
     }
 
@@ -263,37 +263,38 @@ export default function AddConferenceInputs({
           setMessage("Dodano konferencję");
           window.location.replace(`/myconference`);
         } else {
-          console.error("Błąd dodawania konferencji");
           setStatusError(true);
-          setMessage("Wystąpił błąd podczas dodawania konferencji");
+          setMessage("Błąd: " + result);
+          setTimeout(() => setMessage(""), 4 * 1000);
         }
       } else {
         const conferenceId = Number(conferenceid);
         const result = await updateInfoAboutConference(
           conferenceId,
-          newConference
+          newConference,
         );
         if (result === 200) {
           setStatusError(false);
           setMessage("Zaktualizowano konferencję");
           window.location.replace(`/myconference`);
         } else {
-          console.error("Błąd aktualizowania konferencji");
           setStatusError(true);
           setMessage("Wystąpił błąd podczas aktualizowania konferencji");
+          setTimeout(() => setMessage(""), 4 * 1000);
         }
       }
     } catch (error) {
       setStatusError(true);
       console.error(
         isUpdate ? "Updating conference failed:" : "Adding conference failed:",
-        error
+        error,
       );
       setMessage(
         isUpdate
           ? "Błąd aktualizowania konferencji"
-          : "Błąd dodawania konferencji"
+          : "Błąd dodawania konferencji",
       );
+      setTimeout(() => setMessage(""), 4 * 1000);
     }
   };
 
@@ -338,7 +339,7 @@ export default function AddConferenceInputs({
           onChange={(e) => {
             const value = e.target.value;
             const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,300}$/i.test(
-              value
+              value,
             );
 
             if (isValid) {
