@@ -88,7 +88,7 @@ function FilterSection({
               ? e.target.value
                 ? setState(e.target.value)
                 : setState(undefined)
-              : setState(e.target.checked ? e.target.checked : undefined);
+              : setState(e.target.checked);
           }}
         />
       ) : (
@@ -170,7 +170,7 @@ export default function ConferenceSortAndFilter({
   );
   const [name, setName] = useState<string | undefined>(undefined);
   const [tagsIds, setTagsIds] = useState<number[] | undefined>(undefined);
-  const [canceled, setCanceled] = useState<boolean | undefined>(undefined);
+  const [canceled, setCanceled] = useState<boolean | undefined>(false);
   const [verified, setVerified] = useState<boolean | undefined>(undefined);
   const [participantsFull, setParticipantsFull] = useState<boolean | undefined>(
     undefined,
