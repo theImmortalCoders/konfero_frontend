@@ -110,7 +110,7 @@ export default function AddLectureInputs({
     durationMinutes: parseInt(durationMinutes, 10),
     imageId: imageId,
     lecturersIds: lecturersIds,
-    place: conferenceData.format === "ONLINE" ? ' ' : place,
+    place: conferenceData.format === "ONLINE" ? 'online' : place,
   };
 
   const handleAddLecture = async () => {
@@ -120,7 +120,7 @@ export default function AddLectureInputs({
       !startDateTime ||
       !durationMinutes.trim() ||
       imageId === 0 ||
-      !place
+      (!place && conferenceData.format !== "ONLINE")
     ) {
       setStatusError(false);
       setMessage("Wszystkie pola muszą być wypełnione");
