@@ -1,9 +1,28 @@
 import { appAPI } from "@/utils/appENV";
 import { AxiosResponse } from "axios";
 import { LogoInterface } from "./imageAPI";
-import { GetLectureDetailsData } from "@/hooks/lecture";
-import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+
+export interface PageStats {
+  organizersAmount: number,
+  conferencesAmount: number,
+  usersAmount: number
+}
+
+export async function getUsersStats(): Promise<PageStats | string> {
+  try {
+    const response: AxiosResponse<PageStats | string> = await appAPI.get(`/api/user/stats`, {
+      withCredentials: true,
+    });
+    if (response.status === 200) {
+      return response.data;
+    }
+    else {
+      return "Wystąpił błąd podczas pobierania danych strony";
+    }
+  } catch (error: any) {
+    throw new Error("Wystąpił błąd podczas pobierania danych strony");
+  }
+}
 
 export interface Location {
   locX: number;
