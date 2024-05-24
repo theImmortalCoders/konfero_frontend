@@ -150,7 +150,7 @@ export default function MyConferencePage({
             />
           )}
           {deleteWarning && (
-            <DeleteWarning tempId={conferenceIdData.id} setWarning={setDeleteWarning} handleFunction={handleDelete}/>
+            <DeleteWarning tempId={conferenceIdData.id} setWarning={setDeleteWarning} handleFunction={handleDelete} mode={"conference"}/>
           )}
         </>
       ) : (
