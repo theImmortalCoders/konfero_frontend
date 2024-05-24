@@ -110,7 +110,7 @@ export default function AddLectureInputs({
     durationMinutes: parseInt(durationMinutes, 10),
     imageId: imageId,
     lecturersIds: lecturersIds,
-    place: place,
+    place: conferenceData.format === "ONLINE" ? ' ' : place,
   };
 
   const handleAddLecture = async () => {
