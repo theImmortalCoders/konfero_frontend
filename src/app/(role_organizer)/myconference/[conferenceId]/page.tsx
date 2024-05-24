@@ -166,7 +166,7 @@ function Tags({ conference }: { conference: Content }) {
     <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
       <TitleHeader title={"Tagi"} />
       <div className="w-full h-full flex justify-center items-center pt-4">
-        <DisplayTag conference={conference}/>
+        <DisplayTag conference={conference} isSmall={false}/>
       </div>
     </Box>
   );
