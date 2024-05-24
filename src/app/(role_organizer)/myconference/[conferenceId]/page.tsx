@@ -24,6 +24,10 @@ import SignUpWarning from "@/components/conference/SignUpWarning";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import CommentsList from "@/components/myconferenceId/Comments/CommentsList";
 import DisplayTag from "@/components/tag/displaytag";
+import { deleteConference } from "@/hooks/conference";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
+import DeleteWarning from "@/components/myconferenceId/DeleteWarning";
 
 export default function MyConferencePage({
   params,
@@ -41,10 +45,17 @@ export default function MyConferencePage({
     getConferenceDetailsWithRoleFiltering(parseInt(params.conferenceId)),
   );
 
+  const router = useRouter();
+  const handleDelete = useCallback((id: number) => {
+    deleteConference(id);
+    router.push("/myconference");
+  }, []);
+
   if (isError) return <Error500 />;
   if (isAuthorise === false) return <NotFound />;
 
   const [signUpWarning, setSignUpWarning] = useState<boolean>(false);
+  const [deleteWarning, setDeleteWarning] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
 
   const signOut = async (id: number) => {
@@ -75,7 +86,7 @@ export default function MyConferencePage({
         <>
           {(userRole === "ORGANIZER" || userRole === "ADMIN") &&
           !conferenceIdData.canceled ? (
-            <Panel conferenceIdData={conferenceIdData} />
+            <Panel conferenceIdData={conferenceIdData} setDeleteWarning={setDeleteWarning}/>
           ) : null}
           <Title conferenceIdData={conferenceIdData}>
             {!conferenceIdData.canceled && (
@@ -137,6 +148,9 @@ export default function MyConferencePage({
               update={update}
               setUpdate={setUpdate}
             />
+          )}
+          {deleteWarning && (
+            <DeleteWarning tempId={conferenceIdData.id} setWarning={setDeleteWarning} handleFunction={handleDelete}/>
           )}
         </>
       ) : (
