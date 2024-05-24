@@ -180,7 +180,9 @@ export async function getAllConferences(
           ? url.concat(`?sort=${sort}&sortDirection=${sortDirection}`)
           : organizerId
             ? url.concat(`?organizerId=${organizerId.toString()}`)
-            : url;
+            : url.concat(
+              `?sort=startDateTime&sortDirection=DESC`,
+            );
     url = startDateTimeFrom
       ? url.concat("&startDateTimeFrom=", startDateTimeFrom)
       : url;
@@ -193,7 +195,7 @@ export async function getAllConferences(
           url = url.concat(`&tagsIds=${id.toString()}`);
         })
       : null;
-    url = canceled !== undefined ? url.concat(`&canceled=${canceled}`) : url;
+    url = canceled !== undefined ? url.concat(`&canceled=${canceled}`) : url.concat(`&canceled=false`);
     url = verified !== undefined ? url.concat(`&verified=${verified}`) : url;
     url =
       participantsFull !== undefined
