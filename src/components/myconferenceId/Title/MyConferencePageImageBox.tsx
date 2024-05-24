@@ -7,7 +7,6 @@ import {
   FaRegCalendarXmark,
 } from "react-icons/fa6";
 import { IoMdPin } from "react-icons/io";
-import DisplayTag from "@/components/tag/displaytag";
 import React from "react";
 
 export default function MyConferencePageImageBox({
@@ -55,9 +54,6 @@ export default function MyConferencePageImageBox({
           </Link>
         </div>
       ) : null}
-      <div className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg w-full h-full flex justify-center items-center text-darkblue">
-        <DisplayTag conference={conferenceIdData} />
-      </div>
     </div>
   );
 }

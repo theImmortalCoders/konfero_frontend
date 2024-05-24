@@ -3,6 +3,7 @@ import Page from "@/components/common/Page/Page";
 import { Box } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
 import {
+  Content,
   getConferenceDetailsWithRoleFiltering,
   signOutFromConference,
 } from "@/hooks/conference";
@@ -22,6 +23,7 @@ import { useEffect, useState } from "react";
 import SignUpWarning from "@/components/conference/SignUpWarning";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import CommentsList from "@/components/myconferenceId/Comments/CommentsList";
+import DisplayTag from "@/components/tag/displaytag";
 
 export default function MyConferencePage({
   params,
@@ -113,6 +115,9 @@ export default function MyConferencePage({
             )}
           </Title>
           <Organizers organizer={conferenceIdData.organizer} />
+          {conferenceIdData.tags !== null && (
+            <Tags conference={conferenceIdData}/>
+          )}
           <Lectures
             lectures={conferenceIdData.lectures}
             conference={conferenceIdData}
@@ -151,6 +156,17 @@ function Organizers({ organizer }: { organizer: Organizer }) {
           photo={organizer.photo}
           email={organizer.email}
         />
+      </div>
+    </Box>
+  );
+}
+
+function Tags({ conference }: { conference: Content }) {
+  return (
+    <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
+      <TitleHeader title={"Tagi"} />
+      <div className="w-full h-full flex justify-center items-center pt-4">
+        <DisplayTag conference={conference} isSmall={false}/>
       </div>
     </Box>
   );

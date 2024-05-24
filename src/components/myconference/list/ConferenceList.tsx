@@ -90,7 +90,7 @@ export default function ConferenceList({
               {conference.format === "ONLINE" && <p>Online</p>}
             </div>
           </div>
-          <DisplayTag conference={conference} />
+          <DisplayTag conference={conference} isSmall={true}/>
         </div>
       </ListItemImage>
       {mode === "conference" && !conference.canceled && (
