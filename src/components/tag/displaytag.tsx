@@ -16,17 +16,17 @@ export default function DisplayTag({ conference }: { conference: Content }) {
     <>
       {conference.tags !== null ? (
         <>
-          <div className="flex flex-wrap sm:flex-row justify-center w-full sm:pl-4 items-center sm:justify-start mt-1 mb-2 gap-1">
+          <div className="flex flex-wrap sm:flex-row justify-center w-full sm:pl-4 items-center mt-1 mb-2 gap-4">
             {conference.tags?.slice(0, 2 + sumRwd).map((tag) => (
               <p
                 key={tag.id}
-                className="w-20 h-fit text-xxs overflow-hidden overflow-ellipsis whitespace-nowrap text-center bg-gray-200 border-[1px] border-blue rounded-lg px-1"
+                className="w-20 h-fit text-xs overflow-hidden overflow-ellipsis whitespace-nowrap text-center bg-gray-200 border-[1px] border-blue rounded-lg px-1"
               >
                 {tag.tagName}
               </p>
             ))}
             {conference.tags?.length > 2 + sumRwd && (
-              <div className="flex flex-row h-fit text-xxs overflow-hidden overflow-ellipsis whitespace-nowrap justify-center bg-gray-200 border-[1px] border-blue rounded-lg px-2">
+              <div className="flex flex-row h-fit text-xs overflow-hidden overflow-ellipsis whitespace-nowrap justify-center bg-gray-200 border-[1px] border-blue rounded-lg px-2">
                 <p className="sm:hidden">+</p>
                 {conference.tags.length - (2 + sumRwd)}
                 <p className="hidden sm:block">&nbsp;więcej...</p>
