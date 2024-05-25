@@ -30,7 +30,7 @@ export default function SingleComment({
         console.error(result);
       }
     } catch (error) {
-      console.error("Błąd usuwanoa komentarza.", error);
+      console.error("Błąd usuwania komentarza.", error);
     }
   };
 
