@@ -6,7 +6,7 @@ import {
   deleteConference,
 } from "@/hooks/conference";
 import ListItemOptions from "@/components/myconference/list/ListItemOptions";
-import { useCallback } from "react";
+import { useCallback, useState, Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/navigation";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { GoPencil } from "react-icons/go";
@@ -14,8 +14,10 @@ import TitleHeader from "@/components/common/Box/TitleHeader";
 
 export default function Panel({
   conferenceIdData,
+  setDeleteWarning
 }: {
   conferenceIdData: GetConferenceDetailsWithRoleFilteringData;
+  setDeleteWarning: Dispatch<SetStateAction<boolean>>;
 }) {
   const router = useRouter();
 
@@ -25,11 +27,6 @@ export default function Panel({
     },
     [router],
   );
-
-  const handleDelete = useCallback((id: number) => {
-    deleteConference(id);
-    router.push("/myconference");
-  }, []);
 
   const handleCancel = useCallback((id: number) => {
     cancelConference(id);
@@ -50,7 +47,7 @@ export default function Panel({
         {conferenceIdData.participants === null ||
         conferenceIdData.participants.length === 0 ? (
           <button
-            onClick={() => handleDelete(conferenceIdData.id)}
+            onClick={() => setDeleteWarning(true)}
             className="border-2 border-red-600 bg-close2White hover:bg-red-600 text-inherit hover:text-close2White text-sm sm:text-md lg:text-lg font-medium py-1 px-2 rounded-2xl flex items-center justify-center"
           >
             <BsFillTrash3Fill />

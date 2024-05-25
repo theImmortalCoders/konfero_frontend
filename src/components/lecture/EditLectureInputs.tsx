@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Dispatch, SetStateAction } from "react";
 import SingleFormInput from "@/components/common/Input/SingleFormInput";
 import APIImageComponent from "@/hooks/imageAPI";
 import { MdOutlineDeleteForever } from "react-icons/md";
@@ -17,17 +17,17 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { uploadFile } from "@/hooks/file";
 import { ImageCropFrame } from "../common/ImageCrop/ImageCropFrame";
 
-type params = {
-  lectureData: GetLectureDetailsData;
-  conferenceData: GetConferenceDetailsWithRoleFilteringData;
-  currentUserData: UserData;
-};
-
 export default function EditLectureInputs({
   lectureData,
   conferenceData,
   currentUserData,
-}: params) {
+  setWarning
+}:{
+  lectureData: GetLectureDetailsData;
+  conferenceData: GetConferenceDetailsWithRoleFilteringData;
+  currentUserData: UserData;
+  setWarning: Dispatch<SetStateAction<boolean>>;
+}) {
   const [name, setName] = useState<string>(lectureData.name);
   const [description, setDescription] = useState<string>(
     lectureData.description,
@@ -55,12 +55,6 @@ export default function EditLectureInputs({
     boolean | undefined
   >(undefined);
   const [submitMessage, setSubmitMessage] = useState<string | undefined>(
-    undefined,
-  );
-  const [deleteStatusError, setDeleteStatusError] = useState<
-    boolean | undefined
-  >(undefined);
-  const [deleteMessage, setDeleteMessage] = useState<string | undefined>(
     undefined,
   );
 
@@ -211,24 +205,6 @@ export default function EditLectureInputs({
     } catch (error) {
       setSubmitStatusError(true);
       console.error("Modifying lecture failed:", error);
-    }
-  };
-
-  const handleDeleteLecture = async () => {
-    try {
-      const result = await deleteLecture(lectureData.id);
-      if (
-        result !== "Brak autoryzacji użytkownika" &&
-        result !== "Nie jesteś właścicielem konferencji lub nie masz roli" &&
-        result !== "Wystąpił błąd podczas usuwania prelekcji"
-      ) {
-        window.location.replace(`/myconference/${conferenceData.id}`);
-        setDeleteMessage(undefined);
-        setDeleteStatusError(false);
-      }
-    } catch (error) {
-      setDeleteStatusError(true);
-      console.error("Deleting lecture failed:", error);
     }
   };
 
@@ -418,26 +394,11 @@ export default function EditLectureInputs({
       {currentUserData.role !== "USER" && (
         <div className="flex flex-col items-center justify-center w-full">
           <button
-            onClick={handleDeleteLecture}
+            onClick={() => setWarning(true)}
             className="text-nowrap w-fit bg-red-700 text-close2White text-lg font-medium py-2 px-6 rounded-3xl"
           >
             Usuń wykład
           </button>
-          {(deleteStatusError !== undefined || deleteMessage !== undefined) && (
-            <p
-              className={` ${
-                deleteStatusError || deleteMessage !== undefined
-                  ? "text-red-800"
-                  : "text-green-800"
-              } bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center`}
-            >
-              {deleteStatusError
-                ? "Wystąpił błąd podczas usuwania wykładu."
-                : deleteMessage === undefined
-                  ? "Wykład został usunięty poprawnie."
-                  : deleteMessage}
-            </p>
-          )}
         </div>
       )}
     </div>

@@ -15,12 +15,16 @@ import {
   isUserInLecturers,
   isUserInOrganizers,
 } from "@/hooks/authorise/authorization";
+import DeleteWarning from "@/components/myconferenceId/DeleteWarning";
+import { deleteLecture } from "@/hooks/lecture";
 
 export default function EditLecture() {
   const { lectureId } = useParams<{ lectureId: string }>();
   const [userHasPermission, setUserHasPermission] = useState<boolean | null>(
     null,
   );
+
+  const [deleteWarning, setDeleteWarning] = useState<boolean>(false);
 
   const {
     data: currentUserData,
@@ -104,6 +108,22 @@ export default function EditLecture() {
     );
   }
 
+  const handleDeleteLecture = async (id:number) => {
+    try {
+      const result = await deleteLecture(id);
+      if (
+        result !== "Brak autoryzacji użytkownika" &&
+        result !== "Nie jesteś właścicielem konferencji lub nie masz roli" &&
+        result !== "Wystąpił błąd podczas usuwania prelekcji"
+      ) {
+        if(conferenceData && typeof conferenceData !== "string")
+          window.location.replace(`/myconference/${conferenceData.id}`);
+      }
+    } catch (error) {
+      console.error("Deleting lecture failed:", error);
+    }
+  };
+
   return (
     <>
       {userHasPermission &&
@@ -121,8 +141,12 @@ export default function EditLecture() {
               lectureData={lectureData}
               conferenceData={conferenceData}
               currentUserData={currentUserData}
+              setWarning={setDeleteWarning}
             />
           </Box>
+          {deleteWarning && (
+            <DeleteWarning tempId={lectureData.id} setWarning={setDeleteWarning} handleFunction={handleDeleteLecture} mode={"lecture"}/>
+          )}
         </Page>
       ) : (
         <NotFound />
