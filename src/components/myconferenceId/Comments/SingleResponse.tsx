@@ -29,8 +29,8 @@ export default function SingleResponse({
           />
           <p className="inline-flex items-center justify-center text-xs font-semibold">
             {response.author.username}
-            {userRole === "ADMIN" && <MdStars className="ml-1" />}
-            {userId === organizerId && <MdCheckCircle className="ml-1" />}
+            {response.author.role === "ADMIN" && <MdStars className="ml-1" />}
+            {response.author.id === organizerId && <MdCheckCircle className="ml-1" />}
           </p>
           <p className="text-xs text-center">
             {response.createdAt.replace("T", " ").slice(0, 16)}

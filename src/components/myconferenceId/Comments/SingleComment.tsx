@@ -66,8 +66,8 @@ export default function SingleComment({
           />
           <p className="flex flex-row items-center justify-stretch text-sm font-semibold">
             {comment.author.username}
-            {userRole === "ADMIN" && <MdStars className="ml-1" />}
-            {userId === organizerId && <MdCheckCircle className="ml-1" />}
+            {comment.author.role === "ADMIN" && <MdStars className="ml-1" />}
+            {comment.author.id === organizerId && <MdCheckCircle className="ml-1" />}
           </p>
           <p className="text-sm text-center">
             {comment.createdAt.replace("T", " ").slice(0, 16)}
