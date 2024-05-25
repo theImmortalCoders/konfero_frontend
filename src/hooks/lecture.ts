@@ -86,6 +86,7 @@ interface Lecturer {
   email: string;
   photo: string;
   verified: boolean;
+  role: string;
 }
 
 interface Interested {
@@ -94,6 +95,7 @@ interface Interested {
   email: string;
   photo: string;
   verified: boolean;
+  role: string;
 }
 
 export interface GetLectureDetailsData {

@@ -310,6 +310,7 @@ interface Participant {
   email: string;
   photo: string;
   verified: boolean;
+  role: string;
 }
 
 export interface Lecture {

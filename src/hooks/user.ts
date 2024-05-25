@@ -36,6 +36,7 @@ export interface Organizer {
   email: string;
   photo: string;
   verified: boolean;
+  role: string;
 }
 
 export interface Conference {
@@ -149,6 +150,7 @@ export interface GetAllUsersData {
   email: string;
   photo: string;
   verified: boolean;
+  role: string;
 }
 
 export async function getAllUsers(): Promise<GetAllUsersData[] | string> {
