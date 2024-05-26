@@ -8,7 +8,7 @@ import Error500 from "@/components/common/Error/Error500";
 import ConferenceSearch from "@/components/myconference/ConferenceSearch";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 import SignUpWarning from "@/components/conference/SignUpWarning";
-import { getCurrentUser } from "@/hooks/user";
+import { getCurrentUser, UserData } from "@/hooks/user";
 import { useEffect, useState } from "react";
 import ConferenceSortAndFilter from "@/components/myconference/ConferenceSortAndFilter";
 
@@ -31,24 +31,24 @@ export interface SortAndFilterConferenceData {
   locationName?: string;
 }
 
-async function getRole() {
+async function getUserData() {
   const userData = await getCurrentUser();
   if (userData && typeof userData === "object" && "role" in userData) {
-    return userData.role;
+    return userData;
   }
   return null;
 }
 
 export default function ConferencePage() {
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   const [sortFilterData, setSortFilterData] =
     useState<SortAndFilterConferenceData>();
 
   useEffect(() => {
     const fetchRole = async () => {
-      const role = await getRole();
-      setUserRole(role);
+      const userData = await getUserData();
+      setUserData(userData);
     };
     fetchRole();
   }, []);
@@ -100,7 +100,6 @@ export default function ConferencePage() {
           <ConferenceSearch
             numberOfConferences={data.numberOfElements}
             disablerole={true}
-            role={"USER"}
           />
           <div className="w-full flex flex-col gap-y-10">
             {data.content
@@ -110,7 +109,7 @@ export default function ConferencePage() {
                   <ConferenceList
                     key={`${conf.id}`}
                     conference={conf}
-                    role={userRole}
+                    userData={userData}
                     setSignUpWarning={setSignUpWarning}
                     setTempId={setTempId}
                     update={update}

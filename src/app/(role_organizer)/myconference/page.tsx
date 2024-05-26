@@ -13,7 +13,6 @@ import ConferenceSearch from "@/components/myconference/ConferenceSearch";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 import useAuth from "@/hooks/useAuth";
 import NotFound from "@/app/not-found";
-import { getCurrentUser } from "@/hooks/user";
 import { Dispatch, SetStateAction, useState } from "react";
 
 const ConferenceSwitch = ({
@@ -49,14 +48,8 @@ const ConferenceSwitch = ({
 };
 
 export default function MyConferenceListPage() {
-  const { isAuthorise, userRole } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
   const [mySwitch, setMySwitch] = useState<boolean>(true);
-
-  const {
-    data: userData,
-    isLoading: isUserLoading,
-    isError: isUserError,
-  } = useQuery("user info", getCurrentUser);
 
   const {
     data: conferencesData,
@@ -64,11 +57,11 @@ export default function MyConferenceListPage() {
     isError: isConferencesError,
   } = useQuery(
     "NotCanceledConferences",
-    () => getNotCanceledConferences(userData?.id),
+    () => getNotCanceledConferences(userData?.id || -1),
     {
       staleTime: Infinity,
       refetchOnMount: "always",
-      enabled: !isUserLoading && userRole !== "USER",
+      enabled: !!userData,
     },
   );
 
@@ -79,20 +72,21 @@ export default function MyConferenceListPage() {
   } = useQuery("conferences user attends", () => getConferencesIAmSignedFor(), {
     refetchOnMount: true,
     staleTime: 1000,
+    enabled: !!userData,
   });
 
-  if (isSignedConferencesError || isConferencesError || isUserError)
-    return <Error500 />;
+  if (userData === null) return <NotFound />;
+  if (isSignedConferencesError || isConferencesError) return <Error500 />;
   if (isAuthorise === false) return <NotFound />;
 
   return (
     <Page className="pb-10">
       {!isSignedConferencesLoading &&
       !isConferencesLoading &&
-      isAuthorise === true &&
-      userRole ? (
+      isAuthorise &&
+      userData ? (
         <div className="w-[90%] lg:w-[60%] h-full justify-start mb-8">
-          {(userRole === "ORGANIZER" || userRole === "ADMIN") && (
+          {(userData.role === "ORGANIZER" || userData.role === "ADMIN") && (
             <ConferenceSwitch mySwitch={mySwitch} setMySwitch={setMySwitch} />
           )}
           <ConferenceSearch
@@ -102,7 +96,7 @@ export default function MyConferenceListPage() {
                 : (conferencesData as GetAllConferencesData)?.numberOfElements
             }
             disablerole={false}
-            role={userRole}
+            userData={userData}
           />
           <div className="w-full flex flex-col gap-y-10">
             {(mySwitch
@@ -117,7 +111,7 @@ export default function MyConferenceListPage() {
                   <ConferenceList
                     key={`${conference.id}`}
                     conference={conference}
-                    role={userRole}
+                    userData={userData}
                   />
                 );
               })}

@@ -6,16 +6,14 @@ export async function isUserInLecturers(
   user: UserData,
   lectureData: GetLectureDetailsData,
 ): Promise<boolean> {
-  return (
-    lectureData?.lecturers.some((lecturer) => lecturer.id === user?.id) || false
-  );
+  return lectureData.lecturers.some((lecturer) => lecturer.id === user?.id);
 }
 
 export async function isUserInOrganizers(
   user: UserData,
   conferenceData: Conference | GetConferenceDetailsWithRoleFilteringData,
 ): Promise<boolean> {
-  return conferenceData?.organizer.id === user.id || false;
+  return conferenceData.organizer.id === user.id;
 }
 
 export async function isUserLoggedIn(user: UserData): Promise<boolean> {
