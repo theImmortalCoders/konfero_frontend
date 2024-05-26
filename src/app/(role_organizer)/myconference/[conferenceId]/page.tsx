@@ -28,13 +28,14 @@ import { deleteConference } from "@/hooks/conference";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import DeleteWarning from "@/components/myconferenceId/DeleteWarning";
+import { isUserInOrganizers } from "@/hooks/authorise/authorization";
 
 export default function MyConferencePage({
   params,
 }: {
   params: { conferenceId: string };
 }) {
-  const { isAuthorise, userRole } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
 
   const {
     data: conferenceIdData,
@@ -76,17 +77,42 @@ export default function MyConferencePage({
     refetch();
   }, [update]);
 
+  const [isOrganizer, setIsOrganizer] = useState<boolean | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    const checkIfOrganizer = async () => {
+      if (
+        userData &&
+        conferenceIdData &&
+        typeof conferenceIdData !== "string"
+      ) {
+        const isOrganizerResult = await isUserInOrganizers(
+          userData,
+          conferenceIdData,
+        );
+        setIsOrganizer(isOrganizerResult);
+      }
+    };
+
+    checkIfOrganizer();
+  }, [userData, conferenceIdData]);
+
   return (
     <Page className="py-10">
       {isAuthorise === true &&
-      userRole &&
+      userData &&
       !isLoading &&
       conferenceIdData &&
       typeof conferenceIdData !== "string" ? (
         <>
-          {(userRole === "ORGANIZER" || userRole === "ADMIN") &&
+          {(isOrganizer || userData.role === "ADMIN") &&
           !conferenceIdData.canceled ? (
-            <Panel conferenceIdData={conferenceIdData} setDeleteWarning={setDeleteWarning}/>
+            <Panel
+              conferenceIdData={conferenceIdData}
+              setDeleteWarning={setDeleteWarning}
+            />
           ) : null}
           <Title conferenceIdData={conferenceIdData}>
             {!conferenceIdData.canceled && (
@@ -127,12 +153,12 @@ export default function MyConferencePage({
           </Title>
           <Organizers organizer={conferenceIdData.organizer} />
           {conferenceIdData.tags !== null && (
-            <Tags conference={conferenceIdData}/>
+            <Tags conference={conferenceIdData} />
           )}
           <Lectures
             lectures={conferenceIdData.lectures}
             conference={conferenceIdData}
-            userRole={userRole}
+            userData={userData}
           />
           {conferenceIdData.participants !== null ? (
             <Participants conferenceIdData={conferenceIdData} />
@@ -140,7 +166,11 @@ export default function MyConferencePage({
           {conferenceIdData.photos.length !== 0 ? (
             <Photos photos={conferenceIdData.photos} />
           ) : null}
-          <CommentsList conference={conferenceIdData} update={update} setUpdate={setUpdate}/>
+          <CommentsList
+            conference={conferenceIdData}
+            update={update}
+            setUpdate={setUpdate}
+          />
           {signUpWarning && (
             <SignUpWarning
               setSignUpWarning={setSignUpWarning}
@@ -150,7 +180,12 @@ export default function MyConferencePage({
             />
           )}
           {deleteWarning && (
-            <DeleteWarning tempId={conferenceIdData.id} setWarning={setDeleteWarning} handleFunction={handleDelete} mode={"conference"}/>
+            <DeleteWarning
+              tempId={conferenceIdData.id}
+              setWarning={setDeleteWarning}
+              handleFunction={handleDelete}
+              mode={"conference"}
+            />
           )}
         </>
       ) : (
@@ -180,7 +215,7 @@ function Tags({ conference }: { conference: Content }) {
     <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
       <TitleHeader title={"Tagi"} />
       <div className="w-full h-full flex justify-center items-center pt-4">
-        <DisplayTag conference={conference} isSmall={false}/>
+        <DisplayTag conference={conference} isSmall={false} />
       </div>
     </Box>
   );

@@ -1,3 +1,4 @@
+/*
 import {
   isUserInLecturers,
   isUserInOrganizers,
@@ -53,3 +54,4 @@ export default function isAuthorise(
   };
   return isAuth;
 }
+*/

@@ -4,23 +4,24 @@ import LectureList from "./LectureList";
 import { Lecture } from "@/hooks/conference";
 import LectureSearch from "./LectureSearch";
 import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
+import { UserData } from "@/hooks/user";
 
 export default function Lectures({
   lectures,
   conference,
-  userRole,
+  userData,
 }: {
   lectures: Lecture[];
   conference: GetConferenceDetailsWithRoleFilteringData;
-  userRole: string;
+  userData: UserData;
 }) {
   return (
     <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
       <TitleHeader title={"Wykłady"} />
       <LectureSearch
-        data={lectures}
-        conferenceId={conference.id}
-        userRole={userRole}
+        lectures={lectures}
+        conference={conference}
+        userData={userData}
       />
       {lectures.length !== 0 ? (
         <div className="w-full">

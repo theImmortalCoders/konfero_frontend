@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 
 const useAuth = (allowedRoles: string[]) => {
   const [isAuthorise, setIsAuthorise] = useState<boolean | null>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [refresh, setRefresh] = useState<boolean>(false);
   const router = useRouter();
 
   const checkUserRole = useMemo(
@@ -14,9 +15,9 @@ const useAuth = (allowedRoles: string[]) => {
         const currentUser: UserData | null = await getCurrentUser();
         if (currentUser === null) {
           router.push("/login");
-        } else if (currentUser && allowedRoles.includes(currentUser.role)) {
+        } else if (allowedRoles.includes(currentUser.role)) {
           setIsAuthorise(true);
-          setUserRole(currentUser.role);
+          setUserData(currentUser);
         } else {
           setIsAuthorise(false);
         }
@@ -25,14 +26,18 @@ const useAuth = (allowedRoles: string[]) => {
         setIsAuthorise(false);
       }
     },
-    [allowedRoles],
+    [allowedRoles, router],
   );
 
   useEffect(() => {
     checkUserRole();
-  }, [checkUserRole]);
+  }, [refresh]);
 
-  return { isAuthorise, userRole };
+  const refreshUserData = () => {
+    setRefresh(!refresh);
+  };
+
+  return { isAuthorise, userData, refreshUserData };
 };
 
 export default useAuth;

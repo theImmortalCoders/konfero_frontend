@@ -10,7 +10,6 @@ import {
   addLectureToFavourites,
   removeLectureFromFavourites,
 } from "@/hooks/lecture";
-import { getCurrentUser, isUserInLecturers, UserData } from "@/hooks/user";
 import MyLecturePageImageBox from "@/components/lecture/MyLecturePageImageBox";
 import TitleHeader from "@/components/common/Box/TitleHeader";
 import MaterialTableWrapper from "@/components/common/Material/MaterialTableWrapper";
@@ -22,6 +21,10 @@ import NotFound from "../../addlecture/[conferenceId]/not-found";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import {
+  isUserInLecturers,
+  isUserInOrganizers,
+} from "@/hooks/authorise/authorization";
 
 const RedirectToConference = ({ conferenceId }: { conferenceId: number }) => {
   const router = useRouter();
@@ -39,14 +42,6 @@ const RedirectToConference = ({ conferenceId }: { conferenceId: number }) => {
   );
 };
 
-async function getId() {
-  const userData = await getCurrentUser();
-  if (userData && typeof userData === "object" && "id" in userData) {
-    return userData;
-  }
-  return null;
-}
-
 export default function LecturePage({
   params,
 }: {
@@ -55,32 +50,19 @@ export default function LecturePage({
   const [lectureIdData, setLectureIdData] = useState<
     string | GetLectureDetailsData
   >();
-  const [user, setUser] = useState<UserData | null | undefined>(undefined);
-  useEffect(() => {
-    const fetchId = async () => {
-      const data = await getId();
-      setUser(data);
-    };
-    fetchId();
-  }, []);
   const [participant, setParticipant] = useState<boolean>(false);
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
   const [refetchState, setRefetchState] = useState<number>(0);
-  const { isAuthorise, userRole } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
-
-  const [userId, setUserId] = useState<number | null>(null);
+  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
   const [update, setUpdate] = useState<boolean>(false);
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
-
-  useEffect(() => {
-    const fetchId = async () => {
-      const id = await getId();
-      setUserId(id);
-    };
-    fetchId();
-  }, []);
-
+  const [isUserLecturer, setIsUserLecturer] = useState<boolean | undefined>(
+    undefined,
+  );
+  const [isUserOrganizer, setIsUserOrganizer] = useState<boolean | undefined>(
+    undefined,
+  );
   useEffect(() => {
     async function fetchData() {
       try {
@@ -95,7 +77,27 @@ export default function LecturePage({
           if (typeof conference !== "string") {
             setParticipant(conference.amISignedUp);
           }
-          setIsFavourite(data.interested.some((user) => user.id === userId));
+          if (
+            userData &&
+            lectureIdData &&
+            typeof lectureIdData !== "string" &&
+            conference &&
+            typeof conference !== "string"
+          ) {
+            setIsFavourite(
+              data.interested.some((user) => user.id === userData.id),
+            );
+            const isUserInLecturersResults = await isUserInLecturers(
+              userData,
+              lectureIdData,
+            );
+            setIsUserLecturer(isUserInLecturersResults);
+            const isUserInOrganizersResults = await isUserInOrganizers(
+              userData,
+              conference,
+            );
+            setIsUserOrganizer(isUserInOrganizersResults);
+          }
         }
       } catch (error: any) {
         setError(error.message);
@@ -103,7 +105,7 @@ export default function LecturePage({
       }
     }
     fetchData();
-  }, [refetchState, update, userId]);
+  }, [refetchState, update, userData]);
 
   const handleLectureDataRefetch = () => {
     setRefetchState((prev) => prev + 1);
@@ -144,7 +146,9 @@ export default function LecturePage({
     <Page>
       {isAuthorise === true &&
       !isLoading &&
-      userRole &&
+      userData &&
+      isUserOrganizer !== undefined &&
+      isUserLecturer !== undefined &&
       lectureIdData &&
       typeof lectureIdData !== "string" ? (
         <div className="w-[90%] lg:w-[60%]">
@@ -156,7 +160,8 @@ export default function LecturePage({
           >
             <MyLecturePageImageBox
               lectureIdData={lectureIdData}
-              userRole={userRole}
+              isUserOrganizer={isUserOrganizer}
+              isUserLecturer={isUserLecturer}
             />
             <div className="px-4 pt-2 sm:px-8 sm:pt-4 w-full">
               <TitleHeader title={lectureIdData.name} />
@@ -204,30 +209,25 @@ export default function LecturePage({
               </>
             ) : null}
 
-            {(lectureIdData.materials.length === 0 ||
-              lectureIdData.materials === null) &&
-              user &&
-              (user.role !== null ||
-                (user.role === "ADMIN" &&
-                  user.role === "ORGANIZER" &&
-                  isUserInLecturers(lectureIdData, user))) && (
-                <>
-                  <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
-                  <TitleHeader title={"Materiały"} />
-                  <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
-                    {(user.role === "ORGANIZER" ||
-                      user.role === "ADMIN" ||
-                      lectureIdData.lecturers.map(
-                        (lecturer) => lecturer.id === userId,
-                      )) && (
-                      <AddLectureMaterials
-                        lectureId={params.lectureId}
-                        handleRefetch={handleLectureDataRefetch}
-                      />
-                    )}
-                  </div>
-                </>
-              )}
+            {(lectureIdData.materials.length !== 0 ||
+              userData.role === "ADMIN" ||
+              isUserOrganizer === true ||
+              isUserLecturer === true) && (
+              <>
+                <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
+                <TitleHeader title={"Materiały"} />
+                <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
+                  {(userData.role === "ADMIN" ||
+                    isUserOrganizer === true ||
+                    isUserLecturer === true) && (
+                    <AddLectureMaterials
+                      lectureId={params.lectureId}
+                      handleRefetch={handleLectureDataRefetch}
+                    />
+                  )}
+                </div>
+              </>
+            )}
             {lectureIdData.materials.length !== 0 ? (
               <>
                 <MaterialTableWrapper

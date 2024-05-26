@@ -180,9 +180,7 @@ export async function getAllConferences(
           ? url.concat(`?sort=${sort}&sortDirection=${sortDirection}`)
           : organizerId
             ? url.concat(`?organizerId=${organizerId.toString()}`)
-            : url.concat(
-              `?sort=startDateTime&sortDirection=DESC`,
-            );
+            : url.concat(`?sort=startDateTime&sortDirection=DESC`);
     url = startDateTimeFrom
       ? url.concat("&startDateTimeFrom=", startDateTimeFrom)
       : url;
@@ -195,7 +193,10 @@ export async function getAllConferences(
           url = url.concat(`&tagsIds=${id.toString()}`);
         })
       : null;
-    url = canceled !== undefined ? url.concat(`&canceled=${canceled}`) : url.concat(`&canceled=false`);
+    url =
+      canceled !== undefined
+        ? url.concat(`&canceled=${canceled}`)
+        : url.concat(`&canceled=false`);
     url = verified !== undefined ? url.concat(`&verified=${verified}`) : url;
     url =
       participantsFull !== undefined
@@ -270,6 +271,7 @@ export async function getAllConferencesByLocationName(
 export async function getNotCanceledConferences(
   organizerId?: number,
 ): Promise<GetAllConferencesData | string> {
+  console.log("organizerId", organizerId);
   try {
     const response: AxiosResponse<GetAllConferencesData | string> =
       await appAPI.get(

@@ -10,10 +10,11 @@ import Verified from "@/components/status/verified";
 import Cancel from "@/components/status/cancel";
 import End from "@/components/status/end";
 import DisplayTag from "@/components/tag/displaytag";
+import { UserData } from "@/hooks/user";
 
 export default function ConferenceList({
   conference,
-  role,
+  userData,
   setSignUpWarning,
   setTempId,
   update,
@@ -21,7 +22,7 @@ export default function ConferenceList({
   mode,
 }: {
   conference: Content;
-  role: string | null;
+  userData: UserData | null;
   setSignUpWarning?: Dispatch<SetStateAction<boolean>>;
   setTempId?: Dispatch<SetStateAction<number>>;
   update?: boolean;
@@ -30,7 +31,7 @@ export default function ConferenceList({
 }) {
   const router = useRouter();
   const handleCirclePlusClick = () => {
-    if (role === null) {
+    if (userData === null) {
       router.push("/login");
     } else if (setSignUpWarning && setTempId) {
       setSignUpWarning(true);
@@ -53,7 +54,7 @@ export default function ConferenceList({
   };
 
   const handleCircleMinusClick = () => {
-    if (role === null) {
+    if (userData === null) {
       router.push("/login");
     } else {
       signOut();
@@ -90,7 +91,7 @@ export default function ConferenceList({
               {conference.format === "ONLINE" && <p>Online</p>}
             </div>
           </div>
-          <DisplayTag conference={conference} isSmall={true}/>
+          <DisplayTag conference={conference} isSmall={true} />
         </div>
       </ListItemImage>
       {mode === "conference" && !conference.canceled && (
