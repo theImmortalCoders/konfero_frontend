@@ -197,11 +197,11 @@ export async function getAllConferences(
       canceled !== undefined
         ? url.concat(`&canceled=${canceled}`)
         : url.concat(`&canceled=false`);
-    url = verified !== undefined ? url.concat(`&verified=${verified}`) : url;
+    url = verified === true ? url.concat(`&verified=${verified}`) : url;
     url =
       participantsFull !== undefined
         ? url.concat(`&participantsFull=${participantsFull}`)
-        : url;
+        : url.concat(`&participantsFull=false`);
     url = locationName ? url.concat("&locationName=", locationName) : url;
     const response: AxiosResponse<GetAllConferencesData | string> =
       await appAPI.get(`${url}`, {

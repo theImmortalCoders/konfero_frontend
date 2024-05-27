@@ -171,9 +171,9 @@ export default function ConferenceSortAndFilter({
   const [name, setName] = useState<string | undefined>(undefined);
   const [tagsIds, setTagsIds] = useState<number[] | undefined>(undefined);
   const [canceled, setCanceled] = useState<boolean | undefined>(false);
-  const [verified, setVerified] = useState<boolean | undefined>(undefined);
+  const [verified, setVerified] = useState<boolean | undefined>(false);
   const [participantsFull, setParticipantsFull] = useState<boolean | undefined>(
-    undefined,
+    false,
   );
   const [organizerId, setOrganizerId] = useState<number | undefined>(undefined);
   const [locationName, setLocationName] = useState<string | undefined>(
