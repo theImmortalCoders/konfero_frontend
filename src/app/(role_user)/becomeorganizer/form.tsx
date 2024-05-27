@@ -60,7 +60,7 @@ function AddressInput({
         value={address}
         onChange={(e) => {
           const value = e.target.value;
-          const isValid = /^[a-zA-Z\s\/\dąęłńóśźżĄĘŁŃÓŚŹŻ]{0,100}$/.test(value);
+          const isValid = /^[a-zA-Z\s\dąęłńóśźżĄĘŁŃÓŚŹŻ.\-\/]{0,100}$/.test(value);
 
           if (isValid) {
             setAddress(value);
