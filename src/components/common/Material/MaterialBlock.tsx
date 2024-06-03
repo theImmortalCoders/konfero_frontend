@@ -3,33 +3,32 @@ import { NEXT_PUBLIC_API_BASE_URL } from "@/utils/appENV";
 import { renderFileTypeIcon, translateType } from "@/utils/translateType";
 import Link from "next/link";
 import { BsFillTrash3Fill } from "react-icons/bs";
-import {
-  FaFileAudio,
-  FaFileAlt,
-  FaFileImage,
-  FaFileVideo,
-  FaFile,
-} from "react-icons/fa";
-import {useCallback, useState} from "react";
-import {deleteMaterialFromLecture} from "@/hooks/lectureMaterial";
-import {formatDate} from "@/utils/date";
+import { useCallback, useState } from "react";
+import { deleteMaterialFromLecture } from "@/hooks/lectureMaterial";
+import { formatDate } from "@/utils/date";
+import { UserData } from "@/hooks/user";
+import { GetLectureDetailsData } from "@/hooks/lecture";
 
 export default function MaterialBlock({
   material,
   handleRefetch,
-  lectureId,
+  lectureIdData,
+  user,
 }: {
   material: ImageInterface;
-  handleRefetch: ()=>void
-  lectureId: number
+  handleRefetch: () => void;
+  lectureIdData: GetLectureDetailsData;
+  user: UserData | null;
 }) {
-
+  console.log("lectureId", user?.id);
+  console.log("material", material.author.id);
+  console.log("lectureIdData", lectureIdData.lecturers);
   const [hideDel, setHideDel] = useState<boolean>(true);
 
   const handleDelete = useCallback(async () => {
-    await deleteMaterialFromLecture(lectureId, material.id)
-    handleRefetch()
-  },[])
+    await deleteMaterialFromLecture(lectureIdData.id, material.id);
+    handleRefetch();
+  }, []);
 
   return (
     <tr
@@ -66,17 +65,29 @@ export default function MaterialBlock({
       </td>
       <td className="text-center text-darkblue text-nowrap">
         <Link href={`${NEXT_PUBLIC_API_BASE_URL}/api/file/${material.id}`}>
-          {material.createdDate !== null ? formatDate(material.createdDate) : "Brak daty"}
+          {material.createdDate !== null
+            ? formatDate(material.createdDate)
+            : "Brak daty"}
         </Link>
       </td>
-      <td>
-        <button
-          className={`${hideDel?"opacity-0" : "opacity-1"} flex justify-center items-center bg-gray-200 rounded-full w-8 h-8 transition-all duration-100`}
-          onClick={handleDelete}
-        >
-          <BsFillTrash3Fill className="text-red-600"/>
-        </button>
-      </td>
+      {lectureIdData.lecturers.map((lecturer) => (
+        <>
+          {user?.id === lecturer.id ? (
+            <td>
+              <button
+                className={`${
+                  hideDel ? "opacity-0" : "opacity-1"
+                } flex justify-center items-center bg-gray-200 rounded-full w-8 h-8 transition-all duration-100`}
+                onClick={handleDelete}
+              >
+                <BsFillTrash3Fill className="text-red-600" />
+              </button>
+            </td>
+          ) : (
+            <td></td>
+          )}
+        </>
+      ))}
     </tr>
   );
 }

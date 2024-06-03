@@ -1,10 +1,10 @@
 "use client";
 import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
-import SingleFormInput from "@/components/common/Input/SingleFormInput";
 import {
   addNewConference,
   AddNewConferenceData,
   getConferenceDetailsWithRoleFiltering,
+  Tag,
   updateInfoAboutConference,
 } from "@/hooks/conference";
 import { uploadFile, FileResponseData } from "@/hooks/file";
@@ -13,12 +13,16 @@ import { MdOutlineDeleteForever } from "react-icons/md";
 import { LocationMap } from "../common/Input/LocationMap";
 import { useQuery } from "react-query";
 import { ImageCropFrame } from "../common/ImageCrop/ImageCropFrame";
+import SearchBarTag from "../tag/SearchBarTag";
+import { getAllTags } from "@/hooks/tag";
+import { TiDeleteOutline } from "react-icons/ti";
+import SingleFormInput from "../common/Input/SingleFormInput";
 
 export default function AddConferenceInputs({
   isUpdate,
   conferenceid,
   tempId,
-  setTempId
+  setTempId,
 }: {
   isUpdate: boolean;
   conferenceid?: string;
@@ -35,13 +39,57 @@ export default function AddConferenceInputs({
   const [format, setFormat] = useState<string>("STATIONARY");
   const [imageId, setImageId] = useState<number>(0);
   const [imageFile, setImageFile] = useState<File>(new File([], ""));
+  const [tagsIds, setTagsIds] = useState<number[]>([]);
   const [galleryPhotosIds, setGalleryPhotosIds] = useState<number[]>([]);
   const [imageGalleryFiles, setImageGalleryFiles] = useState<File[]>([]);
 
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [tagsNames, setTagsNames] = useState<string[]>([]);
+  const [cleanSearchBar, setCleanSearchBar] = useState(false);
+
   const [statusError, setStatusError] = useState<boolean | undefined>(
-    undefined
+    undefined,
   );
   const [message, setMessage] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      const result = await getAllTags();
+      if (typeof result !== "string") {
+        setTags(result);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
+  const handleTagSelected = (tag: Tag) => {
+    setTagsIds((prevState) => {
+      if (!prevState.includes(tag.id)) {
+        return [...prevState, tag.id];
+      }
+      return prevState;
+    });
+    setTagsNames((prevState) => {
+      if (!prevState.includes(tag.tagName)) {
+        return [...prevState, tag.tagName];
+      }
+      return prevState;
+    });
+    setCleanSearchBar(true);
+  };
+
+  useEffect(() => {
+    if (tagsIds.length !== 0) {
+      setStatusError(undefined);
+      setCleanSearchBar(false);
+    }
+  }, [tagsIds]);
+
+  const handleDeleteTags = (indexToDelete: number) => {
+    setTagsIds(tagsIds.filter((_, index) => index !== indexToDelete));
+    setTagsNames(tagsNames.filter((_, index) => index !== indexToDelete));
+  };
 
   if (isUpdate) {
     const {
@@ -50,7 +98,7 @@ export default function AddConferenceInputs({
       isError: conferenceDetailsError,
       refetch: refetchClub,
     } = useQuery("conferenceDetails", () =>
-      getConferenceDetailsWithRoleFiltering(Number(conferenceid))
+      getConferenceDetailsWithRoleFiltering(Number(conferenceid)),
     );
 
     useEffect(() => {
@@ -69,12 +117,14 @@ export default function AddConferenceInputs({
             setLocY(conferenceDetailsData.location.locY);
             setPlace(conferenceDetailsData.location.name);
             setParticipantsLimit(
-              conferenceDetailsData.participantsLimit.toString()
+              conferenceDetailsData.participantsLimit.toString(),
             );
             setFormat(conferenceDetailsData.format);
             setImageId(conferenceDetailsData.logo.id);
+            setTagsIds(conferenceDetailsData.tags.map((tag) => tag.id));
+            setTagsNames(conferenceDetailsData.tags.map((tag) => tag.tagName));
             setGalleryPhotosIds(
-              conferenceDetailsData.photos.map((photo) => photo.id)
+              conferenceDetailsData.photos.map((photo) => photo.id),
             );
           } else {
             setName("");
@@ -86,6 +136,8 @@ export default function AddConferenceInputs({
             setParticipantsLimit("");
             setFormat("STATIONARY");
             setImageId(0);
+            setTagsIds([]);
+            setTagsNames([]);
             setGalleryPhotosIds([]);
           }
         } else {
@@ -116,15 +168,15 @@ export default function AddConferenceInputs({
         const results = await Promise.all(
           imageGalleryFiles.map((file) => {
             return uploadFile(file, description);
-          })
+          }),
         );
         const validResults = results.filter(
-          (result) => result !== undefined
+          (result) => result !== undefined,
         ) as FileResponseData[];
         setGalleryPhotosIds(
           validResults.map((img) => {
             return img.id;
-          })
+          }),
         );
       } catch (error) {
         console.error("Images adding failed:", error);
@@ -138,7 +190,7 @@ export default function AddConferenceInputs({
     setLocX(0);
     setLocY(0);
     setPlace("");
-  }, [format])
+  }, [format]);
 
   const handleDeleteImage = () => {
     setImageFile(new File([], ""));
@@ -154,7 +206,7 @@ export default function AddConferenceInputs({
     name: name,
     description: description,
     logoId: imageId,
-    tagsIds: [],
+    tagsIds: tagsIds,
     location: {
       locX: locX,
       locY: locY,
@@ -174,9 +226,9 @@ export default function AddConferenceInputs({
       imageId === 0 ||
       (format === "STATIONARY" && !place)
     ) {
-      console.error("Wszystkie pola muszą być wypełnione");
       setStatusError(true);
       setMessage("Wszystkie pola muszą być wypełnione");
+      setTimeout(() => setMessage(""), 4 * 1000);
       return;
     }
 
@@ -210,33 +262,39 @@ export default function AddConferenceInputs({
           setStatusError(false);
           setMessage("Dodano konferencję");
           window.location.replace(`/myconference`);
-        }
-        else {
-          console.error("Błąd dodawania konferencji");
+        } else {
           setStatusError(true);
-          setMessage("Wystąpił błąd podczas dodawania konferencji");
+          setMessage("Błąd: " + result);
+          setTimeout(() => setMessage(""), 4 * 1000);
         }
-      } 
-      else {
+      } else {
         const conferenceId = Number(conferenceid);
         const result = await updateInfoAboutConference(
           conferenceId,
-          newConference
+          newConference,
         );
         if (result === 200) {
           setStatusError(false);
           setMessage("Zaktualizowano konferencję");
           window.location.replace(`/myconference`);
         } else {
-          console.error("Błąd aktualizowania konferencji");
           setStatusError(true);
-          setMessage("Wystąpił błąd podczas aktualizowania konferencji")
+          setMessage("Wystąpił błąd podczas aktualizowania konferencji");
+          setTimeout(() => setMessage(""), 4 * 1000);
         }
       }
     } catch (error) {
       setStatusError(true);
-      console.error(isUpdate ? "Updating conference failed:" : "Adding conference failed:", error);
-      setMessage(isUpdate ? "Błąd aktualizowania konferencji" : "Błąd dodawania konferencji");
+      console.error(
+        isUpdate ? "Updating conference failed:" : "Adding conference failed:",
+        error,
+      );
+      setMessage(
+        isUpdate
+          ? "Błąd aktualizowania konferencji"
+          : "Błąd dodawania konferencji",
+      );
+      setTimeout(() => setMessage(""), 4 * 1000);
     }
   };
 
@@ -281,7 +339,7 @@ export default function AddConferenceInputs({
           onChange={(e) => {
             const value = e.target.value;
             const isValid = /^[\w\s\/\d\WąęłńóśźżĄĘŁŃÓŚŹŻ]{0,300}$/i.test(
-              value
+              value,
             );
 
             if (isValid) {
@@ -332,11 +390,11 @@ export default function AddConferenceInputs({
       </div>
 
       <div className="flex flex-col sm:flex-row">
-        <ImageCropFrame 
-          formName="imageInput" 
-          inputDescription="Logo konferencji" 
-          croppingRatio={16/16}
-          imageFile={imageFile} 
+        <ImageCropFrame
+          formName="imageInput"
+          inputDescription="Logo konferencji"
+          croppingRatio={16 / 16}
+          imageFile={imageFile}
           setImageFile={setImageFile}
         />
         <div className="flex flex-row items-center mt-10 justify-center space-x-12 pt-2 bg-close2White pr-0 sm:pr-10 lg:pr-20">
@@ -349,7 +407,31 @@ export default function AddConferenceInputs({
           />
         </div>
       </div>
-      { format === "STATIONARY" && (
+      <div className="flex flex-col">
+        <SearchBarTag
+          items={tags}
+          renderItem={(tag) => `${tag.tagName}`}
+          onItemSelected={handleTagSelected}
+          placeholder="Dodaj tagi"
+          handleReset={cleanSearchBar}
+          pt={-1}
+        />
+        <div className="grid grid-cols-3 gap-2 w-full text-blue pt-2">
+          {tagsNames.map((name, index) => (
+            <span
+              key={index}
+              className="flex flex-row items-center justify-between p-1 border border-blue rounded-lg"
+            >
+              {name}
+              <TiDeleteOutline
+                className="h-5 w-5 cursor-pointer"
+                onClick={() => handleDeleteTags(index)}
+              />
+            </span>
+          ))}
+        </div>
+      </div>
+      {format === "STATIONARY" && (
         <div className="pt-4">
           <h1 className="text-xs text-darkblue font-bold font-sans">
             Miejsce konferencji:
@@ -363,7 +445,7 @@ export default function AddConferenceInputs({
             setLocName={setPlace}
           />
         </div>
-        ) }
+      )}
       <div className="relative">
         <SingleFormInput
           type="text"
@@ -439,10 +521,10 @@ export default function AddConferenceInputs({
         </button>
         {(statusError !== undefined || message !== undefined) && (
           <p
-            className={` ${ statusError ? "text-red-800" : "text-green-800"} 
-            bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center` }
+            className={` ${statusError ? "text-red-800" : "text-green-800"} 
+            bg-close2White w-full py-2 outline-none focus:outline-none text-sm text-center`}
           >
-            { message }
+            {message}
           </p>
         )}
       </div>

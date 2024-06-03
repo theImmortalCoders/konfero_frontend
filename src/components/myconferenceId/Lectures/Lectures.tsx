@@ -3,29 +3,35 @@ import TitleHeader from "@/components/common/Box/TitleHeader";
 import LectureList from "./LectureList";
 import { Lecture } from "@/hooks/conference";
 import LectureSearch from "./LectureSearch";
+import { GetConferenceDetailsWithRoleFilteringData } from "@/hooks/conference";
+import { UserData } from "@/hooks/user";
 
 export default function Lectures({
   lectures,
-  conferenceId,
-  userRole,
+  conference,
+  userData,
 }: {
   lectures: Lecture[];
-  conferenceId: number;
-  userRole: string;
+  conference: GetConferenceDetailsWithRoleFilteringData;
+  userData: UserData;
 }) {
   return (
     <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
       <TitleHeader title={"Wykłady"} />
       <LectureSearch
-        data={lectures}
-        conferenceId={conferenceId}
-        userRole={userRole}
+        lectures={lectures}
+        conference={conference}
+        userData={userData}
       />
       {lectures.length !== 0 ? (
         <div className="w-full">
           {lectures.map((lecture, index) => (
             <div className="py-3" key={index}>
-              <LectureList key={index} lecture={lecture} />
+              <LectureList
+                key={index}
+                lecture={lecture}
+                conference={conference}
+              />
             </div>
           ))}
         </div>

@@ -5,8 +5,10 @@ import MyConferencePageImageBox from "./MyConferencePageImageBox";
 
 export default function Title({
   conferenceIdData,
+  children,
 }: {
   conferenceIdData: GetConferenceDetailsWithRoleFilteringData;
+  children?: React.ReactNode;
 }) {
   return (
     <BoxWithImage
@@ -20,6 +22,7 @@ export default function Title({
         <p className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg pt-2 sm:pt-3 md:pt-4 lg:pt-3 xl:pt-4">
           {conferenceIdData.description}
         </p>
+        {children}
       </div>
     </BoxWithImage>
   );

@@ -8,10 +8,9 @@ export async function deleteTag(tagId: number) {
       `/api/tag/${tagId}`,
       {
         withCredentials: true,
-      }
+      },
     );
     if (response.status === 200) {
-      console.log("Tag został usunięty poprawnie!");
       return response.status;
     } else if (response.status === 401) {
       window.location.replace("/login");
@@ -33,72 +32,76 @@ export async function deleteTag(tagId: number) {
       console.error("Nie masz odpowiedniej roli");
       return "Nie masz odpowiedniej roli";
     } else {
-      throw new Error("Error500");
+      console.error("Wystąpił błąd podczas usuwania taga");
+      return "Wystąpił błąd podczas usuwania taga";
     }
   }
 }
 
 export async function getAllTags(): Promise<Tag[] | string> {
-    try {
-      const response: AxiosResponse<Tag[] | string> =
-        await appAPI.get(`/api/tag`, {
-          withCredentials: true,
-        });
-      if (response.status === 200) {
-        console.log("Wszystkie tagi pobrano poprawnie!");
-        return response.data;
-      }
-      if (response.status === 401) {
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else {
-        throw new Error("Wystąpił błąd podczas pobierania wszystkich tagów");
-      }
-    } catch (error: any) {
-      if (error.response.status === 401) {
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else {
-        throw new Error("Wystąpił błąd podczas pobierania wszystkich tagów");
-      }
+  try {
+    const response: AxiosResponse<Tag[] | string> = await appAPI.get(
+      `/api/tag`,
+      {
+        withCredentials: true,
+      },
+    );
+    if (response.status === 200) {
+      return response.data;
     }
+    if (response.status === 401) {
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      console.error("Wystąpił błąd podczas pobierania wszystkich tagów");
+      return "Wystąpił błąd podczas pobierania wszystkich tagów";
+    }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else {
+      console.error("Wystąpił błąd podczas pobierania wszystkich tagów");
+      return "Wystąpił błąd podczas pobierania wszystkich tagów";
+    }
+  }
 }
 
 export async function addNewTag(value: string) {
-    try {
-      const response: AxiosResponse<void> = await appAPI.post(
-        `/api/tag`,
-        {
-            value,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      if (response.status === 200) {
-        console.log("Tag został dodany!");
-        return response.status;
-      } else if (response.status === 401) {
-        window.location.replace("/login");
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else if (response.status === 403) {
-        console.error("Nie masz odpowiedniej roli");
-        return "Nie masz odpowiedniej roli";
-      } else {
-        console.error("Wystąpił błąd podczas dodawania taga");
-        return "Wystąpił błąd podczas dodawania taga";
-      }
-    } catch (error: any) {
-      if (error.response.status === 401) {
-        window.location.replace("/login");
-        console.error("Brak autoryzacji użytkownika");
-        return "Brak autoryzacji użytkownika";
-      } else if (error.response.status === 403) {
-        console.error("Nie masz odpowiedniej roli");
-        return "Nie masz odpowiedniej roli";
-      } else {
-        throw new Error("Error500");
-      }
+  try {
+    const response: AxiosResponse<void> = await appAPI.post(
+      `/api/tag`,
+      {
+        value,
+      },
+      {
+        withCredentials: true,
+      },
+    );
+    if (response.status === 200) {
+      return response.status;
+    } else if (response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (response.status === 403) {
+      console.error("Nie masz odpowiedniej roli");
+      return "Nie masz odpowiedniej roli";
+    } else {
+      console.error("Wystąpił błąd podczas dodawania taga");
+      return "Wystąpił błąd podczas dodawania taga";
     }
+  } catch (error: any) {
+    if (error.response.status === 401) {
+      window.location.replace("/login");
+      console.error("Brak autoryzacji użytkownika");
+      return "Brak autoryzacji użytkownika";
+    } else if (error.response.status === 403) {
+      console.error("Nie masz odpowiedniej roli");
+      return "Nie masz odpowiedniej roli";
+    } else {
+      console.error("Wystąpił błąd podczas dodawania taga");
+      return "Wystąpił błąd podczas dodawania taga";
+    }
+  }
 }

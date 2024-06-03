@@ -1,24 +1,34 @@
+'use client'
 import { Box } from "@/components/common/Box/Box";
 import Image from "next/image";
 import Laptop from "@/assets/home/laptop.jpg";
 import { FaArrowRight } from "react-icons/fa6";
 import Page from "@/components/common/Page/Page";
 import Link from "next/link";
+import {useQuery} from "react-query";
+import {getId} from "@/utils/userInformation";
 
 function Joinus() {
-  return (
+
+  const {
+    data: id,
+    isLoading: isIdLoading,
+  } = useQuery('check user session', getId);
+
+  if (!isIdLoading) return (
     <>
       <Link
-        href="/login"
+        href={!id? `/login` : '/conference'}
         className="bg-blue text-close2White text-sm sm:text-md lg:text-lg font-medium py-2 px-4 md:py-3 md:px-6 rounded-2xl flex items-center justify-center"
       >
-        <h1>Dołącz do nas</h1>
+        <h1>{!id? 'Dołącz do nas' : 'Przejdź do konferencji'}</h1>
         <div className="ml-3 md:ml-6 w-6 h-6 md:w-9 md:h-9 rounded-full bg-close2White flex items-center justify-center">
           <FaArrowRight className="text-blue" />
         </div>
       </Link>
     </>
   );
+  return null;
 }
 export default function Home() {
   return (

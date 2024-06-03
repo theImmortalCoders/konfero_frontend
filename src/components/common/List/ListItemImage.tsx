@@ -1,4 +1,4 @@
-import APIImageComponent, { LogoInterface } from "@/hooks/imageAPI";
+import APIImageComponent, { ImageInterface } from "@/hooks/imageAPI";
 import Link from "next/link";
 
 export default function ListItemImage({
@@ -8,17 +8,14 @@ export default function ListItemImage({
   className,
 }: {
   href: string;
-  logo: LogoInterface;
+  logo: ImageInterface;
   children: React.ReactNode;
   className?: string;
 }) {
   return (
-    <Link
-      href={href}
-      className={`w-full hover:bg-gray-200 duration-200 ${className}`}
-    >
-      <div className="flex items-center w-full space-l-3.5 md:h-28">
-        <div className="flex rounded-l-3xl overflow-hidden h-min max-h-full w-32">
+    <Link href={href} className={`w-full ${className}`}>
+      <div className="flex flex-col sm:flex-row items-center space-l-3.5 mt-0 2xs:mt-4 sm:mt-0 sm:h-36">
+        <div className="flex rounded-t-3xl 2xs:rounded-b-3xl sm:rounded-r-none sm:rounded-l-3xl overflow-hidden max-h-full w-full 2xs:size-36 sm:w-48">
           <APIImageComponent imageId={logo.id} type={"IMAGE"} />
         </div>
         {children}

@@ -3,8 +3,9 @@ import Page from "@/components/common/Page/Page";
 import { Box } from "@/components/common/Box/Box";
 import { useQuery } from "react-query";
 import {
-  deleteConference,
+  Content,
   getConferenceDetailsWithRoleFiltering,
+  signOutFromConference,
 } from "@/hooks/conference";
 import Error500 from "@/components/common/Error/Error500";
 import People from "@/components/myconferenceId/Participants/People";
@@ -18,45 +19,146 @@ import Title from "@/components/myconferenceId/Title/Title";
 import Panel from "@/components/myconferenceId/OrganizerAndAdminPanel/Panel";
 import useAuth from "@/hooks/useAuth";
 import NotFound from "../../addlecture/[conferenceId]/not-found";
+import { useEffect, useState } from "react";
+import SignUpWarning from "@/components/conference/SignUpWarning";
+import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
+import CommentsList from "@/components/myconferenceId/Comments/CommentsList";
+import DisplayTag from "@/components/tag/displaytag";
+import { deleteConference } from "@/hooks/conference";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
+import DeleteWarning from "@/components/myconferenceId/DeleteWarning";
+import { isUserInOrganizers } from "@/hooks/authorise/authorization";
 
 export default function MyConferencePage({
   params,
 }: {
   params: { conferenceId: string };
 }) {
-  const {
-    isAuthorise,
-    isLoading: isAuthLoading,
-    userRole,
-  } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
 
   const {
     data: conferenceIdData,
     isLoading,
     isError,
+    refetch,
   } = useQuery(`conferenceId${parseInt(params.conferenceId)}`, () =>
-    getConferenceDetailsWithRoleFiltering(parseInt(params.conferenceId))
+    getConferenceDetailsWithRoleFiltering(parseInt(params.conferenceId)),
   );
+
+  const router = useRouter();
+  const handleDelete = useCallback((id: number) => {
+    deleteConference(id);
+    router.push("/myconference");
+  }, []);
 
   if (isError) return <Error500 />;
   if (isAuthorise === false) return <NotFound />;
+
+  const [signUpWarning, setSignUpWarning] = useState<boolean>(false);
+  const [deleteWarning, setDeleteWarning] = useState<boolean>(false);
+  const [update, setUpdate] = useState<boolean>(false);
+
+  const signOut = async (id: number) => {
+    try {
+      const result = await signOutFromConference(id);
+      if (result === 200) {
+        console.log("Wypisano z konferencji.");
+        if (setUpdate) setUpdate(!update);
+      } else {
+        console.error("Błąd wypisywania z konferencji.");
+      }
+    } catch (error) {
+      console.error("Błąd wypisywania z konferencji.", error);
+    }
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [update]);
+
+  const [isOrganizer, setIsOrganizer] = useState<boolean | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    const checkIfOrganizer = async () => {
+      if (
+        userData &&
+        conferenceIdData &&
+        typeof conferenceIdData !== "string"
+      ) {
+        const isOrganizerResult = await isUserInOrganizers(
+          userData,
+          conferenceIdData,
+        );
+        setIsOrganizer(isOrganizerResult);
+      }
+    };
+
+    checkIfOrganizer();
+  }, [userData, conferenceIdData]);
+
   return (
     <Page className="py-10">
-      {!isAuthLoading &&
-      userRole &&
+      {isAuthorise === true &&
+      userData &&
       !isLoading &&
       conferenceIdData &&
       typeof conferenceIdData !== "string" ? (
         <>
-          {userRole === "ORGANIZER" || userRole === "ADMIN" ? (
-            <Panel conferenceIdData={conferenceIdData} />
+          {(isOrganizer || userData.role === "ADMIN") &&
+          !conferenceIdData.canceled ? (
+            <Panel
+              conferenceIdData={conferenceIdData}
+              setDeleteWarning={setDeleteWarning}
+            />
           ) : null}
-          <Title conferenceIdData={conferenceIdData} />
+          <Title conferenceIdData={conferenceIdData}>
+            {!conferenceIdData.canceled && (
+              <span className="flex justify-center w-full">
+                <span
+                  onClick={() => {
+                    if (conferenceIdData.amISignedUp) {
+                      signOut(conferenceIdData.id);
+                    } else if (
+                      !conferenceIdData.participantsFull &&
+                      !conferenceIdData.amISignedUp
+                    ) {
+                      setSignUpWarning(true);
+                    }
+                  }}
+                  className="flex items-center bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2"
+                >
+                  <p className="text-black font-semibold">
+                    {conferenceIdData.participantsFull &&
+                    !conferenceIdData.amISignedUp
+                      ? "Brak miejsc"
+                      : conferenceIdData.amISignedUp
+                        ? "Wypisz się"
+                        : "Zapisz się"}
+                  </p>
+
+                  {conferenceIdData.participantsFull &&
+                  !conferenceIdData.amISignedUp ? (
+                    <CiCirclePlus className="text-4xl text-darkblue opacity-50" />
+                  ) : conferenceIdData.amISignedUp ? (
+                    <CiCircleMinus className="text-4xl text-darkblue" />
+                  ) : (
+                    <CiCirclePlus className="text-4xl text-darkblue" />
+                  )}
+                </span>
+              </span>
+            )}
+          </Title>
           <Organizers organizer={conferenceIdData.organizer} />
+          {conferenceIdData.tags !== null && (
+            <Tags conference={conferenceIdData} />
+          )}
           <Lectures
             lectures={conferenceIdData.lectures}
-            conferenceId={conferenceIdData.id}
-            userRole={userRole}
+            conference={conferenceIdData}
+            userData={userData}
           />
           {conferenceIdData.participants !== null ? (
             <Participants conferenceIdData={conferenceIdData} />
@@ -64,6 +166,27 @@ export default function MyConferencePage({
           {conferenceIdData.photos.length !== 0 ? (
             <Photos photos={conferenceIdData.photos} />
           ) : null}
+          <CommentsList
+            conference={conferenceIdData}
+            update={update}
+            setUpdate={setUpdate}
+          />
+          {signUpWarning && (
+            <SignUpWarning
+              setSignUpWarning={setSignUpWarning}
+              tempId={conferenceIdData.id}
+              update={update}
+              setUpdate={setUpdate}
+            />
+          )}
+          {deleteWarning && (
+            <DeleteWarning
+              tempId={conferenceIdData.id}
+              setWarning={setDeleteWarning}
+              handleFunction={handleDelete}
+              mode={"conference"}
+            />
+          )}
         </>
       ) : (
         <LoadingMessage />
@@ -82,6 +205,17 @@ function Organizers({ organizer }: { organizer: Organizer }) {
           photo={organizer.photo}
           email={organizer.email}
         />
+      </div>
+    </Box>
+  );
+}
+
+function Tags({ conference }: { conference: Content }) {
+  return (
+    <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
+      <TitleHeader title={"Tagi"} />
+      <div className="w-full h-full flex justify-center items-center pt-4">
+        <DisplayTag conference={conference} isSmall={false} />
       </div>
     </Box>
   );

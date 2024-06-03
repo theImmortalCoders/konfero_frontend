@@ -15,10 +15,8 @@ export default function Participants({
       {!conferenceIdData.participantsFull ? (
         <>
           <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
-            Pozostało{" "}
-            {conferenceIdData.participantsLimit -
-              conferenceIdData.participants.length}{" "}
-            / {conferenceIdData.participantsLimit}
+            {conferenceIdData.participantsAmount}/
+            {conferenceIdData.participantsLimit}
           </h1>
           <div className="w-full grid-cols-4 grid gap-8 pt-4">
             {conferenceIdData.participants.map((participants, index) => (

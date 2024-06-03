@@ -9,14 +9,11 @@ import NotFound from "../addlecture/[conferenceId]/not-found";
 import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 
 export default function AddConference() {
-  const { isAuthorise, isLoading: isAuthLoading } = useAuth([
-    "ORGANIZER",
-    "ADMIN",
-  ]);
+  const { isAuthorise } = useAuth(["ORGANIZER", "ADMIN"]);
   if (isAuthorise === false) return <NotFound />;
   return (
     <Page className="py-10">
-      {!isAuthLoading ? (
+      {isAuthorise === true ? (
         <Box className="flex flex-col items-center space-y-6 w-11/12 sm:w-5/6 lg:w-3/5">
           <Image src={Logo} alt="Logo" width={180} height={180} />
           <h1 className="text-darkblue font-black">

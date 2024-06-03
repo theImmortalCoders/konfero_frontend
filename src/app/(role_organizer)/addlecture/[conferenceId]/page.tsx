@@ -13,10 +13,7 @@ export default function AddLecture({
 }: {
   params: { conferenceId: number };
 }) {
-  const { isAuthorise, isLoading: isAuthLoading } = useAuth([
-    "ORGANIZER",
-    "ADMIN",
-  ]);
+  const { isAuthorise } = useAuth(["ORGANIZER", "ADMIN"]);
 
   const getConferenceInfo = async () => {
     return await getConferenceDetailsWithRoleFiltering(params.conferenceId);
@@ -34,7 +31,7 @@ export default function AddLecture({
   if (isAuthorise === false) return <NotFound />;
   return (
     <Page className="justify-start py-10">
-      {!isAuthLoading &&
+      {isAuthorise === true &&
       !conferenceLoading &&
       conferenceData &&
       typeof conferenceData !== "string" ? (

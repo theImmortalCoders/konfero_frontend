@@ -7,6 +7,8 @@ import Photo_2 from "@/assets/aboutus/decorative_photo_2.jpg";
 import Logo from "@/assets/logo/blue/logo_text_blue.png";
 import { FaUserTie } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { getUsersStats } from "@/hooks/user";
+import { useQuery } from "react-query";
 
 function Header({ children }: { children: React.ReactNode }) {
   return (
@@ -44,24 +46,41 @@ function UserOpinion() {
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+  const { data, isLoading, isError } = useQuery(
+    "PageStats",
+    () => getUsersStats()
+  );
   return (
     <Box className="flex flex-col md:flex-row items-center w-[90%] lg:w-[75%] xl:w-[60%] text-darkblue space-x-0 md:space-x-8 lg:mr-[25%]">
       <div className="flex w-5/6 md:w-2/5 mt-5 lg:mt-0 justify-end order-2 md:order-1 relative xl:right-16">
         <Image src={Photo_1} alt="Photo_1" className="w-full rounded-3xl" />
         <div
-          className={`flex flex-col space-y-1 w-3/4 h-3/5 m-4 p-4 rounded-xl bg-close2White font-bold bg-opacity-90 absolute transition-opacity duration-1000 ${
+          className={`flex flex-col space-y-1 lg:space-y-2 w-3/4 h-3/5 m-4 p-4 rounded-xl bg-close2White font-bold bg-opacity-90 absolute transition-opacity duration-1000 ${
             isLoaded ? "opacity-100" : "opacity-0"
           }`}
         >
-          <p className="text-sm sm:text-base md:text-xs lg:text-sm">
-            ORGANIZATORZY: 69
-          </p>
-          <p className="text-sm sm:text-base md:text-xs lg:text-sm">
-            PRELEGENCI: 100
-          </p>
-          <p className="text-sm sm:text-base md:text-xs lg:text-sm">
-            UŻYTKOWNICY: 2115
-          </p>
+          {!isLoading && !isError ? (
+            <>
+              {typeof data !== 'string' && data && (
+                <>
+                  <p className="text-xs xs:text-sm sm:text-base md:text-xs lg:text-sm">
+                    ORGANIZATORZY: {data.organizersAmount}
+                  </p>
+                  <p className="text-xs xs:text-sm sm:text-base md:text-xs lg:text-sm">
+                    KONFERENCJE: {data.conferencesAmount}
+                  </p>
+                  <p className="text-xs xs:text-sm sm:text-base md:text-xs lg:text-sm">
+                    UŻYTKOWNICY: {data.usersAmount}
+                  </p>
+                </>
+              )}
+            </>
+          ) : (
+            <p>
+              Ładowanie danych...
+            </p>
+          )}
         </div>
       </div>
       <div className="md:w-3/5 order-1 md:order-2">

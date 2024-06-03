@@ -53,8 +53,8 @@ const APIImageComponent: React.FC<APIImageComponentProps> = ({
             const base64Image = btoa(
               new Uint8Array(response.data).reduce(
                 (data, byte) => data + String.fromCharCode(byte),
-                ""
-              )
+                "",
+              ),
             );
 
             const imageSrc = `data:image/png;base64,${base64Image}`;

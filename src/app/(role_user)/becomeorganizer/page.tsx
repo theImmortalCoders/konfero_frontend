@@ -18,12 +18,12 @@ function Description({ children }: { children: React.ReactNode }) {
 }
 
 export default function BecomeOrganizer() {
-  const { isAuthorise, isLoading: isAuthLoading } = useAuth(["USER"]);
+  const { isAuthorise } = useAuth(["USER"]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   if (isAuthorise === false) return <NotFound />;
   return (
     <Page className="justify-center">
-      {!isAuthLoading ? (
+      {isAuthorise === true ? (
         <>
           <Box className="flex flex-col md:flex-row items-center w-[90%] lg:w-[75%] xl:w-[60%] text-darkblue space-x-0 xl:space-x-8">
             <Image

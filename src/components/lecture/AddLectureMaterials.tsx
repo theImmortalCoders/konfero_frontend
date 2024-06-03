@@ -23,15 +23,15 @@ const AddLectureMaterials = ({
           const results = await Promise.all(
             files.map((file, index) => {
               return uploadFile(file, file.name);
-            })
+            }),
           );
           const validResults = results.filter(
-            (result) => result !== undefined
+            (result) => result !== undefined,
           ) as FileResponseData[];
           const addingMaterials = await Promise.all(
             validResults.map((file) => {
               return addMaterialToLecture(parseInt(lectureId), file.id);
-            })
+            }),
           );
           handleRefetch();
         } catch (error) {
@@ -44,7 +44,7 @@ const AddLectureMaterials = ({
   }, [files]);
 
   return (
-    <div className="mr-0 md:mr-2 mt-2 w-min hover:bg-darkblue hover:text-close2White rounded-2xl border-2 border-darkblue overflow-hidden">
+    <div className="mr-0 md:mr-2 mt-2 mb-2 w-min hover:bg-darkblue hover:text-close2White rounded-2xl border-2 border-darkblue overflow-hidden">
       <input
         type={"file"}
         className="hidden"

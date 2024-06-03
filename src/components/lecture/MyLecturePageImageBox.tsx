@@ -3,19 +3,29 @@ import { FaRegCalendarCheck, FaRegClock } from "react-icons/fa6";
 import { IoMdPin } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { getCurrentUser } from "@/hooks/user";
+
+async function getId() {
+  const userData = await getCurrentUser();
+  if (userData && typeof userData === "object" && "id" in userData) {
+    return userData.id;
+  }
+  return null;
+}
 
 export default function MyLecturePageImageBox({
   lectureIdData,
-  userRole,
+  isUserOrganizer,
+  isUserLecturer,
 }: {
   lectureIdData: GetLectureDetailsData;
-  userRole: string;
+  isUserOrganizer: boolean;
+  isUserLecturer: boolean;
 }) {
   const router = useRouter();
-
   return (
     <div className="absolute top-0 left-0 w-full h-fit flex flex-col items-center text-close2White p-4">
-      {userRole === "ORGANIZER" || userRole === "ADMIN" ? (
+      {isUserOrganizer || isUserLecturer ? (
         <div
           onClick={() => router.push(`/updatelecture/${lectureIdData.id}`)}
           className="flex absolute right-4 top-4 px-3 py-1 justify-center items-center space-x-2 bg-close2White rounded-3xl font-black text-darkblue cursor-pointer"

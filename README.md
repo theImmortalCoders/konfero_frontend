@@ -1,4 +1,3 @@
-
 # Platform for organizing conferences
 
 ## Description
@@ -7,7 +6,7 @@ A web application for organizing scientific conferences is a tool designed to su
 
 ## Team Members
 
-- **Marcin Bator** (@marcinbator) 
+- **Marcin Bator** (@marcinbator)
 - **Igor Litwa** (@miszor03)
 - **Wiktor Mazur** (@ZegarekPL)
 - **Paweł Buczek** (@pablitoo1)
