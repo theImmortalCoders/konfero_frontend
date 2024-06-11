@@ -171,6 +171,7 @@ export default function ConferenceSortAndFilter({
   const [name, setName] = useState<string | undefined>(undefined);
   const [tagsIds, setTagsIds] = useState<number[] | undefined>(undefined);
   const [canceled, setCanceled] = useState<boolean | undefined>(false);
+  const [showFinished, setShowFinished] = useState<boolean | undefined>(false);
   const [verified, setVerified] = useState<boolean | undefined>(false);
   const [participantsFull, setParticipantsFull] = useState<boolean | undefined>(
     false,
@@ -189,6 +190,7 @@ export default function ConferenceSortAndFilter({
       name: name,
       tagsIds: tagsIds,
       canceled: canceled,
+      showFinished: showFinished,
       verified: verified,
       participantsFull: participantsFull,
       organizerId: organizerId,
@@ -202,6 +204,7 @@ export default function ConferenceSortAndFilter({
     name,
     tagsIds,
     canceled,
+    showFinished,
     verified,
     participantsFull,
     organizerId,
@@ -272,17 +275,22 @@ export default function ConferenceSortAndFilter({
           </SortFilterRow>
           <SortFilterRow>
             <FilterSection
-              title="Brak miejsc:"
+              title="Pokaż pełne:"
               type="checkbox"
               setState={setParticipantsFull}
             ></FilterSection>
             <FilterSection
-              title="Odwołane:"
+              title="Pokaż odwołane:"
               type="checkbox"
               setState={setCanceled}
             ></FilterSection>
             <FilterSection
-              title="Zweryfikowane:"
+                title="Pokaż zakończone:"
+                type="checkbox"
+                setState={setShowFinished}
+            ></FilterSection>
+            <FilterSection
+              title="Tylko zweryfikowane:"
               type="checkbox"
               setState={setVerified}
             ></FilterSection>
@@ -298,11 +306,6 @@ export default function ConferenceSortAndFilter({
               type="text"
               setState={setName}
             ></FilterSection>
-            {/* <FilterSection
-              title="Organizator:"
-              type="organizer"
-              setState={setOrganizerId}
-            ></FilterSection> */}
             <FilterSection
               title="Lokalizacja:"
               type="text"

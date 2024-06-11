@@ -25,6 +25,7 @@ export interface SortAndFilterConferenceData {
   name?: string;
   tagsIds?: number[];
   canceled?: boolean;
+  showFinished?: boolean;
   verified?: boolean;
   participantsFull?: boolean;
   organizerId?: number;
@@ -64,6 +65,7 @@ export default function ConferencePage() {
         sortFilterData?.name,
         sortFilterData?.tagsIds,
         sortFilterData?.canceled,
+        sortFilterData?.showFinished,
         sortFilterData?.verified,
         sortFilterData?.participantsFull,
         sortFilterData?.organizerId,

@@ -164,6 +164,7 @@ export async function getAllConferences(
   name?: string,
   tagsIds?: number[],
   canceled?: boolean,
+  showFinished?: boolean,
   verified?: boolean,
   participantsFull?: boolean,
   organizerId?: number,
@@ -194,13 +195,14 @@ export async function getAllConferences(
         })
       : null;
     url =
-      canceled !== undefined
-        ? url.concat(`&canceled=${canceled}`)
-        : url.concat(`&canceled=false`);
+      canceled === true
+        ? url
+        : url.concat(`&canceled=false`)
     url = verified === true ? url.concat(`&verified=${verified}`) : url;
+    url = (showFinished !== undefined && showFinished) ? url.concat(`&showFinished=${showFinished}`) : url;
     url =
-      participantsFull !== undefined
-        ? url.concat(`&participantsFull=${participantsFull}`)
+      participantsFull === true
+        ? url
         : url.concat(`&participantsFull=false`);
     url = locationName ? url.concat("&locationName=", locationName) : url;
     const response: AxiosResponse<GetAllConferencesData | string> =
