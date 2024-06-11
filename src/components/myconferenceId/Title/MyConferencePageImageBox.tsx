@@ -15,18 +15,18 @@ export default function MyConferencePageImageBox({
   conferenceIdData: GetConferenceDetailsWithRoleFilteringData;
 }) {
   return (
-    <div className="absolute top-0 left-0 w-full h-fit flex flex-col items-center text-close2White p-4">
-      <h1 className="text-lg sm:text-2xl  md:text-3xl lg:text-2xl xl:text-3xl">
+    <div className=" w-full h-fit flex flex-col items-center text-close2White p-4">
+      <h1 className="my-2 text-lg sm:text-2xl  md:text-3xl lg:text-2xl xl:text-3xl">
         {conferenceIdData.name}
       </h1>
-      <div className="w-full h-auto flex justify-around pt-[8%]">
-        <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
+      <div className="w-full h-auto flex gap-5 px-10 md:px-32 justify-around py-[2%]">
+        <div className="flex-row flex gap-x-3  h-auto items-center justify-center">
           <FaRegCalendarCheck className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
           <h1 className="text-xs sm:text-sm md:text-lg lg:text-md xl:text-lg">
             {formatDateWithHour(conferenceIdData.startDateTime)}
           </h1>
         </div>
-        <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
+        <div className="flex-row flex gap-x-3 h-auto items-center justify-center">
           <FaRegCalendarXmark className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
           <h1 className="text-xs sm:text-sm md:text-lg lg:text-md xl:text-lg">
             {formatDateWithHour(conferenceIdData.endDateTime)}
@@ -34,7 +34,7 @@ export default function MyConferencePageImageBox({
         </div>
       </div>
       {conferenceIdData.format === "STATIONARY" ? (
-        <div className="flex-col flex gap-x-1 md:gap-x-3 w-full h-auto items-center justify-center pt-[5%]">
+        <div className="flex-col flex gap-x-1 md:gap-x-3 w-full h-auto items-center justify-center py-[2%]">
           <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
             <IoMdPin className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
             <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">

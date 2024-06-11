@@ -160,7 +160,7 @@ export default function ConferenceSortAndFilter({
   const [sort, setSort] = useState<
     "startDateTime" | "location" | "canceled" | "format" | "participantsFull"
   >("startDateTime");
-  const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("ASC");
+  const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("DESC");
 
   const [startDateTimeFrom, setStartDateTimeFrom] = useState<
     string | undefined
@@ -239,11 +239,11 @@ export default function ConferenceSortAndFilter({
             onChange={(e) => {
               e.target.value === "ASC" || e.target.value === "DESC"
                 ? setSortDirection(e.target.value)
-                : setSortDirection("ASC");
+                : setSortDirection("DESC");
             }}
           >
-            <option value="ASC">Rosnąco</option>
             <option value="DESC">Malejąco</option>
+            <option value="ASC">Rosnąco</option>
           </select>
         </SortSection>
       </SortFilterRow>

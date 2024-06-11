@@ -10,20 +10,19 @@ export default function Title({
   conferenceIdData: GetConferenceDetailsWithRoleFilteringData;
   children?: React.ReactNode;
 }) {
-  return (
+  return (<>
     <BoxWithImage
-      className="text-darkblue w-[90%] lg:w-[60%] mt-10 mb-5"
+      className="text-darkblue w-[40%] lg:w-[30%] mt-10 mb-5"
       src={conferenceIdData.logo.id}
       alt={"Logo"}
-    >
-      <MyConferencePageImageBox conferenceIdData={conferenceIdData} />
+     children={<></>}/>
+      <MyConferencePageImageBox conferenceIdData={conferenceIdData}/>
       <div className="px-4 py-2 sm:px-8 sm:py-4 w-full">
-        <TitleHeader title={conferenceIdData.name} />
-        <p className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg pt-2 sm:pt-3 md:pt-4 lg:pt-3 xl:pt-4">
+        <p className="flex justify-center text-sm sm:text-md md:text-lg w-full lg:text-md xl:text-lg pt-1 sm:pt-1 md:pt-2 lg:pt-2 xl:pt-2">
           {conferenceIdData.description}
         </p>
         {children}
       </div>
-    </BoxWithImage>
+      </>
   );
 }

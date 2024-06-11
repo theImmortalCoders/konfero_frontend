@@ -116,7 +116,7 @@ export default function MyConferencePage({
           ) : null}
           <Title conferenceIdData={conferenceIdData}>
             {!conferenceIdData.canceled && (
-              <span className="flex justify-center w-full">
+              <span className="flex justify-center py-10 w-full">
                 <span
                   onClick={() => {
                     if (conferenceIdData.amISignedUp) {
