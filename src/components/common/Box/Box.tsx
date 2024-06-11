@@ -42,7 +42,7 @@ export function BoxWithImage({
           />
         ) : (
           <div className="rounded-t-3xl overflow-hidden w-full h-auto filter brightness-50">
-            <APIImageComponent imageId={src} type={"IMAGE"} />
+            <APIImageComponent imageId={src} type={"IMAGE"} better/>
           </div>
         )}
         {children}

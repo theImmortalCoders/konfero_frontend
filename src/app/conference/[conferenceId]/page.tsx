@@ -106,8 +106,7 @@ export default function MyConferencePage({
           isAuthorise != null &&
       typeof conferenceIdData !== "string" ? (
         <>
-          {(isOrganizer || (userData && userData.role === "ADMIN")) &&
-          !conferenceIdData.canceled ? (
+          {(isOrganizer || (userData && userData.role === "ADMIN")) ? (
             <Panel
               conferenceIdData={conferenceIdData}
               setDeleteWarning={setDeleteWarning}

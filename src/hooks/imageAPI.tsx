@@ -24,12 +24,14 @@ interface APIImageComponentProps {
   imageId: number;
   type: string;
   full?: boolean;
+  better?:boolean;
 }
 
 const APIImageComponent: React.FC<APIImageComponentProps> = ({
   imageId,
   type,
   full,
+    better,
 }) => {
   const [imageData, setImageData] = useState<string>("");
   const [defaultImg, setDefaultImage] = useState("question.jpg");
@@ -79,7 +81,7 @@ const APIImageComponent: React.FC<APIImageComponentProps> = ({
         <img
           className={` ${
             full ? "w-full opacity-25 fixed left-0 top-0 -z-10" : "relative"
-          } object-fill object-center h-auto `}
+          } object-fill object-center h-auto ${better ? "w-full" : ""}`}
           src={imageData}
           alt="photo"
         />
@@ -87,7 +89,7 @@ const APIImageComponent: React.FC<APIImageComponentProps> = ({
         <img
           className={`${
             full ? "w-full opacity-25 fixed left-0 top-0 -z-10" : "relative"
-          }  object-fill object-center h-auto `}
+          }  object-fill object-center h-auto ${better ? "w-full":""}`}
           src={`/assets/common/${defaultImg}`}
           alt="defaultPhoto"
         />
