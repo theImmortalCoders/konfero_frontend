@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Box } from "../common/Box/Box";
-import { SortAndFilterConferenceData } from "@/app/(role_all)/conference/page";
+import { SortAndFilterConferenceData } from "@/app/conference/page";
 import { Tag } from "@/hooks/conference";
 import SearchBarTag from "../tag/SearchBarTag";
 import { getAllTags } from "@/hooks/tag";

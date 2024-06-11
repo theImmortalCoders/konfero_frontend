@@ -17,8 +17,8 @@ export default function Title({
       alt={"Logo"}
      children={<></>}/>
       <MyConferencePageImageBox conferenceIdData={conferenceIdData}/>
-      <div className="px-4 py-2 sm:px-8 sm:py-4 w-full">
-        <p className="flex justify-center text-sm sm:text-md md:text-lg w-full lg:text-md xl:text-lg pt-1 sm:pt-1 md:pt-2 lg:pt-2 xl:pt-2">
+      <div className="px-4 lg:w-[60%] py-2 sm:px-8 sm:py-4 my-5">
+        <p className="flex  justify-center text-sm sm:text-md md:text-lg w-full lg:text-md xl:text-lg">
           {conferenceIdData.description}
         </p>
         {children}

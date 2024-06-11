@@ -147,7 +147,7 @@ export default function LecturePage({
       !isLoading &&
       lectureIdData &&
       typeof lectureIdData !== "string" ? (
-        <div className="w-[90%] lg:w-[60%] flex flex-col items-center gap-5 mb-20">
+        <div className="w-[90%] lg:w-[60%] flex flex-col items-center gap-2 lg:gap-5 mb-20">
           <div className="w-full flex items-center flex-col">
           <RedirectToConference conferenceId={lectureIdData.conferenceId} />
           <BoxWithImage

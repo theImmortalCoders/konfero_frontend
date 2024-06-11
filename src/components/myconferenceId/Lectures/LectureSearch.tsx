@@ -16,7 +16,7 @@ export default function LectureSearch({
 }: {
   lectures: Lecture[];
   conference: GetConferenceDetailsWithRoleFilteringData;
-  userData: UserData;
+  userData: UserData|null;
 }) {
   const [isOrganizer, setIsOrganizer] = useState<boolean | undefined>(
     undefined,

@@ -49,6 +49,10 @@ export default function CommentsList({
         }
     };
 
+    if(conference.comments.length == 0){
+        return <></>
+    }
+
     return (
         <Box className="flex flex-col items-center text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
             <TitleHeader title="Komentarze"/>
