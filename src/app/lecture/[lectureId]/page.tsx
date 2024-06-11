@@ -182,7 +182,7 @@ export default function LecturePage({
                     ) : (
                       <FaRegStar className="text-xl" />
                     )}
-                    <p className="text-sm md:text-lg font-medium">
+                    <p className="text-sm md:text-lg font-medium text-white!">
                       {isFavourite
                         ? "Usuń z ulubionych"
                         : "Dodaj do ulubionych"}
