@@ -17,7 +17,7 @@ import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 import AddLectureMaterials from "@/components/lecture/AddLectureMaterials";
 import { useEffect, useState } from "react";
 import useAuth from "@/hooks/useAuth";
-import NotFound from "../../addlecture/[conferenceId]/not-found";
+import NotFound from "../../(role_organizer)/addlecture/[conferenceId]/not-found";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { useRouter } from "next/navigation";
@@ -32,7 +32,7 @@ const RedirectToConference = ({ conferenceId }: { conferenceId: number }) => {
   return (
     <div
       className="relative self-start bg-white rounded-t-2xl font-semibold text-black text-center text-nowrap w-36 xs:w-44 md:w-60 h-10 md:h-12 p-1 hover:py-2 hover:top-0 mt-20 top-2 cursor-pointer duration-100"
-      onClick={() => router.push(`/myconference/${conferenceId}`)}
+      onClick={() => router.push(`/conference/${conferenceId}`)}
     >
       <div className="flex justify-center items-center gap-x-2">
         <IoArrowBackCircle className="size-5 md:size-7 hidden xs:block" />
@@ -54,7 +54,7 @@ export default function LecturePage({
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
   const [refetchState, setRefetchState] = useState<number>(0);
-  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"], true);
   const [update, setUpdate] = useState<boolean>(false);
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
   const [isUserLecturer, setIsUserLecturer] = useState<boolean | undefined>(
@@ -112,7 +112,6 @@ export default function LecturePage({
   };
 
   if (isError) return <Error500 />;
-  if (isAuthorise === false) return <NotFound />;
 
   const handleAddToFavourites = async () => {
     try {
@@ -144,11 +143,8 @@ export default function LecturePage({
 
   return (
     <Page>
-      {isAuthorise === true &&
+      {
       !isLoading &&
-      userData &&
-      isUserOrganizer !== undefined &&
-      isUserLecturer !== undefined &&
       lectureIdData &&
       typeof lectureIdData !== "string" ? (
         <div className="w-[90%] lg:w-[60%]">
@@ -210,14 +206,14 @@ export default function LecturePage({
             ) : null}
 
             {(lectureIdData.materials.length !== 0 ||
-              userData.role === "ADMIN" ||
+                (userData && userData.role === "ADMIN") ||
               isUserOrganizer === true ||
               isUserLecturer === true) && (
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
                 <TitleHeader title={"Materiały"} />
                 <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
-                  {(userData.role === "ADMIN" ||
+                  {((userData && userData.role === "ADMIN") ||
                     isUserOrganizer === true ||
                     isUserLecturer === true) && (
                     <AddLectureMaterials
