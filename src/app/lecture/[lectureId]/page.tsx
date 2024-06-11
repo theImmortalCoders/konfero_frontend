@@ -168,21 +168,21 @@ export default function LecturePage({
                 {lectureIdData.description}
               </p>
               {participant && (
-                <span className="w-full flex justify-center md:justify-end">
+                <span className="w-full flex text-white justify-center md:justify-end">
                   <span
                     onClick={() => {
                       isFavourite
                         ? handleRemoveFromFavourites()
                         : handleAddToFavourites();
                     }}
-                    className="w-fit h-min flex justify-center items-center gap-x-2 cursor-pointer text-darkblue px-3"
+                    className="w-fit h-min flex justify-center items-center gap-x-2 cursor-pointer px-3"
                   >
                     {isFavourite ? (
                       <FaStar className="text-xl" />
                     ) : (
                       <FaRegStar className="text-xl" />
                     )}
-                    <p className="text-sm md:text-lg font-medium text-white!">
+                    <p className="text-sm md:text-lg font-medium ">
                       {isFavourite
                         ? "Usuń z ulubionych"
                         : "Dodaj do ulubionych"}
