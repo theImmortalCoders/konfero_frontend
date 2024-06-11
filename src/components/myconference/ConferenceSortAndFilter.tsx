@@ -129,13 +129,15 @@ function FilterSection({
 function SortFilterRow({
   children,
   isTagsThere,
+  className,
 }: {
   children: React.ReactNode;
   isTagsThere?: boolean;
+  className?: string;
 }) {
   return (
     <div
-      className={`flex w-full justify-center ${
+      className={`${className ? className : 'flex'} w-full justify-center ${
         isTagsThere
           ? "items-center 2xl:items-start flex-col 2xl:flex-row"
           : "items-center flex-col xs:flex-row"
@@ -259,61 +261,57 @@ export default function ConferenceSortAndFilter({
       >
         {showFilters ? "- Ukryj filtry" : "+ Pokaż filtry"}
       </p>
-      {showFilters && (
-        <>
-          <SortFilterRow>
-            <FilterSection
-              title="Rozpoczęcie po:"
-              type="datetime-local"
-              setState={setStartDateTimeFrom}
-            ></FilterSection>
-            <FilterSection
-              title="Koniec przed:"
-              type="datetime-local"
-              setState={setStartDateTimeTo}
-            ></FilterSection>
-          </SortFilterRow>
-          <SortFilterRow>
-            <FilterSection
-              title="Pokaż pełne:"
-              type="checkbox"
-              setState={setParticipantsFull}
-            ></FilterSection>
-            <FilterSection
-              title="Pokaż odwołane:"
-              type="checkbox"
-              setState={setCanceled}
-            ></FilterSection>
-            <FilterSection
-                title="Pokaż zakończone:"
-                type="checkbox"
-                setState={setShowFinished}
-            ></FilterSection>
-            <FilterSection
-              title="Tylko zweryfikowane:"
-              type="checkbox"
-              setState={setVerified}
-            ></FilterSection>
-          </SortFilterRow>
-          <SortFilterRow isTagsThere={true}>
-            <FilterSection
-              title="Tagi:"
-              type="tag"
-              setState={setTagsIds}
-            ></FilterSection>
-            <FilterSection
-              title="Nazwa:"
-              type="text"
-              setState={setName}
-            ></FilterSection>
-            <FilterSection
-              title="Lokalizacja:"
-              type="text"
-              setState={setLocationName}
-            ></FilterSection>
-          </SortFilterRow>
-        </>
-      )}
+      <SortFilterRow className={`${showFilters ? 'flex' : 'hidden'}`}>
+        <FilterSection
+          title="Rozpoczęcie po:"
+          type="datetime-local"
+          setState={setStartDateTimeFrom}
+        ></FilterSection>
+        <FilterSection
+          title="Koniec przed:"
+          type="datetime-local"
+          setState={setStartDateTimeTo}
+        ></FilterSection>
+      </SortFilterRow>
+      <SortFilterRow className={`${showFilters ? 'flex' : 'hidden'}`}>
+        <FilterSection
+          title="Pokaż pełne:"
+          type="checkbox"
+          setState={setParticipantsFull}
+        ></FilterSection>
+        <FilterSection
+          title="Pokaż odwołane:"
+          type="checkbox"
+          setState={setCanceled}
+        ></FilterSection>
+        <FilterSection
+            title="Pokaż zakończone:"
+            type="checkbox"
+            setState={setShowFinished}
+        ></FilterSection>
+        <FilterSection
+          title="Tylko zweryfikowane:"
+          type="checkbox"
+          setState={setVerified}
+        ></FilterSection>
+      </SortFilterRow>
+      <SortFilterRow className={`${showFilters ? 'flex' : 'hidden'}`} isTagsThere={true}>
+        <FilterSection
+          title="Tagi:"
+          type="tag"
+          setState={setTagsIds}
+        ></FilterSection>
+        <FilterSection
+          title="Nazwa:"
+          type="text"
+          setState={setName}
+        ></FilterSection>
+        <FilterSection
+          title="Lokalizacja:"
+          type="text"
+          setState={setLocationName}
+        ></FilterSection>
+      </SortFilterRow>
     </Box>
   );
 }
