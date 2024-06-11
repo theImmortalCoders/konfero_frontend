@@ -156,12 +156,11 @@ export default function MyConferencePage({
           {conferenceIdData.tags !== null && conferenceIdData.tags.length > 0 && (
             <Tags conference={conferenceIdData} />
           )}
-          {conferenceIdData.lectures.length > 0 &&
           <Lectures
             lectures={conferenceIdData.lectures}
             conference={conferenceIdData}
             userData={userData}
-          />}
+          />
           {conferenceIdData.participants !== null && conferenceIdData.participants.length > 0 ? (
             <Participants conferenceIdData={conferenceIdData} />
           ) : null}
