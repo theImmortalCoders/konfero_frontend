@@ -156,11 +156,12 @@ export default function LecturePage({
             alt={"Logo"}
            children={<></>}/>
           </div>
+          {isUserOrganizer != null && isUserLecturer != null &&
             <MyLecturePageImageBox
               lectureIdData={lectureIdData}
               isUserOrganizer={isUserOrganizer}
               isUserLecturer={isUserLecturer}
-            />
+            />}
 
             <div className="px-4 pt-2 sm:px-8 sm:pt-4 w-full">
               <p className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg py-2 sm:py-3 md:py-4 lg:py-3 xl:py-4">
