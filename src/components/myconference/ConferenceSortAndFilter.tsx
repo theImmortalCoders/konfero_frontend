@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Box } from "../common/Box/Box";
-import { SortAndFilterConferenceData } from "@/app/(role_all)/conference/page";
+import { SortAndFilterConferenceData } from "@/app/conference/page";
 import { Tag } from "@/hooks/conference";
 import SearchBarTag from "../tag/SearchBarTag";
 import { getAllTags } from "@/hooks/tag";
@@ -129,13 +129,15 @@ function FilterSection({
 function SortFilterRow({
   children,
   isTagsThere,
+  className,
 }: {
   children: React.ReactNode;
   isTagsThere?: boolean;
+  className?: string;
 }) {
   return (
     <div
-      className={`flex w-full justify-center ${
+      className={`${className ? className : 'flex'} w-full justify-center ${
         isTagsThere
           ? "items-center 2xl:items-start flex-col 2xl:flex-row"
           : "items-center flex-col xs:flex-row"
@@ -160,7 +162,7 @@ export default function ConferenceSortAndFilter({
   const [sort, setSort] = useState<
     "startDateTime" | "location" | "canceled" | "format" | "participantsFull"
   >("startDateTime");
-  const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("ASC");
+  const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("DESC");
 
   const [startDateTimeFrom, setStartDateTimeFrom] = useState<
     string | undefined
@@ -171,6 +173,7 @@ export default function ConferenceSortAndFilter({
   const [name, setName] = useState<string | undefined>(undefined);
   const [tagsIds, setTagsIds] = useState<number[] | undefined>(undefined);
   const [canceled, setCanceled] = useState<boolean | undefined>(false);
+  const [showFinished, setShowFinished] = useState<boolean | undefined>(false);
   const [verified, setVerified] = useState<boolean | undefined>(false);
   const [participantsFull, setParticipantsFull] = useState<boolean | undefined>(
     false,
@@ -189,6 +192,7 @@ export default function ConferenceSortAndFilter({
       name: name,
       tagsIds: tagsIds,
       canceled: canceled,
+      showFinished: showFinished,
       verified: verified,
       participantsFull: participantsFull,
       organizerId: organizerId,
@@ -202,6 +206,7 @@ export default function ConferenceSortAndFilter({
     name,
     tagsIds,
     canceled,
+    showFinished,
     verified,
     participantsFull,
     organizerId,
@@ -239,11 +244,11 @@ export default function ConferenceSortAndFilter({
             onChange={(e) => {
               e.target.value === "ASC" || e.target.value === "DESC"
                 ? setSortDirection(e.target.value)
-                : setSortDirection("ASC");
+                : setSortDirection("DESC");
             }}
           >
-            <option value="ASC">Rosnąco</option>
             <option value="DESC">Malejąco</option>
+            <option value="ASC">Rosnąco</option>
           </select>
         </SortSection>
       </SortFilterRow>
@@ -256,61 +261,57 @@ export default function ConferenceSortAndFilter({
       >
         {showFilters ? "- Ukryj filtry" : "+ Pokaż filtry"}
       </p>
-      {showFilters && (
-        <>
-          <SortFilterRow>
-            <FilterSection
-              title="Rozpoczęcie po:"
-              type="datetime-local"
-              setState={setStartDateTimeFrom}
-            ></FilterSection>
-            <FilterSection
-              title="Koniec przed:"
-              type="datetime-local"
-              setState={setStartDateTimeTo}
-            ></FilterSection>
-          </SortFilterRow>
-          <SortFilterRow>
-            <FilterSection
-              title="Brak miejsc:"
-              type="checkbox"
-              setState={setParticipantsFull}
-            ></FilterSection>
-            <FilterSection
-              title="Odwołane:"
-              type="checkbox"
-              setState={setCanceled}
-            ></FilterSection>
-            <FilterSection
-              title="Zweryfikowane:"
-              type="checkbox"
-              setState={setVerified}
-            ></FilterSection>
-          </SortFilterRow>
-          <SortFilterRow isTagsThere={true}>
-            <FilterSection
-              title="Tagi:"
-              type="tag"
-              setState={setTagsIds}
-            ></FilterSection>
-            <FilterSection
-              title="Nazwa:"
-              type="text"
-              setState={setName}
-            ></FilterSection>
-            {/* <FilterSection
-              title="Organizator:"
-              type="organizer"
-              setState={setOrganizerId}
-            ></FilterSection> */}
-            <FilterSection
-              title="Lokalizacja:"
-              type="text"
-              setState={setLocationName}
-            ></FilterSection>
-          </SortFilterRow>
-        </>
-      )}
+      <SortFilterRow className={`${showFilters ? 'flex' : 'hidden'}`}>
+        <FilterSection
+          title="Rozpoczęcie po:"
+          type="datetime-local"
+          setState={setStartDateTimeFrom}
+        ></FilterSection>
+        <FilterSection
+          title="Koniec przed:"
+          type="datetime-local"
+          setState={setStartDateTimeTo}
+        ></FilterSection>
+      </SortFilterRow>
+      <SortFilterRow className={`${showFilters ? 'flex' : 'hidden'}`}>
+        <FilterSection
+          title="Pokaż pełne:"
+          type="checkbox"
+          setState={setParticipantsFull}
+        ></FilterSection>
+        <FilterSection
+          title="Pokaż odwołane:"
+          type="checkbox"
+          setState={setCanceled}
+        ></FilterSection>
+        <FilterSection
+            title="Pokaż zakończone:"
+            type="checkbox"
+            setState={setShowFinished}
+        ></FilterSection>
+        <FilterSection
+          title="Tylko zweryfikowane:"
+          type="checkbox"
+          setState={setVerified}
+        ></FilterSection>
+      </SortFilterRow>
+      <SortFilterRow className={`${showFilters ? 'flex' : 'hidden'}`} isTagsThere={true}>
+        <FilterSection
+          title="Tagi:"
+          type="tag"
+          setState={setTagsIds}
+        ></FilterSection>
+        <FilterSection
+          title="Nazwa:"
+          type="text"
+          setState={setName}
+        ></FilterSection>
+        <FilterSection
+          title="Lokalizacja:"
+          type="text"
+          setState={setLocationName}
+        ></FilterSection>
+      </SortFilterRow>
     </Box>
   );
 }

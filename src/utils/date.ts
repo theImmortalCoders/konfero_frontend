@@ -1,4 +1,4 @@
-export function formatDate(inputDate: string | Date) {
+export function formatDate(inputDate: string | undefined) {
   const months = [
     "stycznia",
     "lutego",
@@ -14,7 +14,7 @@ export function formatDate(inputDate: string | Date) {
     "grudnia",
   ];
 
-  const date = new Date(inputDate);
+  const date = new Date(inputDate ? inputDate : "");
   const day = date.getDate();
   const month = months[date.getMonth()];
   const year = date.getFullYear();

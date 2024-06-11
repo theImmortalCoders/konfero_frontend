@@ -165,7 +165,7 @@ export default function AddLectureInputs({
         setCleanSearchBar(true);
         setStatusError(false);
         setMessage(undefined);
-        window.location.replace(`/myconference/${conferenceData.id}`);
+        window.location.replace(`/conference/${conferenceData.id}`);
       }
     } catch (error) {
       setStatusError(true);

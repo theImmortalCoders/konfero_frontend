@@ -17,7 +17,7 @@ import LoadingMessage from "@/components/common/Loading/LoadingMessage";
 import AddLectureMaterials from "@/components/lecture/AddLectureMaterials";
 import { useEffect, useState } from "react";
 import useAuth from "@/hooks/useAuth";
-import NotFound from "../../addlecture/[conferenceId]/not-found";
+import NotFound from "../../(role_organizer)/addlecture/[conferenceId]/not-found";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { useRouter } from "next/navigation";
@@ -31,8 +31,8 @@ const RedirectToConference = ({ conferenceId }: { conferenceId: number }) => {
 
   return (
     <div
-      className="relative self-start bg-white rounded-t-2xl font-semibold text-black text-center text-nowrap w-36 xs:w-44 md:w-60 h-10 md:h-12 p-1 hover:py-2 hover:top-0 mt-20 top-2 cursor-pointer duration-100"
-      onClick={() => router.push(`/myconference/${conferenceId}`)}
+      className="relative self-start bg-white rounded-2xl flex items-center justify-center font-semibold text-black text-center text-nowrap w-36 xs:w-44 md:w-60 h-10 md:h-12 p-1 hover:py-2 hover:top-0 mt-20 top-2 cursor-pointer duration-100"
+      onClick={() => router.push(`/conference/${conferenceId}`)}
     >
       <div className="flex justify-center items-center gap-x-2">
         <IoArrowBackCircle className="size-5 md:size-7 hidden xs:block" />
@@ -54,7 +54,7 @@ export default function LecturePage({
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
   const [refetchState, setRefetchState] = useState<number>(0);
-  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"], true);
   const [update, setUpdate] = useState<boolean>(false);
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
   const [isUserLecturer, setIsUserLecturer] = useState<boolean | undefined>(
@@ -112,7 +112,6 @@ export default function LecturePage({
   };
 
   if (isError) return <Error500 />;
-  if (isAuthorise === false) return <NotFound />;
 
   const handleAddToFavourites = async () => {
     try {
@@ -144,28 +143,28 @@ export default function LecturePage({
 
   return (
     <Page>
-      {isAuthorise === true &&
+      {
       !isLoading &&
-      userData &&
-      isUserOrganizer !== undefined &&
-      isUserLecturer !== undefined &&
       lectureIdData &&
       typeof lectureIdData !== "string" ? (
-        <div className="w-[90%] lg:w-[60%]">
+        <div className="w-[90%] lg:w-[60%] flex flex-col items-center gap-2 lg:gap-5 mb-20">
+          <div className="w-full flex items-center flex-col">
           <RedirectToConference conferenceId={lectureIdData.conferenceId} />
           <BoxWithImage
-            className="text-darkblue mb-5 rounded-tl-none"
+              className="text-darkblue w-[55%] lg:w-[45%] mt-10 mb-5"
             src={lectureIdData.image.id}
             alt={"Logo"}
-          >
+           children={<></>}/>
+          </div>
+          {isUserOrganizer != null && isUserLecturer != null &&
             <MyLecturePageImageBox
               lectureIdData={lectureIdData}
               isUserOrganizer={isUserOrganizer}
               isUserLecturer={isUserLecturer}
-            />
+            />}
+
             <div className="px-4 pt-2 sm:px-8 sm:pt-4 w-full">
-              <TitleHeader title={lectureIdData.name} />
-              <p className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg py-2 sm:py-3 md:py-4 lg:py-3 xl:py-4">
+              <p className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg py-2 sm:py-3 md:py-4 lg:py-3 xl:py-4">
                 {lectureIdData.description}
               </p>
               {participant && (
@@ -193,10 +192,10 @@ export default function LecturePage({
               )}
             </div>
             {lectureIdData.lecturers.length !== 0 ? (
-              <>
-                <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
+              <div className="my-5">
+                <div className="h-[2px] w-full bg-darkblue my-5" />
                 <TitleHeader title={"Prowadzący"} />
-                <div className="w-full h-auto flex justify-center items-center pt-4">
+                <div className="w-full gap-5 h-auto flex justify-center items-center pt-4">
                   {lectureIdData.lecturers.map((lecturer, index) => (
                     <People
                       key={index}
@@ -206,18 +205,18 @@ export default function LecturePage({
                     />
                   ))}
                 </div>
-              </>
+              </div>
             ) : null}
 
             {(lectureIdData.materials.length !== 0 ||
-              userData.role === "ADMIN" ||
+                (userData && userData.role === "ADMIN") ||
               isUserOrganizer === true ||
               isUserLecturer === true) && (
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
                 <TitleHeader title={"Materiały"} />
                 <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
-                  {(userData.role === "ADMIN" ||
+                  {((userData && userData.role === "ADMIN") ||
                     isUserOrganizer === true ||
                     isUserLecturer === true) && (
                     <AddLectureMaterials
@@ -241,7 +240,7 @@ export default function LecturePage({
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
                 <TitleHeader title={"Zainteresowani"} />
-                <div className="w-full flex flex-row justify-center items-start gap-2 2xs:gap-8 xl:gap-12 2xl:gap-16 py-4 flex-wrap px-4">
+                <div className="w-full flex flex-row justify-center items-start gap-5 2xs:gap-8 xl:gap-12 2xl:gap-16 py-4 flex-wrap px-4">
                   {lectureIdData.interested.map((interested, index) => (
                     <People
                       key={index}
@@ -252,7 +251,6 @@ export default function LecturePage({
                 </div>
               </>
             ) : null}
-          </BoxWithImage>
         </div>
       ) : (
         <LoadingMessage />

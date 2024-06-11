@@ -13,7 +13,7 @@ export default function Lectures({
 }: {
   lectures: Lecture[];
   conference: GetConferenceDetailsWithRoleFilteringData;
-  userData: UserData;
+  userData: UserData | null;
 }) {
   return (
     <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">

@@ -79,7 +79,7 @@ const APIImageComponent: React.FC<APIImageComponentProps> = ({
         <img
           className={` ${
             full ? "w-full opacity-25 fixed left-0 top-0 -z-10" : "relative"
-          } object-fill object-center h-auto w-full`}
+          } object-fill object-center h-auto `}
           src={imageData}
           alt="photo"
         />
@@ -87,7 +87,7 @@ const APIImageComponent: React.FC<APIImageComponentProps> = ({
         <img
           className={`${
             full ? "w-full opacity-25 fixed left-0 top-0 -z-10" : "relative"
-          }  object-fill object-center h-auto w-full`}
+          }  object-fill object-center h-auto `}
           src={`/assets/common/${defaultImg}`}
           alt="defaultPhoto"
         />
