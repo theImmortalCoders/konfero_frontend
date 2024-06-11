@@ -104,6 +104,7 @@ export default function ConferenceList({
               } else if (
                 !conference.participantsFull &&
                 !conference.amISignedUp
+                  && !(Date.parse(conference.endDateTime) < Date.now())
               ) {
                 handleCirclePlusClick();
               }
@@ -116,13 +117,13 @@ export default function ConferenceList({
                   ? "Wypisz się"
                   : "Zapisz się"}
             </p>
-            {conference.participantsFull && !conference.amISignedUp ? (
-              <CiCirclePlus className="text-4xl text-darkblue opacity-50" />
-            ) : conference.amISignedUp ? (
-              <CiCircleMinus className="text-4xl text-darkblue" />
-            ) : (
+            {!conference.participantsFull && !conference.amISignedUp && !(Date.parse(conference.endDateTime) < Date.now())? (
               <CiCirclePlus className="text-4xl text-darkblue" />
-            )}
+            ) : conference.amISignedUp && !(Date.parse(conference.endDateTime) < Date.now()) ? (
+              <CiCircleMinus className="text-4xl text-darkblue" />
+            ) : !conference.amISignedUp ? (
+                <CiCirclePlus className="text-4xl text-darkblue opacity-50"/>
+            ) : <CiCircleMinus className="text-4xl text-darkblue opacity-50"/>}
           </div>
           <p className="font-semibold text-base xs:text-xs sm:mr-4">
             {conference.participantsAmount}/{conference.participantsLimit}

@@ -19,7 +19,7 @@ import Title from "@/components/myconferenceId/Title/Title";
 import Panel from "@/components/myconferenceId/OrganizerAndAdminPanel/Panel";
 import useAuth from "@/hooks/useAuth";
 import NotFound from "../../addlecture/[conferenceId]/not-found";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SignUpWarning from "@/components/conference/SignUpWarning";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import CommentsList from "@/components/myconferenceId/Comments/CommentsList";
@@ -123,7 +123,7 @@ export default function MyConferencePage({
                       signOut(conferenceIdData.id);
                     } else if (
                       !conferenceIdData.participantsFull &&
-                      !conferenceIdData.amISignedUp
+                      !conferenceIdData.amISignedUp && !(Date.parse(conferenceIdData.endDateTime) < Date.now())
                     ) {
                       setSignUpWarning(true);
                     }
@@ -131,22 +131,22 @@ export default function MyConferencePage({
                   className="flex items-center bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2"
                 >
                   <p className="text-black font-semibold">
-                    {conferenceIdData.participantsFull &&
-                    !conferenceIdData.amISignedUp
-                      ? "Brak miejsc"
-                      : conferenceIdData.amISignedUp
-                        ? "Wypisz się"
-                        : "Zapisz się"}
+                    {!conferenceIdData.participantsFull && !conferenceIdData.amISignedUp && !(Date.parse(conferenceIdData.endDateTime) < Date.now()) ? (
+                        <p>Zapisz się</p>
+                    ) : conferenceIdData.amISignedUp && !(Date.parse(conferenceIdData.endDateTime) < Date.now()) ? (
+                        <p>Wypisz się</p>
+                    ) : !conferenceIdData.amISignedUp ? (
+                        <p className="opacity-50">Zapisz się</p>
+                    ) : <p className="opacity-50">Wypisz się</p>}
                   </p>
 
-                  {conferenceIdData.participantsFull &&
-                  !conferenceIdData.amISignedUp ? (
-                    <CiCirclePlus className="text-4xl text-darkblue opacity-50" />
-                  ) : conferenceIdData.amISignedUp ? (
-                    <CiCircleMinus className="text-4xl text-darkblue" />
-                  ) : (
-                    <CiCirclePlus className="text-4xl text-darkblue" />
-                  )}
+                  {!conferenceIdData.participantsFull && !conferenceIdData.amISignedUp && !(Date.parse(conferenceIdData.endDateTime) < Date.now()) ? (
+                      <CiCirclePlus className="text-4xl text-darkblue"/>
+                  ) : conferenceIdData.amISignedUp && !(Date.parse(conferenceIdData.endDateTime) < Date.now()) ? (
+                      <CiCircleMinus className="text-4xl text-darkblue"/>
+                  ) : !conferenceIdData.amISignedUp ? (
+                      <CiCirclePlus className="text-4xl text-darkblue opacity-50"/>
+                  ) : <CiCircleMinus className="text-4xl text-darkblue opacity-50"/>}
                 </span>
               </span>
             )}

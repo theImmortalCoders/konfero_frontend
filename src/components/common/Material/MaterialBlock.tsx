@@ -67,7 +67,7 @@ export default function MaterialBlock({
         <Link href={`${NEXT_PUBLIC_API_BASE_URL}/api/file/${material.id}`}>
           {material.createdDate !== null
             ? formatDate(material.createdDate)
-            : "Brak daty"}
+              : "Brak daty"}
         </Link>
       </td>
       {lectureIdData.lecturers.map((lecturer) => (
