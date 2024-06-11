@@ -64,7 +64,7 @@ export default function ConferenceList({
   return (
     <div className="flex flex-col sm:flex-row items-center sm:items-start w-full text-black bg-close2White hover:bg-gray-200 duration-200 shadow-whiteShadow h-full z-0 rounded-3xl relative pb-4 sm:py-0">
       <ListItemImage
-        href={`/myconference/${conference.id}`}
+        href={`/conference/${conference.id}`}
         logo={conference.logo}
         className="rounded-l-3xl"
       >
@@ -94,7 +94,7 @@ export default function ConferenceList({
           <DisplayTag conference={conference} isSmall={true} />
         </div>
       </ListItemImage>
-      {mode === "conference" && !conference.canceled && (
+      {mode === "conference" && !conference.canceled && userData != null && (
         <div className="flex flex-col items-center space-y-2 sm:space-y-0">
           <div
             className="w-auto h-min flex justify-center items-center sm:h-min gap-x-2 sm:mr-4 sm:mt-4 2xs:px-2 sm:px-0 2xs:bg-gray-300 sm:bg-transparent rounded-full cursor-pointer"
@@ -117,7 +117,7 @@ export default function ConferenceList({
                   ? "Wypisz się"
                   : "Zapisz się"}
             </p>
-            {!conference.participantsFull && !conference.amISignedUp && !(Date.parse(conference.endDateTime) < Date.now())? (
+            { !conference.participantsFull && !conference.amISignedUp && !(Date.parse(conference.endDateTime) < Date.now())? (
               <CiCirclePlus className="text-4xl text-darkblue" />
             ) : conference.amISignedUp && !(Date.parse(conference.endDateTime) < Date.now()) ? (
               <CiCircleMinus className="text-4xl text-darkblue" />

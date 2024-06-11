@@ -69,7 +69,7 @@ export default function MyConferenceListPage() {
     data: signedConferencesData,
     isLoading: isSignedConferencesLoading,
     isError: isSignedConferencesError,
-  } = useQuery("conferences user attends", () => getConferencesIAmSignedFor(), {
+  } = useQuery("conference user attends", () => getConferencesIAmSignedFor(), {
     refetchOnMount: true,
     staleTime: 1000,
     enabled: !!userData,

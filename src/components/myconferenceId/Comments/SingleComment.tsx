@@ -12,6 +12,7 @@ export default function SingleComment({
   userRole,
   update,
   setUpdate,
+    auth
 }: {
   comment: Comment;
   organizerId: number;
@@ -19,6 +20,7 @@ export default function SingleComment({
   userRole: string | null;
   update: boolean;
   setUpdate: Dispatch<SetStateAction<boolean>>;
+  auth?:boolean;
 }) {
   const removeComment = async (id: number) => {
     try {
@@ -75,6 +77,7 @@ export default function SingleComment({
         </span>
       </span>
       <p className="min-h-16">{comment.content}</p>
+      {auth &&
       <span className="space-x-2 font-semibold">
         <button
           onClick={() => setIsResponse(!isResponse)}
@@ -91,6 +94,7 @@ export default function SingleComment({
           </button>
         )}
       </span>
+      }
       {comment.responses &&
         comment?.responses.map((response) => {
           return (

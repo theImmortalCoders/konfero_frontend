@@ -18,7 +18,6 @@ import Lectures from "@/components/myconferenceId/Lectures/Lectures";
 import Title from "@/components/myconferenceId/Title/Title";
 import Panel from "@/components/myconferenceId/OrganizerAndAdminPanel/Panel";
 import useAuth from "@/hooks/useAuth";
-import NotFound from "../../addlecture/[conferenceId]/not-found";
 import React, { useEffect, useState } from "react";
 import SignUpWarning from "@/components/conference/SignUpWarning";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
@@ -29,13 +28,14 @@ import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import DeleteWarning from "@/components/myconferenceId/DeleteWarning";
 import { isUserInOrganizers } from "@/hooks/authorise/authorization";
+import NotFound from "@/app/not-found";
 
 export default function MyConferencePage({
   params,
 }: {
   params: { conferenceId: string };
 }) {
-  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"]);
+  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"], true);
 
   const {
     data: conferenceIdData,
@@ -49,11 +49,10 @@ export default function MyConferencePage({
   const router = useRouter();
   const handleDelete = useCallback((id: number) => {
     deleteConference(id);
-    router.push("/myconference");
+    router.push("/conference");
   }, []);
 
   if (isError) return <Error500 />;
-  if (isAuthorise === false) return <NotFound />;
 
   const [signUpWarning, setSignUpWarning] = useState<boolean>(false);
   const [deleteWarning, setDeleteWarning] = useState<boolean>(false);
@@ -98,16 +97,15 @@ export default function MyConferencePage({
 
     checkIfOrganizer();
   }, [userData, conferenceIdData]);
-
   return (
     <Page className="py-10">
-      {isAuthorise === true &&
-      userData &&
+      {
       !isLoading &&
       conferenceIdData &&
+          isAuthorise != null &&
       typeof conferenceIdData !== "string" ? (
         <>
-          {(isOrganizer || userData.role === "ADMIN") &&
+          {(isOrganizer || (userData && userData.role === "ADMIN")) &&
           !conferenceIdData.canceled ? (
             <Panel
               conferenceIdData={conferenceIdData}
@@ -115,7 +113,7 @@ export default function MyConferencePage({
             />
           ) : null}
           <Title conferenceIdData={conferenceIdData}>
-            {!conferenceIdData.canceled && (
+            {!conferenceIdData.canceled && isAuthorise && (
               <span className="flex justify-center py-10 w-full">
                 <span
                   onClick={() => {
@@ -130,6 +128,7 @@ export default function MyConferencePage({
                   }}
                   className="flex items-center bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2"
                 >
+
                   <p className="text-black font-semibold">
                     {!conferenceIdData.participantsFull && !conferenceIdData.amISignedUp && !(Date.parse(conferenceIdData.endDateTime) < Date.now()) ? (
                         <p>Zapisz się</p>
@@ -170,6 +169,7 @@ export default function MyConferencePage({
             conference={conferenceIdData}
             update={update}
             setUpdate={setUpdate}
+            auth={isAuthorise}
           />
           {signUpWarning && (
             <SignUpWarning

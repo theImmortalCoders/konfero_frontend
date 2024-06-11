@@ -40,7 +40,7 @@ export default function LectureSearch({
     <Box className="w-full my-8">
       <div className="flex justify-between items-center font-black text-darkblue w-full">
         Znalezione wykłady: {(lectures as Lecture[])?.length}
-        {isOrganizer || userData.role === "ADMIN" ? (
+        {isOrganizer || (userData && userData.role === "ADMIN") ? (
           <AddButton href={`/addlecture/${conference.id}`}>
             Dodaj Wykład
           </AddButton>
