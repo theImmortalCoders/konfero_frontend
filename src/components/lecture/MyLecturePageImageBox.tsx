@@ -23,21 +23,23 @@ export default function MyLecturePageImageBox({
   isUserLecturer: boolean;
 }) {
   const router = useRouter();
+  console.log("o",isUserOrganizer)
+  console.log("l",isUserLecturer)
   return (
-    <div className="absolute top-0 left-0 w-full h-fit flex flex-col items-center text-close2White p-4">
+    <div className="w-full h-fit flex flex-col items-center text-close2White p-4">
       {isUserOrganizer || isUserLecturer ? (
         <div
           onClick={() => router.push(`/updatelecture/${lectureIdData.id}`)}
-          className="flex absolute right-4 top-4 px-3 py-1 justify-center items-center space-x-2 bg-close2White rounded-3xl font-black text-darkblue cursor-pointer"
+          className="flex px-3 py-1 justify-center items-center space-x-2 bg-close2White rounded-3xl font-black text-darkblue cursor-pointer"
         >
           <MdEdit className="text-2xl" />
           <p className="hidden md:block">Edytuj wykład</p>
         </div>
       ) : null}
-      <h1 className="text-lg sm:text-2xl  md:text-3xl lg:text-2xl xl:text-3xl pt-[5%]">
+      <h1 className="text-lg sm:text-2xl  md:text-3xl lg:text-2xl xl:text-3xl py-[3%]">
         {lectureIdData.name}
       </h1>
-      <div className="w-full h-auto flex justify-around pt-[10%]">
+      <div className="w-full h-auto flex justify-around py-[3%]">
         <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
           <FaRegCalendarCheck className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
           <h1 className="text-xs sm:text-sm md:text-lg lg:text-md xl:text-lg">
@@ -56,7 +58,7 @@ export default function MyLecturePageImageBox({
           </h1>
         </div>
       </div>
-      <div className="flex-col flex gap-x-3 w-full h-auto items-center justify-center pt-[10%]">
+      <div className="flex-col flex gap-x-3 w-full h-auto items-center justify-center py-[3%]">
         <div className="flex-row flex gap-x-3 w-full h-auto items-center justify-center">
           <IoMdPin className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />
           <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl">

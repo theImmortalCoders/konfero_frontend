@@ -31,7 +31,7 @@ const RedirectToConference = ({ conferenceId }: { conferenceId: number }) => {
 
   return (
     <div
-      className="relative self-start bg-white rounded-t-2xl font-semibold text-black text-center text-nowrap w-36 xs:w-44 md:w-60 h-10 md:h-12 p-1 hover:py-2 hover:top-0 mt-20 top-2 cursor-pointer duration-100"
+      className="relative self-start bg-white rounded-2xl flex items-center justify-center font-semibold text-black text-center text-nowrap w-36 xs:w-44 md:w-60 h-10 md:h-12 p-1 hover:py-2 hover:top-0 mt-20 top-2 cursor-pointer duration-100"
       onClick={() => router.push(`/conference/${conferenceId}`)}
     >
       <div className="flex justify-center items-center gap-x-2">
@@ -147,21 +147,23 @@ export default function LecturePage({
       !isLoading &&
       lectureIdData &&
       typeof lectureIdData !== "string" ? (
-        <div className="w-[90%] lg:w-[60%]">
+        <div className="w-[90%] lg:w-[60%] flex flex-col items-center gap-5 mb-20">
+          <div className="w-full flex items-center flex-col">
           <RedirectToConference conferenceId={lectureIdData.conferenceId} />
           <BoxWithImage
-            className="text-darkblue mb-5 rounded-tl-none"
+              className="text-darkblue w-[55%] lg:w-[45%] mt-10 mb-5"
             src={lectureIdData.image.id}
             alt={"Logo"}
-          >
+           children={<></>}/>
+          </div>
             <MyLecturePageImageBox
               lectureIdData={lectureIdData}
               isUserOrganizer={isUserOrganizer}
               isUserLecturer={isUserLecturer}
             />
+
             <div className="px-4 pt-2 sm:px-8 sm:pt-4 w-full">
-              <TitleHeader title={lectureIdData.name} />
-              <p className="text-sm sm:text-md md:text-lg lg:text-md xl:text-lg py-2 sm:py-3 md:py-4 lg:py-3 xl:py-4">
+              <p className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg py-2 sm:py-3 md:py-4 lg:py-3 xl:py-4">
                 {lectureIdData.description}
               </p>
               {participant && (
@@ -189,10 +191,10 @@ export default function LecturePage({
               )}
             </div>
             {lectureIdData.lecturers.length !== 0 ? (
-              <>
-                <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
+              <div className="my-5">
+                <div className="h-[2px] w-full bg-darkblue my-5" />
                 <TitleHeader title={"Prowadzący"} />
-                <div className="w-full h-auto flex justify-center items-center pt-4">
+                <div className="w-full gap-5 h-auto flex justify-center items-center pt-4">
                   {lectureIdData.lecturers.map((lecturer, index) => (
                     <People
                       key={index}
@@ -202,7 +204,7 @@ export default function LecturePage({
                     />
                   ))}
                 </div>
-              </>
+              </div>
             ) : null}
 
             {(lectureIdData.materials.length !== 0 ||
@@ -237,7 +239,7 @@ export default function LecturePage({
               <>
                 <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
                 <TitleHeader title={"Zainteresowani"} />
-                <div className="w-full flex flex-row justify-center items-start gap-2 2xs:gap-8 xl:gap-12 2xl:gap-16 py-4 flex-wrap px-4">
+                <div className="w-full flex flex-row justify-center items-start gap-5 2xs:gap-8 xl:gap-12 2xl:gap-16 py-4 flex-wrap px-4">
                   {lectureIdData.interested.map((interested, index) => (
                     <People
                       key={index}
@@ -248,7 +250,6 @@ export default function LecturePage({
                 </div>
               </>
             ) : null}
-          </BoxWithImage>
         </div>
       ) : (
         <LoadingMessage />
