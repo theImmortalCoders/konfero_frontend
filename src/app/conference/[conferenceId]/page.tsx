@@ -128,7 +128,7 @@ export default function MyConferencePage({
                       setSignUpWarning(true);
                     }
                   }}
-                  className="flex items-center bg-gray-300 rounded-full cursor-pointer px-2 mt-4 space-x-2"
+                  className="flex items-center bg-gray-300 rounded-full cursor-pointer px-5 mt-4 space-x-2"
                 >
 
                   <p className="text-black font-semibold">
@@ -162,7 +162,7 @@ export default function MyConferencePage({
             conference={conferenceIdData}
             userData={userData}
           />}
-          {conferenceIdData.participants !== null ? (
+          {conferenceIdData.participants !== null && conferenceIdData.participants.length > 0 ? (
             <Participants conferenceIdData={conferenceIdData} />
           ) : null}
           {conferenceIdData.photos.length !== 0 ? (

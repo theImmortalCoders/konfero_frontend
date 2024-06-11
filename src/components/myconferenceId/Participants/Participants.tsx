@@ -12,7 +12,6 @@ export default function Participants({
     <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
       <TitleHeader title={"Uczestnicy"} />
 
-      {!conferenceIdData.participantsFull ? (
         <>
           <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
             {conferenceIdData.participantsAmount}/
@@ -28,11 +27,7 @@ export default function Participants({
             ))}
           </div>
         </>
-      ) : (
-        <h1 className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg">
-          Niestety brak wolnych miejsc
-        </h1>
-      )}
+
     </Box>
   );
 }

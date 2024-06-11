@@ -12,6 +12,7 @@ import End from "@/components/status/end";
 import Verified from "@/components/status/verified";
 import Cancel from "@/components/status/cancel";
 import Full from "@/components/status/full";
+import {Box} from "@/components/common/Box/Box";
 
 export default function MyConferencePageImageBox({
   conferenceIdData,
@@ -23,9 +24,11 @@ export default function MyConferencePageImageBox({
       <h1 className="my-2 text-lg sm:text-2xl  md:text-3xl lg:text-2xl xl:text-3xl">
         {conferenceIdData.name}
       </h1>
+      <Box className="text-darkblue w-[90%] lg:w-[60%] mt-5 mb-5">
       {conferenceIdData.verified && <Verified showtext={true}/>}
       {conferenceIdData.canceled && <Cancel showtext={true}/>}
       {conferenceIdData.participantsFull && <Full/>}
+
       {Date.parse(conferenceIdData.endDateTime) < Date.now() && !conferenceIdData.canceled && <End/>}
       <div className="w-full h-auto flex gap-5 px-10 md:px-32 justify-around py-[2%]">
         <div className="flex-row flex gap-x-3  h-auto items-center justify-center">
@@ -62,6 +65,7 @@ export default function MyConferencePageImageBox({
           </Link>
         </div>
       ) : null}
+      </Box>
     </div>
   );
 }
