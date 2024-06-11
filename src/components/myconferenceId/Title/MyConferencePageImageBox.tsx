@@ -8,6 +8,9 @@ import {
 } from "react-icons/fa6";
 import { IoMdPin } from "react-icons/io";
 import React from "react";
+import End from "@/components/status/end";
+import Verified from "@/components/status/verified";
+import Cancel from "@/components/status/cancel";
 
 export default function MyConferencePageImageBox({
   conferenceIdData,
@@ -19,6 +22,9 @@ export default function MyConferencePageImageBox({
       <h1 className="my-2 text-lg sm:text-2xl  md:text-3xl lg:text-2xl xl:text-3xl">
         {conferenceIdData.name}
       </h1>
+      {conferenceIdData.verified && <Verified showtext={true}/>}
+      {conferenceIdData.canceled && <Cancel showtext={true}/>}
+      {Date.parse(conferenceIdData.endDateTime) < Date.now() && !conferenceIdData.canceled && <End/>}
       <div className="w-full h-auto flex gap-5 px-10 md:px-32 justify-around py-[2%]">
         <div className="flex-row flex gap-x-3  h-auto items-center justify-center">
           <FaRegCalendarCheck className="text-lg md:text-3xl lg:text-2xl xl:text-4xl" />

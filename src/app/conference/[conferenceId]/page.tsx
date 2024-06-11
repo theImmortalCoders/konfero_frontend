@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import DeleteWarning from "@/components/myconferenceId/DeleteWarning";
 import { isUserInOrganizers } from "@/hooks/authorise/authorization";
 import NotFound from "@/app/not-found";
+import End from "@/components/status/end";
 
 export default function MyConferencePage({
   params,
@@ -112,6 +113,7 @@ export default function MyConferencePage({
               setDeleteWarning={setDeleteWarning}
             />
           ) : null}
+
           <Title conferenceIdData={conferenceIdData}>
             {!conferenceIdData.canceled && isAuthorise && (
               <span className="flex justify-center py-10 w-full">

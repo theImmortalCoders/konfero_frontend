@@ -73,6 +73,7 @@ export default function ConferenceList({
             <div className="flex flex-col sm:flex-row sm:h-3 gap-x-4 text-xs text-cyan-700 font-bold">
               {conference.verified && <Verified showtext={true} />}
               {conference.canceled && <Cancel showtext={true} />}
+              {Date.parse(conference.endDateTime) < Date.now() && !conference.canceled && <End/>}
             </div>
             <p className="font-black text-sm 2xs:text-xl line-clamp-1">
               {conference?.name}
@@ -82,7 +83,6 @@ export default function ConferenceList({
                 {formatDate(conference?.startDateTime)}
                 &nbsp;- {formatDate(conference?.endDateTime)}
               </p>
-              {conference.finished && <End />}
             </div>
             <div className="font-semibold xs:font-bold text-xs 2xs:text-base line-clamp-1">
               {conference.format === "STATIONARY" && (
