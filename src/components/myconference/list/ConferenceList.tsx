@@ -11,6 +11,7 @@ import Cancel from "@/components/status/cancel";
 import End from "@/components/status/end";
 import DisplayTag from "@/components/tag/displaytag";
 import { UserData } from "@/hooks/user";
+import Full from "@/components/status/full";
 
 export default function ConferenceList({
   conference,
@@ -73,6 +74,7 @@ export default function ConferenceList({
             <div className="flex flex-col sm:flex-row sm:h-3 gap-x-4 text-xs text-cyan-700 font-bold">
               {conference.verified && <Verified showtext={true} />}
               {conference.canceled && <Cancel showtext={true} />}
+              {conference.participantsFull && <Full />}
               {Date.parse(conference.endDateTime) < Date.now() && !conference.canceled && <End/>}
             </div>
             <p className="font-black text-sm 2xs:text-xl line-clamp-1">

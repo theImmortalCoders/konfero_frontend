@@ -11,6 +11,7 @@ import React from "react";
 import End from "@/components/status/end";
 import Verified from "@/components/status/verified";
 import Cancel from "@/components/status/cancel";
+import Full from "@/components/status/full";
 
 export default function MyConferencePageImageBox({
   conferenceIdData,
@@ -24,6 +25,7 @@ export default function MyConferencePageImageBox({
       </h1>
       {conferenceIdData.verified && <Verified showtext={true}/>}
       {conferenceIdData.canceled && <Cancel showtext={true}/>}
+      {conferenceIdData.participantsFull && <Full/>}
       {Date.parse(conferenceIdData.endDateTime) < Date.now() && !conferenceIdData.canceled && <End/>}
       <div className="w-full h-auto flex gap-5 px-10 md:px-32 justify-around py-[2%]">
         <div className="flex-row flex gap-x-3  h-auto items-center justify-center">

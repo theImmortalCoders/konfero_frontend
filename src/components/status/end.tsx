@@ -1,9 +1,11 @@
 import React from "react";
+import {RiVerifiedBadgeFill} from "react-icons/ri";
 
 export default function End() {
   return (
-    <p className="text-red-700">
-      Zakończona
-    </p>
+    <div className="flex items-center justify-center gap-x-1">
+        <RiVerifiedBadgeFill/>
+        <p>Zakończona</p>
+    </div>
   );
 }
