@@ -278,8 +278,8 @@ export async function getNotCanceledConferences(
     const response: AxiosResponse<GetAllConferencesData | string> =
       await appAPI.get(
         organizerId
-          ? `/api/conference?sort=startDateTime&sortDirection=ASC&organizerId=${organizerId.toString()}`
-          : `/api/conference?sort=startDateTime&sortDirection=ASC`,
+          ? `/api/conference?sort=startDateTime&sortDirection=ASC&showFinished=true&organizerId=${organizerId.toString()}`
+          : `/api/conference?sort=startDateTime&sortDirection=ASC&showFinished=true`,
         {
           withCredentials: true,
         },
