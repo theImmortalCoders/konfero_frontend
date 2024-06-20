@@ -54,7 +54,10 @@ export default function LecturePage({
   const [isLoading, setLoading] = useState(true);
   const [isError, setError] = useState(false);
   const [refetchState, setRefetchState] = useState<number>(0);
-  const { isAuthorise, userData } = useAuth(["USER", "ORGANIZER", "ADMIN"], true);
+  const { isAuthorise, userData } = useAuth(
+    ["USER", "ORGANIZER", "ADMIN"],
+    true,
+  );
   const [update, setUpdate] = useState<boolean>(false);
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
   const [isUserLecturer, setIsUserLecturer] = useState<boolean | undefined>(
@@ -143,114 +146,114 @@ export default function LecturePage({
 
   return (
     <Page>
-      {
-      !isLoading &&
-      lectureIdData &&
-      typeof lectureIdData !== "string" ? (
+      {!isLoading && lectureIdData && typeof lectureIdData !== "string" ? (
         <div className="w-[90%] lg:w-[60%] flex flex-col items-center gap-2 lg:gap-5 mb-20">
           <div className="w-full flex items-center flex-col">
-          <RedirectToConference conferenceId={lectureIdData.conferenceId} />
-          <BoxWithImage
+            <RedirectToConference conferenceId={lectureIdData.conferenceId} />
+            <BoxWithImage
               className="text-darkblue w-[55%] lg:w-[45%] mt-10 mb-5"
-            src={lectureIdData.image.id}
-            alt={"Logo"}
-           children={<></>}/>
+              src={lectureIdData.image.id}
+              alt={"Logo"}
+              children={<></>}
+            />
           </div>
-          {isUserOrganizer != null && isUserLecturer != null &&
+          {isUserOrganizer != null && isUserLecturer != null && (
             <MyLecturePageImageBox
               lectureIdData={lectureIdData}
               isUserOrganizer={isUserOrganizer}
               isUserLecturer={isUserLecturer}
-            />}
+            />
+          )}
 
-            <div className="px-4 pt-2 sm:px-8 sm:pt-4 w-full">
-              <p className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg py-2 sm:py-3 md:py-4 lg:py-3 xl:py-4">
-                {lectureIdData.description}
-              </p>
-              {participant && (
-                <span className="w-full flex text-white justify-center md:justify-end">
-                  <span
-                    onClick={() => {
-                      isFavourite
-                        ? handleRemoveFromFavourites()
-                        : handleAddToFavourites();
-                    }}
-                    className="w-fit h-min flex justify-center items-center gap-x-2 cursor-pointer px-3"
-                  >
-                    {isFavourite ? (
-                      <FaStar className="text-xl" />
-                    ) : (
-                      <FaRegStar className="text-xl" />
-                    )}
-                    <p className="text-sm md:text-lg font-medium ">
-                      {isFavourite
-                        ? "Usuń z ulubionych"
-                        : "Dodaj do ulubionych"}
-                    </p>
-                  </span>
-                </span>
-              )}
-            </div>
-            {lectureIdData.lecturers.length !== 0 ? (
-              <div className="my-5">
-                <div className="h-[2px] w-full bg-darkblue my-5" />
-                <TitleHeader title={"Prowadzący"} />
-                <div className="w-full gap-5 h-auto flex justify-center items-center pt-4">
-                  {lectureIdData.lecturers.map((lecturer, index) => (
-                    <People
-                      key={index}
-                      username={lecturer.username}
-                      photo={lecturer.photo}
-                      email={lecturer.email}
-                    />
-                  ))}
-                </div>
-              </div>
-            ) : null}
-
-            {(lectureIdData.materials.length !== 0 ||
-                (userData && userData.role === "ADMIN") ||
-              isUserOrganizer === true ||
-              isUserLecturer === true) && (
-              <>
-                <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
-                <TitleHeader title={"Materiały"} />
-                <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
-                  {((userData && userData.role === "ADMIN") ||
-                    isUserOrganizer === true ||
-                    isUserLecturer === true) && (
-                    <AddLectureMaterials
-                      lectureId={params.lectureId}
-                      handleRefetch={handleLectureDataRefetch}
-                    />
+          <div className="px-4 pt-2 sm:px-8 sm:pt-4 w-full">
+            <h1 className="my-2 w-full text-center text-lg sm:text-2xl  md:text-3xl lg:text-2xl xl:text-3xl">
+              {lectureIdData.name}
+            </h1>
+            <p className="w-full flex justify-center text-sm sm:text-md md:text-lg lg:text-md xl:text-lg py-2 sm:py-3 md:py-4 lg:py-3 xl:py-4">
+              {lectureIdData.description}
+            </p>
+            {participant && (
+              <span className="w-full flex text-white justify-center md:justify-end">
+                <span
+                  onClick={() => {
+                    isFavourite
+                      ? handleRemoveFromFavourites()
+                      : handleAddToFavourites();
+                  }}
+                  className="w-fit h-min flex justify-center items-center gap-x-2 cursor-pointer px-3"
+                >
+                  {isFavourite ? (
+                    <FaStar className="text-xl" />
+                  ) : (
+                    <FaRegStar className="text-xl" />
                   )}
-                </div>
-              </>
+                  <p className="text-sm md:text-lg font-medium ">
+                    {isFavourite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+                  </p>
+                </span>
+              </span>
             )}
-            {lectureIdData.materials.length !== 0 ? (
-              <>
-                <MaterialTableWrapper
-                  lectureIdData={lectureIdData}
-                  handleRefetch={handleLectureDataRefetch}
-                />
-              </>
-            ) : null}
+          </div>
+          {lectureIdData.lecturers.length !== 0 ? (
+            <div className="my-5">
+              <div className="h-[2px] w-full bg-darkblue my-5" />
+              <TitleHeader title={"Prowadzący"} />
+              <div className="w-full gap-5 h-auto flex justify-center items-center pt-4">
+                {lectureIdData.lecturers.map((lecturer, index) => (
+                  <People
+                    key={index}
+                    username={lecturer.username}
+                    photo={lecturer.photo}
+                    email={lecturer.email}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : null}
 
-            {lectureIdData.interested.length !== 0 ? (
-              <>
-                <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
-                <TitleHeader title={"Zainteresowani"} />
-                <div className="w-full flex flex-row justify-center items-start gap-5 2xs:gap-8 xl:gap-12 2xl:gap-16 py-4 flex-wrap px-4">
-                  {lectureIdData.interested.map((interested, index) => (
-                    <People
-                      key={index}
-                      username={interested.username}
-                      photo={interested.photo}
-                    />
-                  ))}
-                </div>
-              </>
-            ) : null}
+          {(lectureIdData.materials.length !== 0 ||
+            (userData && userData.role === "ADMIN") ||
+            isUserOrganizer === true ||
+            isUserLecturer === true) && (
+            <>
+              <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
+              <TitleHeader title={"Materiały"} />
+              <div className="w-full flex justify-center md:justify-end items-center mb-4 px-4 sm:px-8">
+                {((userData && userData.role === "ADMIN") ||
+                  isUserOrganizer === true ||
+                  isUserLecturer === true) && (
+                  <AddLectureMaterials
+                    lectureId={params.lectureId}
+                    handleRefetch={handleLectureDataRefetch}
+                  />
+                )}
+              </div>
+            </>
+          )}
+          {lectureIdData.materials.length !== 0 ? (
+            <>
+              <MaterialTableWrapper
+                lectureIdData={lectureIdData}
+                handleRefetch={handleLectureDataRefetch}
+              />
+            </>
+          ) : null}
+
+          {lectureIdData.interested.length !== 0 ? (
+            <>
+              <div className="h-[2px] w-full bg-darkblue mt-2 mb-2" />
+              <TitleHeader title={"Zainteresowani"} />
+              <div className="w-full flex flex-row justify-center items-start gap-5 2xs:gap-8 xl:gap-12 2xl:gap-16 py-4 flex-wrap px-4">
+                {lectureIdData.interested.map((interested, index) => (
+                  <People
+                    key={index}
+                    username={interested.username}
+                    photo={interested.photo}
+                  />
+                ))}
+              </div>
+            </>
+          ) : null}
         </div>
       ) : (
         <LoadingMessage />
